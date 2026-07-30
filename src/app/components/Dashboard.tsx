@@ -148,21 +148,27 @@ export function Dashboard() {
     <div ref={containerRef} className="bg-black relative overflow-x-hidden text-white font-sans">
       
       {/* Floating Navbar Island */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl">
         <nav className="navbar-island flex items-center justify-between px-6 py-4 rounded-[2rem] transition-all duration-500 bg-transparent text-white border border-transparent">
           <Link to="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight">
             <MapPin className="size-5" />
             HijauLog
           </Link>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <div className="hidden lg:flex items-center gap-8 text-sm font-medium">
             <a href="#urgensi" onClick={(e) => scrollToSection(e, 0)} className="hover:opacity-70 transition-opacity">Urgensi</a>
             <a href="#solusi" onClick={(e) => scrollToSection(e, 1)} className="hover:opacity-70 transition-opacity">Solusi</a>
             <a href="#integritas" onClick={(e) => scrollToSection(e, 2)} className="hover:opacity-70 transition-opacity">Integritas</a>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium hidden md:block">
-              Hai, {session?.user?.user_metadata?.full_name || session?.user?.email || "Pengguna"}
+            <span className="text-sm font-medium hidden md:block opacity-80">
+              Hai, {session?.user?.user_metadata?.full_name?.split(' ')[0] || session?.user?.email?.split('@')[0] || "Pengguna"}
             </span>
+            <Link 
+              to="/dashboard/lands" 
+              className="hidden sm:block text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg shadow-[var(--color-moss)]/20"
+            >
+              Buka Dashboard
+            </Link>
             <button 
               onClick={async () => {
                 await supabase.auth.signOut();

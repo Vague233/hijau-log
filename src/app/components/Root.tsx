@@ -1,11 +1,20 @@
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import { MapPin, LayoutDashboard } from "lucide-react";
 import { Button } from "./ui/button";
+import { useAuth } from "../../lib/AuthContext";
 
 export function Root() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  
   const isDashboard =
     location.pathname.startsWith("/dashboard");
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -41,11 +50,9 @@ export function Root() {
                   >
                     Ekspor
                   </Link>
-                  <Link to="/">
-                    <Button variant="outline" size="sm">
-                      Keluar
-                    </Button>
-                  </Link>
+                  <Button variant="outline" size="sm" onClick={handleLogout}>
+                    Keluar
+                  </Button>
                 </>
               ) : (
                 <>

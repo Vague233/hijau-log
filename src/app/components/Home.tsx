@@ -5,6 +5,8 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activity, ScanLine, FileText } from "lucide-react";
 
+import { useAuth } from "../../lib/AuthContext";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export function Home() {
@@ -12,6 +14,8 @@ export function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const philosophyRef = useRef<HTMLDivElement>(null);
   const protocolRef = useRef<HTMLDivElement>(null);
+  
+  const { session } = useAuth();
 
   useGSAP(
     () => {
@@ -104,10 +108,18 @@ export function Home() {
             <a href="#protocol" className="hover:opacity-70 transition-opacity">Protokol</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/login" className="text-sm font-medium hover:opacity-70 transition-opacity">Masuk</Link>
-            <Link to="/register" className="text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-              Akses Sistem
-            </Link>
+            {session ? (
+              <Link to="/dashboard" className="text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300">
+                Buka Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm font-medium hover:opacity-70 transition-opacity">Masuk</Link>
+                <Link to="/register" className="text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300">
+                  Akses Sistem
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </div>
@@ -239,52 +251,7 @@ export function Home() {
       </section>
 
       {/* Membership & Footer */}
-      <section className="pt-32 bg-[var(--color-cream)] px-4">
-        <div className="max-w-6xl mx-auto mb-32">
-          <div className="text-center mb-16">
-            <h2 className="font-serif italic text-4xl md:text-5xl mb-4">Tingkatan Akses</h2>
-            <p className="font-outfit text-gray-600">Skalabilitas untuk setiap entitas rantai pasok.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            {/* Basic */}
-            <div className="bg-white rounded-[2rem] p-8 border border-[var(--color-moss)]/10 hover:scale-[1.02] transition-transform cursor-default">
-              <h3 className="font-sans font-bold text-xl mb-2">Petani Lokal</h3>
-              <p className="text-3xl font-serif mb-6">Gratis</p>
-              <ul className="space-y-3 mb-8 font-outfit text-sm text-[var(--color-charcoal)]/70">
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-moss)]"/> Registrasi 1 Lahan</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-moss)]"/> Poligon Geo-Tagging</li>
-              </ul>
-              <button className="w-full py-3 rounded-full border border-[var(--color-moss)]/20 font-medium hover:bg-gray-50 transition-colors">Pilih</button>
-            </div>
-            {/* Performance (Pop) */}
-            <div className="bg-[var(--color-moss)] text-[var(--color-cream)] rounded-[2.5rem] p-10 md:scale-105 shadow-xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4">
-                <span className="bg-[var(--color-cream)]/20 text-xs px-3 py-1 rounded-full">Rekomendasi</span>
-              </div>
-              <h3 className="font-sans font-bold text-xl mb-2">Koperasi / Pengepul</h3>
-              <p className="text-4xl font-serif mb-6 text-[var(--color-cream)]">Rp 499k<span className="text-lg opacity-70">/bln</span></p>
-              <ul className="space-y-3 mb-8 font-outfit text-sm text-[var(--color-cream)]/80">
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-clay)]"/> Unlimited Lahan</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-clay)]"/> Generate QR Code</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-clay)]"/> Export Data (CSV/PDF)</li>
-              </ul>
-              {/* Magnetic button feel */}
-              <button className="relative w-full py-4 rounded-full bg-[var(--color-clay)] text-[var(--color-cream)] font-bold overflow-hidden group-hover:scale-105 transition-transform">
-                <span className="relative z-10">Upgrade Akses</span>
-              </button>
-            </div>
-            {/* Enterprise */}
-            <div className="bg-white rounded-[2rem] p-8 border border-[var(--color-moss)]/10 hover:scale-[1.02] transition-transform cursor-default">
-              <h3 className="font-sans font-bold text-xl mb-2">Eksportir Besar</h3>
-              <p className="text-3xl font-serif mb-6">Custom</p>
-              <ul className="space-y-3 mb-8 font-outfit text-sm text-[var(--color-charcoal)]/70">
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-moss)]"/> API Integration</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-[var(--color-moss)]"/> White-label DDS</li>
-              </ul>
-              <button className="w-full py-3 rounded-full border border-[var(--color-moss)]/20 font-medium hover:bg-gray-50 transition-colors">Hubungi Sales</button>
-            </div>
-          </div>
-        </div>
+      <section className="pt-16 bg-[var(--color-cream)] px-4">
 
         {/* Footer */}
         <footer className="bg-[var(--color-charcoal)] text-[var(--color-cream)] rounded-t-[4rem] pt-20 pb-10 px-8 md:px-16 mt-20 relative">

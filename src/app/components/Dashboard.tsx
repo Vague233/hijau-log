@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activity, ScanLine, FileText, Smartphone, Fingerprint, Lock } from "lucide-react";
 
 import { useAuth } from "../../lib/AuthContext";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../../lib/supabase";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -355,7 +355,6 @@ export function Dashboard() {
             </div>
           </div>
         </footer>
-      </section>
 
       {/* CSS for Navbar Morph */}
       <style>{`

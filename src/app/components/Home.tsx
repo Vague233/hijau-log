@@ -268,7 +268,7 @@ export function Home() {
             <div className="flex gap-16">
               <div className="flex flex-col gap-4 font-outfit">
                 <span className="font-bold mb-2">Legal</span>
-                <a href="#" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Privacy Policy</a>
+                <Link to="/privacy" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Privacy Policy</Link>
                 <a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank" rel="noopener noreferrer" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">EUDR Statement</a>
               </div>
             </div>

@@ -9,19 +9,15 @@ export function AccessGateway() {
 
   useGSAP(() => {
     const tl = gsap.timeline();
-    tl.from(".gateway-bg", {
-      scale: 1.1,
-      opacity: 0,
-      duration: 1.5,
-      ease: "power3.out",
-    })
-    .from(".gateway-content", {
-      y: 40,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power3.out",
-    }, "-=1");
+    tl.fromTo(".gateway-bg", 
+      { scale: 1.1, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 1.5, ease: "power3.out" }
+    )
+    .fromTo(".gateway-content", 
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out" }, 
+      "-=1"
+    );
   }, { scope: containerRef });
 
   return (
@@ -72,10 +68,10 @@ export function AccessGateway() {
 
         {/* Back to Features */}
         <div className="gateway-content">
-          <Link to="/#features" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors font-outfit text-sm px-6 py-3 rounded-full hover:bg-white/5">
+          <a href="/#features" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors font-outfit text-sm px-6 py-3 rounded-full hover:bg-white/5">
             <ArrowLeft className="size-4" />
             Kembali ke penjelasan fitur
-          </Link>
+          </a>
         </div>
       </div>
     </div>

@@ -129,7 +129,7 @@ export function Home() {
         {/* Background Image with Gradient Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1470115636405-2d3924bea9e5?q=80&w=2000&auto=format&fit=crop" 
+            src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2000&auto=format&fit=crop" 
             alt="Dark Forest" 
             className="w-full h-full object-cover scale-105"
           />

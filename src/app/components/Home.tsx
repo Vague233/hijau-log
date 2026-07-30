@@ -265,7 +265,11 @@ export function Home() {
                 Infrastruktur pelacakan komoditas tingkat lanjut untuk menjamin kepatuhan pasar global.
               </p>
             </div>
-            <div className="flex gap-16">
+            <div className="flex flex-col md:flex-row gap-12 md:gap-24">
+              <div className="flex flex-col gap-4 font-outfit">
+                <span className="font-bold mb-2">Perusahaan</span>
+                <Link to="/about" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Tentang Kami</Link>
+              </div>
               <div className="flex flex-col gap-4 font-outfit">
                 <span className="font-bold mb-2">Legal</span>
                 <Link to="/privacy" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Privacy Policy</Link>

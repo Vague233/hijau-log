@@ -11,6 +11,7 @@ import { QRCodeView } from "./components/QRCodeView";
 import { ExportData } from "./components/ExportData";
 import { AuthGuard } from "./components/AuthGuard";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
+import { About } from "./components/About";
 
 export const router = createBrowserRouter([
   {
@@ -18,9 +19,10 @@ export const router = createBrowserRouter([
     Component: Root,
     children: [
       { index: true, Component: Home },
-      { path: "register", Component: Register },
       { path: "login", Component: Login },
+      { path: "register", Component: Register },
       { path: "privacy", Component: PrivacyPolicy },
+      { path: "about", Component: About },
       { 
         path: "dashboard", 
         element: <AuthGuard><Dashboard /></AuthGuard> 

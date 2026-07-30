@@ -41,6 +41,30 @@ export function AddLand() {
     }
   };
 
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 800; // Resize width to 800px to save space
+          const scaleSize = MAX_WIDTH / img.width;
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // Compress to webp format for minimal base64 string size
+          resolve(canvas.toDataURL("image/webp", 0.7)); 
+        };
+        img.onerror = (error) => reject(error);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement
@@ -85,6 +109,16 @@ export function AddLand() {
     }
 
     setLoading(true);
+
+    let fotoBase64 = null;
+    if (file) {
+      try {
+        fotoBase64 = await compressImage(file);
+      } catch (err) {
+        console.error("Gagal mengkompresi gambar", err);
+      }
+    }
+
     const { error } = await supabase.from("lahan").insert([
       {
         user_id: session.user.id,
@@ -92,7 +126,8 @@ export function AddLand() {
         lokasi: formData.lokasi,
         luas: parseFloat(formData.luas) || 0,
         jumlah_pohon: parseInt(formData.jumlah_pohon) || 0,
-        polygon: formData.polygon ? JSON.parse(`[${formData.polygon}]`) : null, // Assuming polygon takes a jsonb or geometry array, let's omit or send as string if it breaks. Let's send null for now if it breaks, but we'll try to just send string or json. Wait, let's omit polygon for safety, or we can send it as string.
+        polygon: formData.polygon ? JSON.parse(`[${formData.polygon}]`) : null,
+        foto: fotoBase64,
       },
     ]);
 

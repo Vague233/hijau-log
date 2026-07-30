@@ -15,6 +15,7 @@ interface Land {
   jumlah_pohon: number;
   polygon: string;
   created_at: string;
+  foto?: string;
 }
 
 export function LandDetail() {
@@ -143,6 +144,17 @@ export function LandDetail() {
                 </div>
               </CardContent>
             </Card>
+
+            {land.foto && (
+              <Card className="border-emerald-100 shadow-sm">
+                <CardHeader>
+                  <CardTitle>Foto Lahan</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <img src={land.foto} alt="Foto Lahan" className="w-full max-h-96 object-cover rounded-lg border border-gray-200" />
+                </CardContent>
+              </Card>
+            )}
 
             <Card className="border-emerald-100 shadow-sm">
               <CardHeader>

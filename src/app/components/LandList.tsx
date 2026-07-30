@@ -15,6 +15,7 @@ interface Land {
   jumlah_pohon: number;
   polygon: string;
   created_at: string;
+  foto?: string;
 }
 
 export function LandList() {
@@ -86,11 +87,21 @@ export function LandList() {
           {lands.map((land) => (
             <Card key={land.id} className="hover:shadow-lg transition-shadow border-emerald-100 shadow-sm">
               <CardHeader>
-                <CardTitle className="flex items-start justify-between">
-                  <span className="flex-1 text-emerald-900">{land.nama_lahan}</span>
-                  <MapPin className="size-5 text-emerald-600 flex-shrink-0" />
-                </CardTitle>
-                <CardDescription>{land.lokasi}</CardDescription>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="flex items-start gap-2">
+                      <span className="text-emerald-900">{land.nama_lahan}</span>
+                    </CardTitle>
+                    <CardDescription className="mt-1">{land.lokasi}</CardDescription>
+                  </div>
+                  {land.foto ? (
+                    <img src={land.foto} alt="Foto Lahan" className="w-16 h-16 object-cover rounded-md border border-emerald-100 flex-shrink-0" />
+                  ) : (
+                    <div className="w-16 h-16 bg-emerald-50 rounded-md border border-emerald-100 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="size-6 text-emerald-300" />
+                    </div>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="space-y-2 text-sm">

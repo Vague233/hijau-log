@@ -1,7 +1,12 @@
 import { Link } from "react-router";
 import { ShieldCheck, MapPin, ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
 
 export function PrivacyPolicy() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[var(--color-cream)] text-[var(--color-charcoal)] pt-32 pb-20 px-4 md:px-16 font-outfit">
       <div className="max-w-4xl mx-auto">

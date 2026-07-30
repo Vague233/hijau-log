@@ -36,7 +36,7 @@ export function Root() {
             ) : (
               <Link to="/access">
                 <Button size="sm" className="rounded-full bg-[var(--color-moss)] hover:bg-[var(--color-charcoal)] transition-colors">
-                  Akses Sistem
+                  {location.pathname === "/login" || location.pathname === "/register" ? "Kembali" : "Akses Sistem"}
                 </Button>
               </Link>
             )}

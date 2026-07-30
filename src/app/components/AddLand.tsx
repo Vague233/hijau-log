@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import {
   Card,
@@ -28,6 +28,18 @@ export function AddLand() {
     polygon: "", // Optional, JSON string or coordinates
     notes: "",
   });
+
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -217,15 +229,48 @@ export function AddLand() {
 
               <div className="space-y-2 mt-4">
                 <Label>Upload Foto Lahan (Opsional)</Label>
-                <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer">
-                  <Upload className="size-8 mx-auto mb-2 text-gray-400" />
-                  <p className="text-sm text-gray-600">
-                    Klik untuk mengunggah atau seret file
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Foto lahan, tanaman (Maks 5MB)
-                  </p>
-                </div>
+                
+                {/* Hidden File Input */}
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileChange} 
+                  accept="image/*" 
+                  className="hidden" 
+                />
+
+                {!previewUrl ? (
+                  <div 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                    <Upload className="size-8 mx-auto mb-2 text-gray-400" />
+                    <p className="text-sm text-gray-600">
+                      Klik untuk mengunggah atau seret file
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Foto lahan, tanaman (Maks 5MB)
+                    </p>
+                  </div>
+                ) : (
+                  <div className="relative border border-gray-200 rounded-lg overflow-hidden group">
+                    <img src={previewUrl} alt="Preview" className="w-full h-48 object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Button 
+                        type="button" 
+                        variant="destructive" 
+                        size="sm" 
+                        onClick={() => {
+                          setFile(null);
+                          setPreviewUrl("");
+                          if (fileInputRef.current) fileInputRef.current.value = "";
+                        }}
+                      >
+                        Hapus Foto
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

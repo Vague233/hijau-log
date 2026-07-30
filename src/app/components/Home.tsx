@@ -114,8 +114,7 @@ export function Home() {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-medium hover:opacity-70 transition-opacity">Masuk</Link>
-                <Link to="/register" className="text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300">
+                <Link to="/access" className="text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-6 py-2.5 rounded-full hover:scale-105 transition-all duration-300 shadow-lg shadow-[var(--color-moss)]/20">
                   Akses Sistem
                 </Link>
               </>

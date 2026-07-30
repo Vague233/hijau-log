@@ -19,7 +19,7 @@ export function Root() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
       {/* Navigation Header */}
-      {location.pathname !== "/" && (
+      {location.pathname !== "/" && location.pathname !== "/access" && (
         <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full px-6 py-4 flex items-center justify-between border border-white/20 bg-white/40 backdrop-blur-md shadow-lg text-[var(--color-moss)]">
           <Link to="/" className="group flex items-center gap-2 transition-all duration-300 hover:opacity-90">
             <MapPin className="size-6 text-[var(--color-moss)] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" />
@@ -34,16 +34,11 @@ export function Root() {
                 Keluar
               </Button>
             ) : (
-              <>
-                <Link to="/login">
-                  <Button variant="outline" size="sm" className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
-                    Masuk
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button size="sm" className="rounded-full">Daftar</Button>
-                </Link>
-              </>
+              <Link to="/access">
+                <Button size="sm" className="rounded-full bg-[var(--color-moss)] hover:bg-[var(--color-charcoal)] transition-colors">
+                  Akses Sistem
+                </Button>
+              </Link>
             )}
           </div>
         </header>
@@ -55,7 +50,7 @@ export function Root() {
       </main>
 
       {/* Footer */}
-      {location.pathname !== "/" && (
+      {location.pathname !== "/" && location.pathname !== "/access" && (
         <footer className="border-t border-white/10 bg-[var(--color-charcoal)] py-8">
           <div className="container mx-auto px-4 text-center text-sm font-mono text-[var(--color-cream)]/40">
             <p>

@@ -41,29 +41,6 @@ export function AddLand() {
     }
   };
 
-  const compressImage = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target?.result as string;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 800; // Resize width to 800px to save space
-          const scaleSize = MAX_WIDTH / img.width;
-          canvas.width = MAX_WIDTH;
-          canvas.height = img.height * scaleSize;
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-          // Compress to webp format for minimal base64 string size
-          resolve(canvas.toDataURL("image/webp", 0.7)); 
-        };
-        img.onerror = (error) => reject(error);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -110,12 +87,31 @@ export function AddLand() {
 
     setLoading(true);
 
-    let fotoBase64 = null;
+    let fotoUrl = null;
     if (file) {
       try {
-        fotoBase64 = await compressImage(file);
-      } catch (err) {
-        console.error("Gagal mengkompresi gambar", err);
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+        const filePath = `${session.user.id}/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("lahan_photos")
+          .upload(filePath, file);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data: publicUrlData } = supabase.storage
+          .from("lahan_photos")
+          .getPublicUrl(filePath);
+
+        fotoUrl = publicUrlData.publicUrl;
+      } catch (err: any) {
+        console.error("Gagal mengunggah foto ke storage", err);
+        toast.error(`Gagal mengunggah foto: ${err.message}`);
+        setLoading(false);
+        return;
       }
     }
 
@@ -127,7 +123,7 @@ export function AddLand() {
         luas: parseFloat(formData.luas) || 0,
         jumlah_pohon: parseInt(formData.jumlah_pohon) || 0,
         polygon: formData.polygon ? JSON.parse(`[${formData.polygon}]`) : null,
-        foto: fotoBase64,
+        foto: fotoUrl,
       },
     ]);
 

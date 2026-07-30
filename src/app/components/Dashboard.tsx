@@ -41,29 +41,29 @@ export function Dashboard() {
       title: "Total Lahan Terdaftar",
       value: totalLands.toString(),
       icon: MapPin,
-      color: "text-emerald-600",
-      bgColor: "bg-emerald-100",
+      color: "text-[var(--color-moss)]",
+      bgColor: "bg-[var(--color-moss)]/10",
     },
     {
       title: "Pohon Teregistrasi",
       value: totalTrees.toString(),
       icon: Trees,
-      color: "text-teal-600",
-      bgColor: "bg-teal-100",
+      color: "text-[var(--color-clay)]",
+      bgColor: "bg-[var(--color-clay)]/10",
     },
     {
       title: "Kode QR Dibuat",
       value: totalLands.toString(), // Simplified for now
       icon: QrCode,
-      color: "text-green-600",
-      bgColor: "bg-green-100",
+      color: "text-[var(--color-moss)]",
+      bgColor: "bg-[var(--color-moss)]/10",
     },
     {
       title: "Kepatuhan EUDR",
       value: "100%",
       icon: FileText,
-      color: "text-emerald-600",
-      bgColor: "bg-emerald-100",
+      color: "text-[var(--color-clay)]",
+      bgColor: "bg-[var(--color-clay)]/10",
     },
   ];
 
@@ -75,11 +75,11 @@ export function Dashboard() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl mb-2 font-bold text-gray-900 flex items-center gap-2">
-          <Leaf className="text-emerald-600 size-8" />
+        <h1 className="text-3xl mb-2 font-bold text-[var(--color-charcoal)] flex items-center gap-2">
+          <Leaf className="text-[var(--color-moss)] size-8" />
           EUDR Compliance Dashboard
         </h1>
-        <p className="text-gray-600">Sistem Geo-Tagging Traceability untuk Kepatuhan EUDR</p>
+        <p className="text-[var(--color-charcoal)]/70">Sistem Geo-Tagging Traceability untuk Kepatuhan EUDR</p>
       </div>
 
       {/* Statistics Cards */}
@@ -87,9 +87,9 @@ export function Dashboard() {
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={index} className="border-emerald-100">
+            <Card key={index} className="border-[var(--color-moss)]/10">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">
+                <CardTitle className="text-sm font-medium text-[var(--color-charcoal)]/70">
                   {stat.title}
                 </CardTitle>
                 <div className={`${stat.bgColor} ${stat.color} p-2 rounded-lg`}>
@@ -105,7 +105,7 @@ export function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <Card className="mb-8 border-emerald-100">
+      <Card className="mb-8 border-[var(--color-moss)]/10">
         <CardHeader>
           <CardTitle>Aksi Cepat</CardTitle>
           <CardDescription>Akses cepat ke fungsi utama sistem</CardDescription>
@@ -113,19 +113,19 @@ export function Dashboard() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link to="/dashboard/add-land">
-              <Button className="w-full h-24 flex flex-col gap-2 bg-emerald-600 hover:bg-emerald-700">
+              <Button className="w-full h-24 flex flex-col gap-2 bg-[var(--color-moss)] hover:bg-[var(--color-moss)]/90 text-white">
                 <MapPin className="size-6" />
                 <span>Tambah Lahan/Pohon</span>
               </Button>
             </Link>
             <Link to="/dashboard/lands">
-              <Button variant="outline" className="w-full h-24 flex flex-col gap-2 border-emerald-200 hover:bg-emerald-50 text-emerald-700">
+              <Button variant="outline" className="w-full h-24 flex flex-col gap-2 border-[var(--color-moss)]/20 hover:bg-[var(--color-moss)]/5 text-[var(--color-moss)]">
                 <Trees className="size-6" />
                 <span>Lihat Semua Lahan</span>
               </Button>
             </Link>
             <Link to="/dashboard/export">
-              <Button variant="outline" className="w-full h-24 flex flex-col gap-2 border-emerald-200 hover:bg-emerald-50 text-emerald-700">
+              <Button variant="outline" className="w-full h-24 flex flex-col gap-2 border-[var(--color-moss)]/20 hover:bg-[var(--color-moss)]/5 text-[var(--color-moss)]">
                 <Package className="size-6" />
                 <span>Ekspor Data (DDS)</span>
               </Button>
@@ -136,7 +136,7 @@ export function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* System Flow Diagram */}
-        <Card className="border-emerald-100">
+        <Card className="border-[var(--color-moss)]/10">
           <CardHeader>
             <CardTitle>Alur Kepatuhan EUDR</CardTitle>
             <CardDescription>Alur sistem traceability geo-tagging</CardDescription>
@@ -144,31 +144,31 @@ export function Dashboard() {
           <CardContent>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="bg-emerald-600 text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">1</div>
-                <div className="flex-1 p-3 bg-emerald-50 rounded-lg">
+                <div className="bg-[var(--color-moss)] text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">1</div>
+                <div className="flex-1 p-3 bg-[var(--color-moss)]/5 rounded-lg">
                   <p className="text-sm font-medium">Registrasi Lahan & Geo-Tagging</p>
-                  <p className="text-xs text-gray-600">Input data lahan & koordinat GPS (Poligon)</p>
+                  <p className="text-xs text-[var(--color-charcoal)]/70">Input data lahan & koordinat GPS (Poligon)</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="bg-teal-600 text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">2</div>
-                <div className="flex-1 p-3 bg-teal-50 rounded-lg">
+                <div className="bg-[var(--color-clay)] text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">2</div>
+                <div className="flex-1 p-3 bg-[var(--color-clay)]/5 rounded-lg">
                   <p className="text-sm font-medium">Pembuatan Kode QR</p>
-                  <p className="text-xs text-gray-600">Generate QR dengan data traceability</p>
+                  <p className="text-xs text-[var(--color-charcoal)]/70">Generate QR dengan data traceability</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="bg-green-600 text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">3</div>
-                <div className="flex-1 p-3 bg-green-50 rounded-lg">
+                <div className="bg-[var(--color-moss)] text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">3</div>
+                <div className="flex-1 p-3 bg-[var(--color-moss)]/5 rounded-lg">
                   <p className="text-sm font-medium">Ekspor & Registrasi DDS</p>
-                  <p className="text-xs text-gray-600">Persiapkan paket data kepatuhan Due Diligence Statement</p>
+                  <p className="text-xs text-[var(--color-charcoal)]/70">Persiapkan paket data kepatuhan Due Diligence Statement</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="bg-lime-600 text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">4</div>
-                <div className="flex-1 p-3 bg-lime-50 rounded-lg">
+                <div className="bg-[var(--color-clay)] text-white rounded-full size-8 flex items-center justify-center flex-shrink-0 text-sm">4</div>
+                <div className="flex-1 p-3 bg-[var(--color-clay)]/5 rounded-lg">
                   <p className="text-sm font-medium">Verifikasi EU</p>
-                  <p className="text-xs text-gray-600">Submit untuk kepatuhan EUDR di pelabuhan tujuan</p>
+                  <p className="text-xs text-[var(--color-charcoal)]/70">Submit untuk kepatuhan EUDR di pelabuhan tujuan</p>
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@ export function Dashboard() {
         </Card>
 
         {/* Recent Activities */}
-        <Card className="border-emerald-100">
+        <Card className="border-[var(--color-moss)]/10">
           <CardHeader>
             <CardTitle>Aktivitas Terbaru</CardTitle>
             <CardDescription>Aktivitas terbaru dalam sistem</CardDescription>
@@ -184,14 +184,14 @@ export function Dashboard() {
           <CardContent>
             <div className="space-y-4">
               {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex items-start gap-3 pb-4 border-b last:border-0 border-emerald-100">
-                  <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
+                <div key={activity.id} className="flex items-start gap-3 pb-4 border-b last:border-0 border-[var(--color-moss)]/10">
+                  <div className="bg-[var(--color-clay)]/10 text-[var(--color-clay)] p-2 rounded-lg">
                     <TrendingUp className="size-4" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-sm">{activity.action}</p>
-                    <p className="text-sm text-gray-600">{activity.location}</p>
-                    <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
+                    <p className="text-sm text-[var(--color-charcoal)]/70">{activity.location}</p>
+                    <p className="text-xs text-[var(--color-charcoal)]/40 mt-1">{activity.time}</p>
                   </div>
                 </div>
               ))}

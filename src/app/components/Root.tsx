@@ -21,9 +21,9 @@ export function Root() {
       {/* Navigation Header */}
       {location.pathname !== "/" && (
         <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full px-6 py-4 flex items-center justify-between border border-white/20 bg-white/40 backdrop-blur-md shadow-lg text-[var(--color-moss)]">
-          <Link to="/" className="flex items-center gap-2">
-            <MapPin className="size-6 text-[var(--color-moss)]" />
-            <span className="font-semibold text-lg text-[var(--color-charcoal)]">
+          <Link to="/" className="group flex items-center gap-2 transition-all duration-300 hover:opacity-90">
+            <MapPin className="size-6 text-[var(--color-moss)] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" />
+            <span className="font-semibold text-lg text-[var(--color-charcoal)] transition-colors duration-300 group-hover:text-[var(--color-moss)]">
               HijauLog
             </span>
           </Link>

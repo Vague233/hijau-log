@@ -1,0 +1,140 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "./ui/button";
+import { MapPin, Trees, QrCode, Eye, Leaf } from "lucide-react";
+import { supabase } from "../../lib/supabase";
+import { useAuth } from "../../lib/AuthContext";
+import { toast } from "sonner";
+
+interface Land {
+  id: string;
+  nama_lahan: string;
+  lokasi: string;
+  luas: number;
+  jumlah_pohon: number;
+  polygon: string;
+  created_at: string;
+}
+
+export function LandList() {
+  const { session } = useAuth();
+  const [lands, setLands] = useState<Land[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLands = async () => {
+      if (!session?.user) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from("lahan")
+          .select("*")
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setLands(data || []);
+      } catch (error: any) {
+        toast.error(`Gagal memuat data: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLands();
+  }, [session]);
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <Leaf className="size-8 text-emerald-600 hidden md:block" />
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Database Lahan</h1>
+            <p className="text-gray-600">Daftar lahan yang telah teregistrasi</p>
+          </div>
+        </div>
+        <Link to="/dashboard/add-land">
+          <Button className="bg-emerald-600 hover:bg-emerald-700">
+            <MapPin className="size-4 mr-2" />
+            Tambah Lahan Baru
+          </Button>
+        </Link>
+      </div>
+
+      {loading ? (
+        <Card className="border-emerald-100 shadow-sm">
+          <CardContent className="py-12 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Memuat data lahan...</p>
+          </CardContent>
+        </Card>
+      ) : lands.length === 0 ? (
+        <Card className="border-emerald-100 shadow-sm">
+          <CardContent className="py-12 text-center">
+            <MapPin className="size-12 mx-auto mb-4 text-emerald-300" />
+            <h3 className="text-xl mb-2 font-medium text-gray-900">Belum Ada Lahan Terdaftar</h3>
+            <p className="text-gray-600 mb-6">Mulai dengan menambahkan lahan pertama Anda</p>
+            <Link to="/dashboard/add-land">
+              <Button className="bg-emerald-600 hover:bg-emerald-700">Tambah Lahan</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {lands.map((land) => (
+            <Card key={land.id} className="hover:shadow-lg transition-shadow border-emerald-100 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-start justify-between">
+                  <span className="flex-1 text-emerald-900">{land.nama_lahan}</span>
+                  <MapPin className="size-5 text-emerald-600 flex-shrink-0" />
+                </CardTitle>
+                <CardDescription>{land.lokasi}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="space-y-2 text-sm">
+                  {land.polygon && (
+                    <div className="flex items-start gap-2 text-gray-600">
+                      <MapPin className="size-4 mt-0.5" />
+                      <span className="line-clamp-1" title={land.polygon}>
+                        Poligon: {land.polygon}
+                      </span>
+                    </div>
+                  )}
+                  {land.luas != null && (
+                    <div className="text-gray-600 flex items-center gap-2">
+                       <MapPin className="size-4 opacity-0" />
+                       Luas: {land.luas} hektar
+                    </div>
+                  )}
+                  {land.jumlah_pohon != null && (
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Trees className="size-4" />
+                      <span>Estimasi pohon: {land.jumlah_pohon}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-4 flex gap-2">
+                  <Link to={`/dashboard/land/${land.id}`} className="flex-1">
+                    <Button variant="outline" className="w-full border-emerald-200 text-emerald-700 hover:bg-emerald-50" size="sm">
+                      <Eye className="size-4 mr-2" />
+                      Lihat Detail
+                    </Button>
+                  </Link>
+                  <Link to={`/dashboard/land/${land.id}/qr`} className="flex-1">
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700" size="sm">
+                      <QrCode className="size-4 mr-2" />
+                      Kode QR
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

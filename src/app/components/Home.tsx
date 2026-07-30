@@ -418,7 +418,7 @@ function MockCursorScheduler() {
 
 function ProtocolCard({ bg, title, desc, icon, animation }: { bg: string, title: string, desc: string, icon: React.ReactNode, animation: string }) {
   return (
-    <div className={`protocol-card w-full h-[100dvh] flex items-center justify-center ${bg} p-8`}>
+    <div className={`protocol-card relative z-10 w-full h-[100dvh] flex items-center justify-center ${bg} p-8`} style={{ transform: 'translateZ(0)' }}>
       <div className="max-w-4xl w-full flex flex-col md:flex-row items-center gap-16">
         <div className={`relative flex items-center justify-center size-64 rounded-full bg-white/30 shadow-2xl backdrop-blur-sm
           ${animation === 'rotate' ? 'animate-[spin_10s_linear_infinite]' : ''}

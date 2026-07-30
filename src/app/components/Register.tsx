@@ -41,7 +41,7 @@ export function Register() {
       setLoading(false);
     } else {
       toast.success("Pendaftaran berhasil! Silakan cek email atau langsung masuk.");
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 

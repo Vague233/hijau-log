@@ -1,138 +1,373 @@
-import { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router";
-import { Button } from "./ui/button";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activity, ScanLine, FileText, Smartphone, Fingerprint, Lock } from "lucide-react";
 
-const panels = [
-  {
-    id: "01",
-    title: "Peta & Lahan",
-    subtitle: "Manajemen Area Hutan",
-    desc: "Registrasi lahan baru, pemetaan poligon koordinat GPS, dan pemantauan luasan area hutan secara real-time.",
-    cta: "Kelola Lahan",
-    link: "/dashboard/lands",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "02",
-    title: "Verifikasi EUDR",
-    subtitle: "Due Diligence Statement",
-    desc: "Analisis geospasial mendalam yang memastikan poligon lahan bebas dari indikasi deforestasi pasca 31 Desember 2020.",
-    cta: "Cek Kepatuhan",
-    link: "/dashboard/export",
-    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "03",
-    title: "Traceability",
-    subtitle: "Enkripsi Data Rantai Pasok",
-    desc: "Pembuatan kode QR terenkripsi yang berisi riwayat titik geolokasi, kepemilikan, dan status kepatuhan kayu untuk inspeksi otoritas Eropa.",
-    cta: "Buat QR Code",
-    link: "/dashboard/lands",
-    image: "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "04",
-    title: "Aktivitas Sistem",
-    subtitle: "Log & Telemetri",
-    desc: "Pantau seluruh riwayat pendaftaran lahan, pembuatan QR, dan penarikan data secara real-time oleh berbagai aktor rantai pasok.",
-    cta: "Lihat Log",
-    link: "/dashboard", // Currently points back to dashboard as placeholder
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop",
-  },
+import { useAuth } from "../../lib/AuthContext";
+import { supabase } from "../../lib/supabaseClient";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const funFacts = [
+  "Tahukah Anda? Indonesia memiliki kawasan hutan hujan tropis terbesar ketiga di dunia, mencakup sekitar 95,6 juta hektar.",
+  "Tahukah Anda? Adaptasi smartphone di Indonesia mencapai 73% pada tahun 2024, memungkinkan pelacakan hutan dari genggaman.",
+  "Tahukah Anda? EUDR menetapkan batas akhir evaluasi deforestasi pada 30 Desember 2020.",
+  "Tahukah Anda? HijauLog mampu mereduksi waktu verifikasi asal kayu dari 14 hari menjadi kurang dari 24 jam.",
+  "Tahukah Anda? Teknologi GPS seluler modern dalam sistem kami menekan margin of error spasial di bawah 10 meter."
 ];
 
 export function Dashboard() {
-  const [activePanel, setActivePanel] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cinematicWrapperRef = useRef<HTMLDivElement>(null);
+  const philosophyRef = useRef<HTMLDivElement>(null);
+  const protocolRef = useRef<HTMLDivElement>(null);
+  const [randomFact, setRandomFact] = useState("");
+  
+  const { session } = useAuth();
+
+  useEffect(() => {
+    // Pick a random fun fact on mount
+    const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
+    setRandomFact(fact);
+  }, []);
+
+  useGSAP(
+    () => {
+      // Navbar Morphing
+      ScrollTrigger.create({
+        start: "top -50",
+        end: 99999,
+        toggleClass: { className: "navbar-scrolled", targets: ".navbar-island" },
+      });
+
+      // Cinematic Pinning and Crossfade Timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: cinematicWrapperRef.current,
+          start: "top top",
+          end: "+=300%",
+          pin: true,
+          scrub: 1, // Add some smoothing to the scrub
+        }
+      });
+
+      // Initially, section 1 is visible, opacity 1, y 0.
+      // Transition from 1 to 2
+      tl.to(".cinematic-section-1 .anim-elem", { y: -50, opacity: 0, duration: 1, stagger: 0.1 })
+        .to(".cinematic-bg-2", { opacity: 1, duration: 1 }, "<")
+        .fromTo(".cinematic-section-2 .anim-elem", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, "<0.3")
+
+        // Wait a bit (simulated by empty space in timeline)
+        .to({}, { duration: 0.5 })
+
+        // Transition from 2 to 3
+        .to(".cinematic-section-2 .anim-elem", { y: -50, opacity: 0, duration: 1, stagger: 0.1 })
+        .to(".cinematic-bg-3", { opacity: 1, duration: 1 }, "<")
+        .fromTo(".cinematic-section-3 .anim-elem", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, "<0.3")
+        
+        // Wait at the end before unpinning
+        .to({}, { duration: 0.5 });
+
+
+      // Philosophy Parallax & Text Reveal (Original)
+      gsap.from(".phil-text-1", {
+        scrollTrigger: {
+          trigger: philosophyRef.current,
+          start: "top 70%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+      
+      gsap.from(".phil-text-2", {
+        scrollTrigger: {
+          trigger: philosophyRef.current,
+          start: "top 40%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.3,
+      });
+
+      // Protocol Stacking (Original)
+      const cards = gsap.utils.toArray(".protocol-card") as HTMLElement[];
+      cards.forEach((card, i) => {
+        if (i === cards.length - 1) return;
+        
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top top",
+          endTrigger: cards[i + 1],
+          end: "top top",
+          pin: true,
+          pinSpacing: false,
+        });
+
+        gsap.to(card, {
+          scale: 0.9,
+          opacity: 0.5,
+          filter: "blur(20px)",
+          scrollTrigger: {
+            trigger: cards[i + 1],
+            start: "top bottom",
+            end: "top top",
+            scrub: true,
+          },
+        });
+      });
+
+    },
+    { scope: containerRef }
+  );
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, index: number) => {
+    e.preventDefault();
+    if (!cinematicWrapperRef.current) return;
+    
+    // We pinned it for 300% of height.
+    // Index 0 -> top
+    // Index 1 -> 150vh down
+    // Index 2 -> 300vh down
+    const wrapperTop = cinematicWrapperRef.current.offsetTop;
+    const windowHeight = window.innerHeight;
+    const targetScroll = wrapperTop + (index * windowHeight * 1.5);
+    
+    window.scrollTo({
+      top: targetScroll,
+      behavior: "smooth"
+    });
+  };
 
   return (
-    <div className="bg-[var(--color-charcoal)] min-h-[calc(100vh-4rem)] pt-28 md:pt-32 pb-8 px-4 md:px-8 flex flex-col items-center justify-center">
+    <div ref={containerRef} className="bg-black relative overflow-x-hidden text-white font-sans">
       
-      <div className="w-full max-w-7xl mb-8 text-center md:text-left text-[var(--color-cream)]">
-        <h1 className="text-3xl md:text-5xl font-serif italic mb-2">Sistem Telemetri</h1>
-        <p className="font-outfit opacity-70">Pilih instrumen operasional Anda.</p>
+      {/* Floating Navbar Island */}
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
+        <nav className="navbar-island flex items-center justify-between px-6 py-4 rounded-[2rem] transition-all duration-500 bg-transparent text-white border border-transparent">
+          <Link to="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight">
+            <MapPin className="size-5" />
+            HijauLog
+          </Link>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="#urgensi" onClick={(e) => scrollToSection(e, 0)} className="hover:opacity-70 transition-opacity">Urgensi</a>
+            <a href="#solusi" onClick={(e) => scrollToSection(e, 1)} className="hover:opacity-70 transition-opacity">Solusi</a>
+            <a href="#integritas" onClick={(e) => scrollToSection(e, 2)} className="hover:opacity-70 transition-opacity">Integritas</a>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium hidden md:block">
+              Hai, {session?.user?.user_metadata?.full_name || session?.user?.email || "Pengguna"}
+            </span>
+            <button 
+              onClick={async () => {
+                await supabase.auth.signOut();
+                window.location.href = '/';
+              }} 
+              className="text-sm font-medium bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-full transition-all duration-300 backdrop-blur-md"
+            >
+              Keluar
+            </button>
+          </div>
+        </nav>
       </div>
 
-      {/* Expanding Accordion Container */}
-      <div 
-        className="flex flex-col md:flex-row w-full max-w-7xl h-[80vh] min-h-[600px] gap-2 md:gap-4 overflow-hidden"
-        onMouseLeave={() => setActivePanel(null)}
-      >
-        {panels.map((panel) => {
-          const isActive = activePanel === panel.id;
-          const isAnyActive = activePanel !== null;
+      {/* Cinematic Main Page Section (Replaces Hero) */}
+      <section ref={cinematicWrapperRef} className="relative h-[100dvh] overflow-hidden bg-black">
+        
+        {/* Background Layers */}
+        <div className="absolute inset-0 z-0">
+          {/* BG 1: Urgensi */}
+          <div className="cinematic-bg-1 absolute inset-0 z-10 opacity-100">
+            <img 
+              src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
+              alt="Deep Forest Canopy" 
+              className="w-full h-full object-cover scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+          </div>
           
-          return (
-            <div
-              key={panel.id}
-              onMouseEnter={() => setActivePanel(panel.id)}
-              className={`group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-                ${isActive ? 'md:flex-[4] flex-[3]' : 'md:flex-[1] flex-[1]'}
-                ${!isActive && isAnyActive ? 'opacity-80' : 'opacity-100'}
-              `}
-            >
-              {/* Background Image */}
-              <img 
-                src={panel.image} 
-                alt={panel.title} 
-                className={`absolute inset-0 w-full h-full object-cover transition-all duration-[800ms] ease-in-out
-                  ${isActive ? 'grayscale-0 brightness-[0.6] scale-100' : 'grayscale brightness-[0.4] scale-110'}
-                `}
-              />
-              
-              {/* Gradient Overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent transition-opacity duration-700
-                ${isActive ? 'opacity-90' : 'opacity-60'}
-              `}></div>
+          {/* BG 2: Solusi */}
+          <div className="cinematic-bg-2 absolute inset-0 z-20 opacity-0">
+            <img 
+              src="https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?q=80&w=2000&auto=format&fit=crop" 
+              alt="Forest Path" 
+              className="w-full h-full object-cover scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-black/90 via-black/70 to-transparent"></div>
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
 
-              {/* Collapsed State Content (Vertical Text) */}
-              <div 
-                className={`absolute inset-0 p-6 flex flex-col items-center justify-between transition-opacity duration-500
-                  ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100 delay-200'}
-                `}
-              >
-                <span className="text-[var(--color-cream)] font-mono text-sm md:text-lg opacity-60">
-                  {panel.id}
-                </span>
-                
-                {/* Horizontal on mobile, Vertical on desktop */}
-                <span className="text-[var(--color-cream)] font-serif italic text-2xl md:text-3xl whitespace-nowrap md:rotate-180 md:[writing-mode:vertical-rl] tracking-wide">
-                  {panel.title}
-                </span>
+          {/* BG 3: Integritas */}
+          <div className="cinematic-bg-3 absolute inset-0 z-30 opacity-0">
+            <img 
+              src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=2000&auto=format&fit=crop" 
+              alt="Misty Woods" 
+              className="w-full h-full object-cover scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 backdrop-blur-[2px]"></div>
+          </div>
+        </div>
+
+        {/* Content Layers */}
+        <div className="relative z-40 h-full">
+          
+          {/* Section 1: Urgensi */}
+          <div className="cinematic-section-1 absolute inset-0 flex items-center px-8 md:px-24">
+            <div className="max-w-2xl">
+              <div className="anim-elem flex items-center gap-3 mb-6">
+                <div className="w-12 h-[1px] bg-[var(--color-clay)]"></div>
+                <span className="font-mono text-sm tracking-widest text-[var(--color-clay)] uppercase">Urgensi Global</span>
               </div>
-
-              {/* Expanded State Content */}
-              <div 
-                className={`absolute inset-x-0 bottom-0 p-6 md:p-12 flex flex-col justify-end transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
-                  ${isActive ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 translate-y-10 pointer-events-none'}
-                `}
-              >
-                <div className="flex items-center gap-4 mb-3">
-                  <span className="text-[var(--color-clay)] font-mono text-xs md:text-sm tracking-widest">{panel.id}</span>
-                  <span className="h-[1px] w-12 bg-[var(--color-clay)]/50"></span>
-                  <p className="text-[var(--color-clay)] font-mono text-xs md:text-sm uppercase tracking-widest">
-                    {panel.subtitle}
-                  </p>
-                </div>
-                
-                <h2 className="text-[var(--color-cream)] text-3xl md:text-5xl font-serif italic mb-4 leading-tight">
-                  {panel.title}
-                </h2>
-                
-                <p className="text-[var(--color-cream)]/70 font-outfit text-sm md:text-base max-w-lg mb-8 line-clamp-3 md:line-clamp-none">
-                  {panel.desc}
+              <h1 className="anim-elem text-5xl md:text-8xl font-sans font-bold leading-[1.1] tracking-tight mb-2">
+                Nature is the Asset.
+              </h1>
+              <h2 className="anim-elem text-4xl md:text-6xl font-serif italic mb-6">
+                Kepatuhan EUDR <br/>di Jantung Tropis
+              </h2>
+              <p className="anim-elem font-outfit text-lg md:text-xl text-white/80 mb-8 leading-relaxed">
+                Sektor ekspor kayu Indonesia berada pada titik krusial. Setiap unit produk wajib terverifikasi tidak berasal dari lahan yang mengalami deforestasi setelah batas waktu 30 Desember 2020. 
+              </p>
+              
+              {/* Fun Fact */}
+              <div className="anim-elem mt-12 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-moss)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <h4 className="font-sans font-bold text-sm text-[var(--color-moss)] mb-2 flex items-center gap-2">
+                  <Activity className="size-4" /> Fakta Menarik
+                </h4>
+                <p className="font-outfit text-sm text-white/70 italic leading-relaxed">
+                  "{randomFact}"
                 </p>
-                
-                <Link to={panel.link} className="w-fit">
-                  <Button className="bg-[var(--color-moss)] hover:bg-[var(--color-moss)]/80 text-[var(--color-cream)] rounded-full px-6 md:px-8 py-6 text-sm md:text-base transition-transform hover:scale-105 duration-300">
-                    {panel.cta}
-                  </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Solusi */}
+          <div className="cinematic-section-2 absolute inset-0 flex items-center justify-end px-8 md:px-24">
+            <div className="max-w-2xl text-right flex flex-col items-end">
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center gap-3 mb-6 justify-end">
+                <span className="font-mono text-sm tracking-widest text-emerald-400 uppercase">Ekosistem HijauLog</span>
+                <div className="w-12 h-[1px] bg-emerald-400"></div>
+              </div>
+              <h2 className="anim-elem opacity-0 translate-y-[50px] text-4xl md:text-6xl font-serif italic mb-6">
+                Sinkronisasi Luring <br/>di Garis Depan
+              </h2>
+              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-lg md:text-xl text-white/80 mb-8 leading-relaxed text-right">
+                Kami merespons kesenjangan literasi teknologi dengan pendekatan <strong>Offline-First</strong>. Melalui aplikasi mobile di lapangan, petugas dapat melakukan geotagging yang presisi meski tanpa koneksi internet (blank spot). Data akan tersinkronisasi otomatis segera setelah sinyal terdeteksi.
+              </p>
+              
+              <div className="anim-elem opacity-0 translate-y-[50px] grid grid-cols-2 gap-4 mt-8 w-full max-w-lg mb-8">
+                <div className="bg-black/40 border border-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col items-center text-center">
+                  <Smartphone className="size-8 text-emerald-400 mb-3" />
+                  <span className="font-bold text-sm mb-1">Mobile Field App</span>
+                  <span className="text-xs text-white/50">Geotagging luring di tengah hutan lebat.</span>
+                </div>
+                <div className="bg-black/40 border border-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col items-center text-center">
+                  <Activity className="size-8 text-emerald-400 mb-3" />
+                  <span className="font-bold text-sm mb-1">Auto-Sync</span>
+                  <span className="text-xs text-white/50">Resolusi konflik data otomatis ke cloud.</span>
+                </div>
+              </div>
+              <Link to="/dashboard/lands" className="anim-elem opacity-0 translate-y-[50px] inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg shadow-emerald-500/20">
+                <MapPin className="size-5" />
+                Kelola Lahan Anda
+              </Link>
+            </div>
+          </div>
+
+          {/* Section 3: Integritas */}
+          <div className="cinematic-section-3 absolute inset-0 flex items-center justify-center px-8 text-center">
+            <div className="max-w-3xl flex flex-col items-center">
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center mb-8">
+                <div className="p-4 rounded-full bg-white/10 backdrop-blur-lg border border-white/20">
+                  <Lock className="size-10 text-[var(--color-cream)]" />
+                </div>
+              </div>
+              <h2 className="anim-elem opacity-0 translate-y-[50px] text-4xl md:text-6xl font-serif italic mb-6">
+                Integritas Tak Terbantahkan
+              </h2>
+              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-lg text-white/70 mb-12 max-w-2xl leading-relaxed">
+                Setiap poligon lahan diukur dengan margin of error <strong>&lt; 10 meter</strong>. Kami menerapkan <span className="text-white font-bold">Digital Fingerprint (SHA-256)</span> pada setiap rekaman batch. Jika data diubah secara ilegal, hash akan hancur, mencegah praktik <em>timber laundering</em>.
+              </p>
+              
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center gap-8 w-full mb-8">
+                <div className="flex flex-col items-center gap-3">
+                  <Fingerprint className="size-8 text-[var(--color-moss)]" />
+                  <span className="font-mono text-xs tracking-widest uppercase">SHA-256 Hash</span>
+                </div>
+                <div className="h-12 w-[1px] bg-white/20"></div>
+                <div className="flex flex-col items-center gap-3">
+                  <ScanLine className="size-8 text-[var(--color-moss)]" />
+                  <span className="font-mono text-xs tracking-widest uppercase">Dynamic QR</span>
+                </div>
+                <div className="h-12 w-[1px] bg-white/20"></div>
+                <div className="flex flex-col items-center gap-3">
+                  <MapPin className="size-8 text-[var(--color-moss)]" />
+                  <span className="font-mono text-xs tracking-widest uppercase">PostGIS Auth</span>
+                </div>
+              </div>
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center gap-4">
+                <Link to="/dashboard/export" className="inline-flex items-center gap-2 bg-[var(--color-moss)] hover:bg-[#5b7a5b] text-[var(--color-cream)] px-8 py-3 rounded-full font-bold transition-all shadow-lg shadow-[var(--color-moss)]/20">
+                  <ShieldCheck className="size-5" />
+                  Cek Kepatuhan EUDR
                 </Link>
               </div>
-
             </div>
-          );
-        })}
-      </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[var(--color-charcoal)] text-[var(--color-cream)] rounded-t-[4rem] pt-20 pb-10 px-8 md:px-16 mt-20 relative">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 border-b border-white/10 pb-12 mb-8">
+          <div>
+            <Link to="/" className="flex items-center gap-2 font-bold text-2xl mb-6">
+              <MapPin className="size-6 text-[var(--color-moss)]" />
+              HijauLog
+            </Link>
+            <p className="font-outfit text-[var(--color-cream)]/50 max-w-sm">
+              Infrastruktur pelacakan komoditas tingkat lanjut untuk menjamin kepatuhan pasar global.
+            </p>
+          </div>
+            <div className="flex flex-col md:flex-row gap-12 md:gap-24">
+              <div className="flex flex-col gap-4 font-outfit">
+                <span className="font-bold mb-2">Perusahaan</span>
+                <Link to="/about" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Tentang Kami</Link>
+              </div>
+              <div className="flex flex-col gap-4 font-outfit">
+                <span className="font-bold mb-2">Legal</span>
+                <Link to="/privacy" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Privacy Policy</Link>
+                <a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank" rel="noopener noreferrer" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">EUDR Statement</a>
+              </div>
+            </div>
+          </div>
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-mono text-[var(--color-cream)]/40">
+            <p>© 2026 HijauLog Core Systems.</p>
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full">
+              <span className="w-2 h-2 bg-[var(--color-moss)] rounded-full animate-pulse"></span>
+              SYSTEM OPERATIONAL
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      {/* CSS for Navbar Morph */}
+      <style>{`
+        .navbar-scrolled {
+          background-color: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(16px);
+          color: white;
+          border-color: rgba(255,255,255,0.1);
+          box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+      `}</style>
     </div>
   );
 }
+

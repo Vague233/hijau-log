@@ -36,7 +36,7 @@ export function Login() {
       setLoading(false);
     } else {
       toast.success("Login berhasil!");
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 

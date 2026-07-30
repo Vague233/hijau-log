@@ -224,24 +224,24 @@ export function Dashboard() {
         <div className="relative z-40 h-full">
           
           {/* Section 1: Urgensi */}
-          <div className="cinematic-section-1 absolute inset-0 flex items-center px-8 md:px-24">
+          <div className="cinematic-section-1 absolute inset-0 flex items-center px-8 md:px-24 pt-20">
             <div className="max-w-2xl">
-              <div className="anim-elem flex items-center gap-3 mb-6">
+              <div className="anim-elem flex items-center gap-3 mb-4">
                 <div className="w-12 h-[1px] bg-[var(--color-clay)]"></div>
                 <span className="font-mono text-sm tracking-widest text-[var(--color-clay)] uppercase">Urgensi Global</span>
               </div>
-              <h1 className="anim-elem text-5xl md:text-8xl font-sans font-bold leading-[1.1] tracking-tight mb-2">
+              <h1 className="anim-elem text-5xl md:text-7xl font-sans font-bold leading-[1.1] tracking-tight mb-2">
                 Nature is the Asset.
               </h1>
-              <h2 className="anim-elem text-4xl md:text-6xl font-serif italic mb-6">
+              <h2 className="anim-elem text-3xl md:text-5xl font-serif italic mb-4">
                 Kepatuhan EUDR <br/>di Jantung Tropis
               </h2>
-              <p className="anim-elem font-outfit text-lg md:text-xl text-white/80 mb-8 leading-relaxed">
+              <p className="anim-elem font-outfit text-lg md:text-xl text-white/80 mb-6 leading-relaxed">
                 Sektor ekspor kayu Indonesia berada pada titik krusial. Setiap unit produk wajib terverifikasi tidak berasal dari lahan yang mengalami deforestasi setelah batas waktu 30 Desember 2020. 
               </p>
               
               {/* Fun Fact */}
-              <div className="anim-elem mt-12 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 relative overflow-hidden group">
+              <div className="anim-elem mt-6 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-moss)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <h4 className="font-sans font-bold text-sm text-[var(--color-moss)] mb-2 flex items-center gap-2">
                   <Activity className="size-4" /> Fakta Menarik
@@ -254,20 +254,20 @@ export function Dashboard() {
           </div>
 
           {/* Section 2: Solusi */}
-          <div className="cinematic-section-2 absolute inset-0 flex items-center justify-end px-8 md:px-24">
+          <div className="cinematic-section-2 absolute inset-0 flex items-center justify-end px-8 md:px-24 pt-20">
             <div className="max-w-2xl text-right flex flex-col items-end">
-              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center gap-3 mb-6 justify-end">
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center gap-3 mb-4 justify-end">
                 <span className="font-mono text-sm tracking-widest text-emerald-400 uppercase">Ekosistem HijauLog</span>
                 <div className="w-12 h-[1px] bg-emerald-400"></div>
               </div>
-              <h2 className="anim-elem opacity-0 translate-y-[50px] text-4xl md:text-6xl font-serif italic mb-6">
+              <h2 className="anim-elem opacity-0 translate-y-[50px] text-3xl md:text-5xl font-serif italic mb-4">
                 Sinkronisasi Luring <br/>di Garis Depan
               </h2>
-              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-lg md:text-xl text-white/80 mb-8 leading-relaxed text-right">
+              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-base md:text-lg text-white/80 mb-6 leading-relaxed text-right">
                 Kami merespons kesenjangan literasi teknologi dengan pendekatan <strong>Offline-First</strong>. Melalui aplikasi mobile di lapangan, petugas dapat melakukan geotagging yang presisi meski tanpa koneksi internet (blank spot). Data akan tersinkronisasi otomatis segera setelah sinyal terdeteksi.
               </p>
               
-              <div className="anim-elem opacity-0 translate-y-[50px] grid grid-cols-2 gap-4 mt-8 w-full max-w-lg mb-8">
+              <div className="anim-elem opacity-0 translate-y-[50px] grid grid-cols-2 gap-3 mt-4 w-full max-w-lg mb-6">
                 <div className="bg-black/40 border border-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col items-center text-center">
                   <Smartphone className="size-8 text-emerald-400 mb-3" />
                   <span className="font-bold text-sm mb-1">Mobile Field App</span>
@@ -287,42 +287,41 @@ export function Dashboard() {
           </div>
 
           {/* Section 3: Integritas */}
-          <div className="cinematic-section-3 absolute inset-0 flex items-center justify-center px-8 text-center">
+          <div className="cinematic-section-3 absolute inset-0 flex items-center justify-center px-8 text-center pt-20">
             <div className="max-w-3xl flex flex-col items-center">
-              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center mb-8">
-                <div className="p-4 rounded-full bg-white/10 backdrop-blur-lg border border-white/20">
-                  <Lock className="size-10 text-[var(--color-cream)]" />
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center mb-6">
+                <div className="p-3 rounded-full bg-white/10 backdrop-blur-lg border border-white/20">
+                  <Lock className="size-8 text-[var(--color-cream)]" />
                 </div>
               </div>
-              <h2 className="anim-elem opacity-0 translate-y-[50px] text-4xl md:text-6xl font-serif italic mb-6">
+              <h2 className="anim-elem opacity-0 translate-y-[50px] text-3xl md:text-5xl font-serif italic mb-4">
                 Integritas Tak Terbantahkan
               </h2>
-              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-lg text-white/70 mb-12 max-w-2xl leading-relaxed">
-                Setiap poligon lahan diukur dengan margin of error <strong>&lt; 10 meter</strong>. Kami menerapkan <span className="text-white font-bold">Digital Fingerprint (SHA-256)</span> pada setiap rekaman batch. Jika data diubah secara ilegal, hash akan hancur, mencegah praktik <em>timber laundering</em>.
+              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-base md:text-lg text-white/70 mb-8 max-w-2xl leading-relaxed">
+                Setiap poligon lahan diukur dengan margin of error <strong>&lt; 10 meter</strong>. Kami menerapkan <strong>Digital Fingerprint (SHA-256)</strong> pada setiap rekaman batch. Jika data diubah secara ilegal, hash akan hancur, mencegah praktik <em>timber laundering</em>.
               </p>
               
-              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center gap-8 w-full mb-8">
-                <div className="flex flex-col items-center gap-3">
-                  <Fingerprint className="size-8 text-[var(--color-moss)]" />
-                  <span className="font-mono text-xs tracking-widest uppercase">SHA-256 Hash</span>
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center gap-6 md:gap-12 text-[var(--color-cream)]/60 font-mono text-xs md:text-sm mb-8">
+                <div className="flex flex-col items-center gap-2">
+                  <Fingerprint className="size-6" />
+                  <span>SHA-256 HASH</span>
                 </div>
-                <div className="h-12 w-[1px] bg-white/20"></div>
-                <div className="flex flex-col items-center gap-3">
-                  <ScanLine className="size-8 text-[var(--color-moss)]" />
-                  <span className="font-mono text-xs tracking-widest uppercase">Dynamic QR</span>
+                <div className="w-[1px] h-8 bg-white/20"></div>
+                <div className="flex flex-col items-center gap-2">
+                  <ScanLine className="size-6" />
+                  <span>DYNAMIC QR</span>
                 </div>
-                <div className="h-12 w-[1px] bg-white/20"></div>
-                <div className="flex flex-col items-center gap-3">
-                  <MapPin className="size-8 text-[var(--color-moss)]" />
-                  <span className="font-mono text-xs tracking-widest uppercase">PostGIS Auth</span>
+                <div className="w-[1px] h-8 bg-white/20"></div>
+                <div className="flex flex-col items-center gap-2">
+                  <MapPin className="size-6" />
+                  <span>POSTGIS AUTH</span>
                 </div>
               </div>
-              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center gap-4">
-                <Link to="/dashboard/export" className="inline-flex items-center gap-2 bg-[var(--color-moss)] hover:bg-[#5b7a5b] text-[var(--color-cream)] px-8 py-3 rounded-full font-bold transition-all shadow-lg shadow-[var(--color-moss)]/20">
-                  <ShieldCheck className="size-5" />
-                  Cek Kepatuhan EUDR
-                </Link>
-              </div>
+
+              <Link to="/dashboard/lands" className="anim-elem opacity-0 translate-y-[50px] inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-3 rounded-full font-bold transition-all backdrop-blur-md">
+                <ShieldCheck className="size-5 text-[var(--color-cream)]" />
+                Cek Kepatuhan EUDR
+              </Link>
             </div>
           </div>
 

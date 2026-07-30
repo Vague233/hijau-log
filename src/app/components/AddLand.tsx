@@ -16,7 +16,11 @@ import { toast } from "sonner";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
 
-export function AddLand() {
+interface AddLandProps {
+  onBack?: () => void;
+}
+
+export function AddLand({ onBack }: AddLandProps = {}) {
   const navigate = useNavigate();
   const { session } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -137,15 +141,15 @@ export function AddLand() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="dark container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center gap-2">
-          <Leaf className="size-8 text-emerald-600" />
+          <Leaf className="size-8 text-emerald-400" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-white">
               Tambah Lahan / Registrasi Pohon
             </h1>
-            <p className="text-gray-600">
+            <p className="text-white/70">
               Input data lahan dan geo-tagging untuk kepatuhan EUDR
             </p>
           </div>
@@ -153,7 +157,7 @@ export function AddLand() {
 
         <form onSubmit={handleSubmit}>
           {/* Part 1: Land Information */}
-          <Card className="mb-6 border-emerald-100 shadow-sm">
+          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
             <CardHeader>
               <CardTitle>
                 1. Informasi Lahan (Petani/Pengelola Kebun)
@@ -174,6 +178,7 @@ export function AddLand() {
                     placeholder="e.g., Kebun Sawit A"
                     value={formData.nama_lahan}
                     onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                     required
                   />
                 </div>
@@ -187,6 +192,7 @@ export function AddLand() {
                     placeholder="e.g., Kabupaten/Kota"
                     value={formData.lokasi}
                     onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                     required
                   />
                 </div>
@@ -205,6 +211,7 @@ export function AddLand() {
                     placeholder="e.g., 5.5"
                     value={formData.luas}
                     onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                     required
                   />
                 </div>
@@ -219,6 +226,7 @@ export function AddLand() {
                     placeholder="e.g., 100"
                     value={formData.jumlah_pohon}
                     onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                     required
                   />
                 </div>
@@ -227,7 +235,7 @@ export function AddLand() {
           </Card>
 
           {/* Part 2: Geo-Tagging */}
-          <Card className="mb-6 border-emerald-100 shadow-sm">
+          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
             <CardHeader>
               <CardTitle>
                 2. Geo-Tagging & Dokumentasi
@@ -245,6 +253,7 @@ export function AddLand() {
                   placeholder="e.g., [-6.200, 106.816]"
                   value={formData.polygon}
                   onChange={handleChange}
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                 />
               </div>
 
@@ -252,7 +261,7 @@ export function AddLand() {
                 type="button"
                 variant="outline"
                 onClick={getCurrentLocation}
-                className="w-full border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                className="w-full border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/20 bg-transparent"
               >
                 <MapPin className="size-4 mr-2" />
                 Ambil Koordinat Saat Ini
@@ -273,13 +282,13 @@ export function AddLand() {
                 {!previewUrl ? (
                   <div 
                     onClick={() => fileInputRef.current?.click()}
-                    className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:bg-white/5 transition-colors cursor-pointer"
                   >
-                    <Upload className="size-8 mx-auto mb-2 text-gray-400" />
-                    <p className="text-sm text-gray-600">
+                    <Upload className="size-8 mx-auto mb-2 text-white/50" />
+                    <p className="text-sm text-white/70">
                       Klik untuk mengunggah atau seret file
                     </p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-white/40 mt-1">
                       Foto lahan, tanaman (Maks 5MB)
                     </p>
                   </div>
@@ -307,7 +316,7 @@ export function AddLand() {
           </Card>
 
           {/* Additional Notes */}
-          <Card className="mb-6 border-emerald-100 shadow-sm">
+          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
             <CardHeader>
               <CardTitle>Catatan Tambahan</CardTitle>
             </CardHeader>
@@ -318,23 +327,35 @@ export function AddLand() {
                 value={formData.notes}
                 onChange={handleChange}
                 rows={4}
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
               />
             </CardContent>
           </Card>
 
           {/* Submit Buttons */}
           <div className="flex gap-4">
-            <Button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700" disabled={loading}>
+            <Button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white border-0" disabled={loading}>
               {loading ? "Menyimpan..." : "Simpan ke Database"}
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate("/dashboard")}
-              className="border-gray-200 hover:bg-gray-100"
-            >
-              Batal
-            </Button>
+            {onBack ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onBack}
+                className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+              >
+                Batal
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate("/dashboard")}
+                className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+              >
+                Batal
+              </Button>
+            )}
           </div>
         </form>
       </div>

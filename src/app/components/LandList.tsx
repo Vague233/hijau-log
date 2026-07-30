@@ -18,7 +18,11 @@ interface Land {
   foto?: string;
 }
 
-export function LandList() {
+interface LandListProps {
+  onBack?: () => void;
+}
+
+export function LandList({ onBack }: LandListProps = {}) {
   const { session } = useAuth();
   const [lands, setLands] = useState<Land[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,58 +51,62 @@ export function LandList() {
   }, [session]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="dark container mx-auto px-4 py-8 text-white">
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <Leaf className="size-8 text-emerald-600 hidden md:block" />
+          <Leaf className="size-8 text-emerald-400 hidden md:block" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Database Lahan</h1>
-            <p className="text-gray-600">Daftar lahan yang telah teregistrasi</p>
+            <h1 className="text-3xl font-bold text-white">Database Lahan</h1>
+            <p className="text-white/70">Daftar lahan yang telah teregistrasi</p>
           </div>
         </div>
-        <Link to="/dashboard/add-land">
-          <Button className="bg-emerald-600 hover:bg-emerald-700">
-            <MapPin className="size-4 mr-2" />
-            Tambah Lahan Baru
-          </Button>
-        </Link>
+        {!onBack && (
+          <Link to="/dashboard/add-land">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">
+              <MapPin className="size-4 mr-2" />
+              Tambah Lahan Baru
+            </Button>
+          </Link>
+        )}
       </div>
 
       {loading ? (
-        <Card className="border-emerald-100 shadow-sm">
+        <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
           <CardContent className="py-12 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat data lahan...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
+            <p className="text-white/70">Memuat data lahan...</p>
           </CardContent>
         </Card>
       ) : lands.length === 0 ? (
-        <Card className="border-emerald-100 shadow-sm">
+        <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
           <CardContent className="py-12 text-center">
-            <MapPin className="size-12 mx-auto mb-4 text-emerald-300" />
-            <h3 className="text-xl mb-2 font-medium text-gray-900">Belum Ada Lahan Terdaftar</h3>
-            <p className="text-gray-600 mb-6">Mulai dengan menambahkan lahan pertama Anda</p>
-            <Link to="/dashboard/add-land">
-              <Button className="bg-emerald-600 hover:bg-emerald-700">Tambah Lahan</Button>
-            </Link>
+            <MapPin className="size-12 mx-auto mb-4 text-emerald-400/50" />
+            <h3 className="text-xl mb-2 font-medium text-white">Belum Ada Lahan Terdaftar</h3>
+            <p className="text-white/70 mb-6">Mulai dengan menambahkan lahan pertama Anda</p>
+            {!onBack && (
+              <Link to="/dashboard/add-land">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">Tambah Lahan</Button>
+              </Link>
+            )}
           </CardContent>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {lands.map((land) => (
-            <Card key={land.id} className="hover:shadow-lg transition-shadow border-emerald-100 shadow-sm">
+            <Card key={land.id} className="hover:shadow-2xl transition-shadow bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
                     <CardTitle className="flex items-start gap-2">
-                      <span className="text-emerald-900">{land.nama_lahan}</span>
+                      <span className="text-emerald-400">{land.nama_lahan}</span>
                     </CardTitle>
-                    <CardDescription className="mt-1">{land.lokasi}</CardDescription>
+                    <CardDescription className="mt-1 text-white/70">{land.lokasi}</CardDescription>
                   </div>
                   {land.foto ? (
-                    <img src={land.foto} alt="Foto Lahan" className="w-16 h-16 object-cover rounded-md border border-emerald-100 flex-shrink-0" />
+                    <img src={land.foto} alt="Foto Lahan" className="w-16 h-16 object-cover rounded-md border border-white/10 flex-shrink-0" />
                   ) : (
-                    <div className="w-16 h-16 bg-emerald-50 rounded-md border border-emerald-100 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="size-6 text-emerald-300" />
+                    <div className="w-16 h-16 bg-white/5 rounded-md border border-white/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="size-6 text-white/30" />
                     </div>
                   )}
                 </div>
@@ -106,7 +114,7 @@ export function LandList() {
               <CardContent className="space-y-3">
                 <div className="space-y-2 text-sm">
                   {land.polygon && (
-                    <div className="flex items-start gap-2 text-gray-600">
+                    <div className="flex items-start gap-2 text-white/70">
                       <MapPin className="size-4 mt-0.5" />
                       <span className="line-clamp-1" title={land.polygon}>
                         Poligon: {land.polygon}
@@ -114,13 +122,13 @@ export function LandList() {
                     </div>
                   )}
                   {land.luas != null && (
-                    <div className="text-gray-600 flex items-center gap-2">
+                    <div className="text-white/70 flex items-center gap-2">
                        <MapPin className="size-4 opacity-0" />
                        Luas: {land.luas} hektar
                     </div>
                   )}
                   {land.jumlah_pohon != null && (
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-white/70">
                       <Trees className="size-4" />
                       <span>Estimasi pohon: {land.jumlah_pohon}</span>
                     </div>
@@ -129,13 +137,13 @@ export function LandList() {
 
                 <div className="pt-4 flex gap-2">
                   <Link to={`/dashboard/land/${land.id}`} className="flex-1">
-                    <Button variant="outline" className="w-full border-emerald-200 text-emerald-700 hover:bg-emerald-50" size="sm">
+                    <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10 bg-transparent" size="sm">
                       <Eye className="size-4 mr-2" />
                       Lihat Detail
                     </Button>
                   </Link>
                   <Link to={`/dashboard/land/${land.id}/qr`} className="flex-1">
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700" size="sm">
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-0" size="sm">
                       <QrCode className="size-4 mr-2" />
                       Kode QR
                     </Button>

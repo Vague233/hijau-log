@@ -15,7 +15,11 @@ interface Land {
   created_at: string;
 }
 
-export function ExportData() {
+interface ExportDataProps {
+  onBack?: () => void;
+}
+
+export function ExportData({ onBack }: ExportDataProps = {}) {
   const [lands, setLands] = useState<Land[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -144,11 +148,11 @@ export function ExportData() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Card className="border-emerald-100 shadow-sm">
+      <div className="dark container mx-auto px-4 py-8">
+        <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
           <CardContent className="py-12 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat data...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
+            <p className="text-white/70">Memuat data...</p>
           </CardContent>
         </Card>
       </div>
@@ -156,82 +160,82 @@ export function ExportData() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="dark container mx-auto px-4 py-8 text-white">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Ekspor Data</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-white mb-2">Ekspor Data</h1>
+          <p className="text-white/70">
             Ekspor data untuk keperluan pelaporan dan kepatuhan EUDR (EU Deforestation Regulation)
           </p>
         </div>
 
         <div className="space-y-6">
           {/* Export Statistics */}
-          <Card className="border-emerald-100 shadow-sm">
+          <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
             <CardHeader>
               <CardTitle>Ringkasan Data</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-emerald-50 border border-emerald-100 rounded-lg">
-                  <p className="text-3xl font-bold text-emerald-900 mb-1">{lands.length}</p>
-                  <p className="text-sm text-emerald-700">Total Bidang Lahan</p>
+                <div className="text-center p-4 bg-white/5 border border-white/10 rounded-lg">
+                  <p className="text-3xl font-bold text-emerald-400 mb-1">{lands.length}</p>
+                  <p className="text-sm text-white/70">Total Bidang Lahan</p>
                 </div>
-                <div className="text-center p-4 bg-emerald-50 border border-emerald-100 rounded-lg">
-                  <p className="text-3xl font-bold text-emerald-900 mb-1">
+                <div className="text-center p-4 bg-white/5 border border-white/10 rounded-lg">
+                  <p className="text-3xl font-bold text-emerald-400 mb-1">
                     {lands.reduce((acc, land) => acc + (land.jumlah_pohon || 0), 0)}
                   </p>
-                  <p className="text-sm text-emerald-700">Total Pohon Terdaftar</p>
+                  <p className="text-sm text-white/70">Total Pohon Terdaftar</p>
                 </div>
-                <div className="text-center p-4 bg-emerald-50 border border-emerald-100 rounded-lg">
-                  <p className="text-3xl font-bold text-emerald-900 mb-1">100%</p>
-                  <p className="text-sm text-emerald-700">Tingkat Kepatuhan EUDR</p>
+                <div className="text-center p-4 bg-white/5 border border-white/10 rounded-lg">
+                  <p className="text-3xl font-bold text-emerald-400 mb-1">100%</p>
+                  <p className="text-sm text-white/70">Tingkat Kepatuhan EUDR</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Export Options */}
-          <Card className="border-emerald-100 shadow-sm">
+          <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
             <CardHeader>
               <CardTitle>Format Ekspor Tersedia</CardTitle>
-              <CardDescription>
+              <CardDescription className="text-white/70">
                 Pilih format ekspor sesuai kebutuhan pelaporan Anda (JSON, CSV, atau Paket Data EUDR)
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button onClick={exportAsJSON} variant="outline" className="h-auto py-6 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700">
+                <Button onClick={exportAsJSON} variant="outline" className="h-auto py-6 border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400 bg-transparent text-white">
                   <div className="flex flex-col items-center gap-2">
-                    <FileJson className="size-8 text-emerald-600" />
+                    <FileJson className="size-8 text-emerald-400" />
                     <div className="text-center">
                       <p className="font-bold">Ekspor sebagai JSON</p>
-                      <p className="text-xs text-gray-500">Format yang dapat dibaca mesin</p>
+                      <p className="text-xs text-white/50">Format yang dapat dibaca mesin</p>
                     </div>
                   </div>
                 </Button>
 
-                <Button onClick={exportAsCSV} variant="outline" className="h-auto py-6 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700">
+                <Button onClick={exportAsCSV} variant="outline" className="h-auto py-6 border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400 bg-transparent text-white">
                   <div className="flex flex-col items-center gap-2">
-                    <FileSpreadsheet className="size-8 text-emerald-600" />
+                    <FileSpreadsheet className="size-8 text-emerald-400" />
                     <div className="text-center">
                       <p className="font-bold">Ekspor sebagai CSV</p>
-                      <p className="text-xs text-gray-500">Kompatibel dengan Microsoft Excel</p>
+                      <p className="text-xs text-white/50">Kompatibel dengan Microsoft Excel</p>
                     </div>
                   </div>
                 </Button>
 
-                <Button onClick={exportEUDRReport} variant="outline" className="h-auto py-6 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700">
+                <Button onClick={exportEUDRReport} variant="outline" className="h-auto py-6 border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400 bg-transparent text-white">
                   <div className="flex flex-col items-center gap-2">
-                    <FileText className="size-8 text-emerald-600" />
+                    <FileText className="size-8 text-emerald-400" />
                     <div className="text-center">
                       <p className="font-bold">Laporan Kepatuhan EUDR</p>
-                      <p className="text-xs text-gray-500">Paket kepatuhan penuh</p>
+                      <p className="text-xs text-white/50">Paket kepatuhan penuh</p>
                     </div>
                   </div>
                 </Button>
 
-                <Button variant="outline" className="h-auto py-6 border-gray-200 text-gray-400 cursor-not-allowed" disabled>
+                <Button variant="outline" className="h-auto py-6 border-white/10 text-white/30 cursor-not-allowed bg-transparent" disabled>
                   <div className="flex flex-col items-center gap-2">
                     <Package className="size-8" />
                     <div className="text-center">
@@ -245,15 +249,15 @@ export function ExportData() {
           </Card>
 
           {/* Export Information */}
-          <Card className="border-emerald-100 shadow-sm">
+          <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
             <CardHeader>
               <CardTitle>Informasi Paket Data Kepatuhan EUDR</CardTitle>
-              <CardDescription>Penjelasan mengenai konten data yang diekspor</CardDescription>
+              <CardDescription className="text-white/70">Penjelasan mengenai konten data yang diekspor</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
               <div>
-                <h4 className="font-bold text-gray-900 mb-2">Konten Paket Data:</h4>
-                <ul className="list-disc list-inside space-y-1 text-gray-700">
+                <h4 className="font-bold text-white mb-2">Konten Paket Data:</h4>
+                <ul className="list-disc list-inside space-y-1 text-white/70">
                   <li>Data Geo-lokasi (Poligon) untuk semua lahan</li>
                   <li>Sertifikasi/Bukti Legalitas (Status)</li>
                   <li>Daftar periksa kepatuhan (Compliance checklist)</li>
@@ -262,9 +266,9 @@ export function ExportData() {
                 </ul>
               </div>
 
-              <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                <h4 className="font-bold text-emerald-900 mb-2">Kesiapan Proses Ekspor (Real-time):</h4>
-                <ul className="space-y-1 text-emerald-800 text-sm">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                <h4 className="font-bold text-emerald-400 mb-2">Kesiapan Proses Ekspor (Real-time):</h4>
+                <ul className="space-y-1 text-emerald-200/80 text-sm">
                   <li>✓ Persiapan Registrasi DDS (Due Diligence Statement)</li>
                   <li>✓ Integrasi Sistem Keterlacakan</li>
                   <li>✓ Data Kode QR untuk Validasi Due Diligence</li>
@@ -273,8 +277,8 @@ export function ExportData() {
               </div>
 
               <div>
-                <h4 className="font-bold text-gray-900 mb-2">Alur Penggunaan Data Ekspor:</h4>
-                <ol className="list-decimal list-inside space-y-1 text-gray-700">
+                <h4 className="font-bold text-white mb-2">Alur Penggunaan Data Ekspor:</h4>
+                <ol className="list-decimal list-inside space-y-1 text-white/70">
                   <li>Unduh paket data kepatuhan melalui platform ini</li>
                   <li>Siapkan dokumentasi ekspor fisik tambahan</li>
                   <li>Serahkan data JSON ke sistem Registrasi DDS (Otoritas Nasional)</li>

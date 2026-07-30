@@ -60,54 +60,32 @@ export function Root() {
       <CustomCursor />
       {/* Navigation Header */}
       {location.pathname !== "/" && (
-        <header className="border-b bg-white sticky top-0 z-50">
-          <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2">
-              <MapPin className="size-6 text-[var(--color-moss)]" />
-              <span className="font-semibold text-lg text-[var(--color-charcoal)]">
-                HijauLog
-              </span>
-            </Link>
+        <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full px-6 py-4 flex items-center justify-between border border-white/20 bg-white/40 backdrop-blur-md shadow-lg text-[var(--color-moss)]">
+          <Link to="/" className="flex items-center gap-2">
+            <MapPin className="size-6 text-[var(--color-moss)]" />
+            <span className="font-semibold text-lg text-[var(--color-charcoal)]">
+              HijauLog
+            </span>
+          </Link>
 
-            <div className="flex items-center gap-4">
-              {isDashboard ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className={`text-sm ${location.pathname === "/dashboard" ? "text-[var(--color-clay)] font-medium" : "text-gray-600 hover:text-gray-900"}`}
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    to="/dashboard/lands"
-                    className={`text-sm ${location.pathname.includes("/lands") || location.pathname.includes("/land/") ? "text-[var(--color-clay)] font-medium" : "text-gray-600 hover:text-gray-900"}`}
-                  >
-                    Lahan
-                  </Link>
-                  <Link
-                    to="/dashboard/export"
-                    className={`text-sm ${location.pathname === "/dashboard/export" ? "text-[var(--color-clay)] font-medium" : "text-gray-600 hover:text-gray-900"}`}
-                  >
-                    Ekspor
-                  </Link>
-                  <Button variant="outline" size="sm" onClick={handleLogout}>
-                    Keluar
+          <div className="flex items-center gap-4">
+            {isDashboard ? (
+              <Button variant="outline" size="sm" onClick={handleLogout} className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
+                Keluar
+              </Button>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" size="sm" className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
+                    Masuk
                   </Button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login">
-                    <Button variant="outline" size="sm">
-                      Masuk
-                    </Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button size="sm">Daftar</Button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </nav>
+                </Link>
+                <Link to="/register">
+                  <Button size="sm" className="rounded-full">Daftar</Button>
+                </Link>
+              </>
+            )}
+          </div>
         </header>
       )}
 

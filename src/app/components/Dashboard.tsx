@@ -279,10 +279,7 @@ export function Dashboard() {
                   <span className="text-xs text-white/50">Resolusi konflik data otomatis ke cloud.</span>
                 </div>
               </div>
-              <Link to="/dashboard/lands" className="anim-elem opacity-0 translate-y-[50px] inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg shadow-emerald-500/20">
-                <MapPin className="size-5" />
-                Kelola Lahan Anda
-              </Link>
+              </div>
             </div>
           </div>
 
@@ -318,10 +315,7 @@ export function Dashboard() {
                 </div>
               </div>
 
-              <Link to="/dashboard/lands" className="anim-elem opacity-0 translate-y-[50px] inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-3 rounded-full font-bold transition-all backdrop-blur-md">
-                <ShieldCheck className="size-5 text-[var(--color-cream)]" />
-                Cek Kepatuhan EUDR
-              </Link>
+              </div>
             </div>
           </div>
 

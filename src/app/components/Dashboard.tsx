@@ -224,8 +224,8 @@ export function Dashboard() {
         <div className="relative z-40 h-full">
           
           {/* Section 1: Urgensi */}
-          <div className="cinematic-section-1 absolute inset-0 flex items-center px-8 md:px-24 pt-20">
-            <div className="max-w-2xl">
+          <div className="cinematic-section-1 absolute inset-0 flex items-center px-8 md:px-24 pt-32">
+            <div className="max-w-2xl mt-8">
               <div className="anim-elem flex items-center gap-3 mb-4">
                 <div className="w-12 h-[1px] bg-[var(--color-clay)]"></div>
                 <span className="font-mono text-sm tracking-widest text-[var(--color-clay)] uppercase">Urgensi Global</span>
@@ -254,21 +254,21 @@ export function Dashboard() {
           </div>
 
           {/* Section 2: Solusi */}
-          <div className="cinematic-section-2 absolute inset-0 flex items-center justify-end px-8 md:px-24 pt-20">
-            <div className="max-w-2xl text-right flex flex-col items-end">
-              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center gap-3 mb-4 justify-end">
+          <div className="cinematic-section-2 absolute inset-0 flex items-center justify-end px-8 md:px-24 pt-32">
+            <div className="max-w-2xl text-right flex flex-col items-end mt-8">
+              <div className="anim-elem opacity-0 translate-y-[50px] flex items-center gap-3 mb-3 justify-end">
                 <span className="font-mono text-sm tracking-widest text-emerald-400 uppercase">Ekosistem HijauLog</span>
                 <div className="w-12 h-[1px] bg-emerald-400"></div>
               </div>
-              <h2 className="anim-elem opacity-0 translate-y-[50px] text-3xl md:text-5xl font-serif italic mb-4">
+              <h2 className="anim-elem opacity-0 translate-y-[50px] text-3xl md:text-4xl lg:text-5xl font-serif italic mb-3">
                 Sinkronisasi Luring <br/>di Garis Depan
               </h2>
-              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-base md:text-lg text-white/80 mb-6 leading-relaxed text-right">
+              <p className="anim-elem opacity-0 translate-y-[50px] font-outfit text-base md:text-lg text-white/80 mb-4 leading-relaxed text-right">
                 Kami merespons kesenjangan literasi teknologi dengan pendekatan <strong>Offline-First</strong>. Melalui aplikasi mobile di lapangan, petugas dapat melakukan geotagging yang presisi meski tanpa koneksi internet (blank spot). Data akan tersinkronisasi otomatis segera setelah sinyal terdeteksi.
               </p>
               
-              <div className="anim-elem opacity-0 translate-y-[50px] grid grid-cols-2 gap-3 mt-4 w-full max-w-lg mb-6">
-                <div className="bg-black/40 border border-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col items-center text-center">
+              <div className="anim-elem opacity-0 translate-y-[50px] grid grid-cols-2 gap-3 mt-2 w-full max-w-lg mb-5">
+                <div className="bg-black/40 border border-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col items-center text-center">
                   <Smartphone className="size-8 text-emerald-400 mb-3" />
                   <span className="font-bold text-sm mb-1">Mobile Field App</span>
                   <span className="text-xs text-white/50">Geotagging luring di tengah hutan lebat.</span>
@@ -287,8 +287,8 @@ export function Dashboard() {
           </div>
 
           {/* Section 3: Integritas */}
-          <div className="cinematic-section-3 absolute inset-0 flex items-center justify-center px-8 text-center pt-20">
-            <div className="max-w-3xl flex flex-col items-center">
+          <div className="cinematic-section-3 absolute inset-0 flex items-center justify-center px-8 text-center pt-32">
+            <div className="max-w-3xl flex flex-col items-center mt-8">
               <div className="anim-elem opacity-0 translate-y-[50px] flex items-center justify-center mb-6">
                 <div className="p-3 rounded-full bg-white/10 backdrop-blur-lg border border-white/20">
                   <Lock className="size-8 text-[var(--color-cream)]" />

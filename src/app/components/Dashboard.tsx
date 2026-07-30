@@ -10,7 +10,7 @@ const panels = [
     desc: "Registrasi lahan baru, pemetaan poligon koordinat GPS, dan pemantauan luasan area hutan secara real-time.",
     cta: "Kelola Lahan",
     link: "/dashboard/lands",
-    image: "https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "02",
@@ -19,7 +19,7 @@ const panels = [
     desc: "Analisis geospasial mendalam yang memastikan poligon lahan bebas dari indikasi deforestasi pasca 31 Desember 2020.",
     cta: "Cek Kepatuhan",
     link: "/dashboard/export",
-    image: "https://images.unsplash.com/photo-1470115636405-2d3924bea9e5?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "03",
@@ -28,7 +28,7 @@ const panels = [
     desc: "Pembuatan kode QR terenkripsi yang berisi riwayat titik geolokasi, kepemilikan, dan status kepatuhan kayu untuk inspeksi otoritas Eropa.",
     cta: "Buat QR Code",
     link: "/dashboard/lands",
-    image: "https://images.unsplash.com/photo-1416879598555-25916029584d?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "04",
@@ -45,7 +45,7 @@ export function Dashboard() {
   const [activePanel, setActivePanel] = useState<string | null>(null);
 
   return (
-    <div className="bg-[var(--color-charcoal)] min-h-[calc(100vh-4rem)] p-4 md:p-8 flex flex-col items-center justify-center">
+    <div className="bg-[var(--color-charcoal)] min-h-[calc(100vh-4rem)] pt-28 md:pt-32 pb-8 px-4 md:px-8 flex flex-col items-center justify-center">
       
       <div className="w-full max-w-7xl mb-8 text-center md:text-left text-[var(--color-cream)]">
         <h1 className="text-3xl md:text-5xl font-serif italic mb-2">Sistem Telemetri</h1>

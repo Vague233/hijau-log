@@ -50,7 +50,7 @@ export function Root() {
       )}
 
       {/* Main Content */}
-      <main className={`flex-1 bg-noise ${location.pathname !== "/" ? "pt-24" : ""}`}>
+      <main className="flex-1 bg-noise">
         <Outlet />
       </main>
 

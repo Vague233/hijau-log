@@ -267,15 +267,9 @@ export function Home() {
             </div>
             <div className="flex gap-16">
               <div className="flex flex-col gap-4 font-outfit">
-                <span className="font-bold mb-2">Platform</span>
-                <a href="#" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Dashboard</a>
-                <a href="#" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Traceability</a>
-                <a href="#" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">API Docs</a>
-              </div>
-              <div className="flex flex-col gap-4 font-outfit">
                 <span className="font-bold mb-2">Legal</span>
                 <a href="#" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">Privacy Policy</a>
-                <a href="#" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">EUDR Statement</a>
+                <a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank" rel="noopener noreferrer" className="text-[var(--color-cream)]/60 hover:text-[var(--color-cream)] transition-colors">EUDR Statement</a>
               </div>
             </div>
           </div>

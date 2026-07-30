@@ -279,7 +279,6 @@ export function Dashboard() {
                   <span className="text-xs text-white/50">Resolusi konflik data otomatis ke cloud.</span>
                 </div>
               </div>
-              </div>
             </div>
           </div>
 
@@ -313,8 +312,6 @@ export function Dashboard() {
                   <MapPin className="size-6" />
                   <span>POSTGIS AUTH</span>
                 </div>
-              </div>
-
               </div>
             </div>
           </div>

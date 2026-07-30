@@ -56,8 +56,8 @@ export function Root() {
 
       {/* Footer */}
       {location.pathname !== "/" && (
-        <footer className="border-t bg-[var(--color-cream)] py-8">
-          <div className="container mx-auto px-4 text-center text-sm text-[var(--color-charcoal)]">
+        <footer className="border-t border-white/10 bg-[var(--color-charcoal)] py-8">
+          <div className="container mx-auto px-4 text-center text-sm font-mono text-[var(--color-cream)]/40">
             <p>
               © 2026 HijauLog - Sistem Traceability Geo-Tagging. All
               rights reserved.

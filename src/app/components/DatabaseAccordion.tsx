@@ -12,20 +12,6 @@ interface DatabaseAccordionProps {
 export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
   const [activeView, setActiveView] = useState<'add' | 'list' | 'export' | null>(null);
   const [expandingPanel, setExpandingPanel] = useState<'add' | 'list' | 'export' | null>(null);
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-  const [isHovering, setIsHovering] = useState(false);
-
-  // Mouse move for custom cursor
-  useEffect(() => {
-    if (!isOpen) return;
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isOpen]);
 
   // Reset states when closed
   useEffect(() => {
@@ -54,29 +40,15 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex flex-col transition-all duration-500 cursor-none"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex flex-col transition-all duration-500"
     >
-      
-      {/* Custom Cursor */}
-      <div 
-        className="cursor-dot" 
-        style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }} 
-      />
-      <div 
-        className={`cursor-ring ${isHovering ? 'hovering' : ''}`} 
-        style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }} 
-      />
 
       {/* Header / Back button */}
       <div className="absolute top-6 left-6 z-50 flex items-center gap-4">
         {activeView ? (
           <button 
             onClick={handleBackToAccordion}
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full backdrop-blur-md transition-all cursor-none"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full backdrop-blur-md transition-all"
           >
             <ChevronLeft className="size-5" />
             Kembali ke Menu
@@ -84,9 +56,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
         ) : (
           <button 
             onClick={onClose}
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full backdrop-blur-md transition-all cursor-none"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full backdrop-blur-md transition-all"
           >
             <ChevronLeft className="size-5" />
             Tutup Database
@@ -115,9 +85,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
         {/* Panel 1: Tambah Lahan */}
         <div 
           onClick={() => handlePanelClick('add')}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className={`accordion-panel group relative cursor-none overflow-hidden border-r border-white/5 ${
+          className={`accordion-panel group relative overflow-hidden border-r border-white/5 ${
             expandingPanel === 'add' ? 'flex-[10]' : expandingPanel ? 'flex-[0.1]' : 'flex-1 hover:flex-[2]'
           }`}
         >
@@ -148,7 +116,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
                 <p className="text-white/70 max-w-md font-outfit text-sm md:text-base leading-relaxed mb-6">
                   Registrasi poligon lahan baru dan input koordinat GPS pohon secara luring atau daring untuk kepatuhan EUDR.
                 </p>
-                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors cursor-none">
+                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
                   Mulai Registrasi
                 </button>
               </div>
@@ -168,9 +136,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
         {/* Panel 2: Lihat Semua Lahan */}
         <div 
           onClick={() => handlePanelClick('list')}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className={`accordion-panel group relative cursor-none overflow-hidden border-r border-white/5 ${
+          className={`accordion-panel group relative overflow-hidden border-r border-white/5 ${
             expandingPanel === 'list' ? 'flex-[10]' : expandingPanel ? 'flex-[0.1]' : 'flex-1 hover:flex-[2]'
           }`}
         >
@@ -200,7 +166,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
                 <p className="text-white/70 max-w-md font-outfit text-sm md:text-base leading-relaxed mb-6">
                   Pantau seluruh portofolio lahan Anda, periksa status verifikasi, dan manajemen aset hutan berkelanjutan.
                 </p>
-                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors cursor-none">
+                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
                   Buka Database
                 </button>
               </div>
@@ -219,9 +185,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
         {/* Panel 3: Ekspor Data */}
         <div 
           onClick={() => handlePanelClick('export')}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className={`accordion-panel group relative cursor-none overflow-hidden ${
+          className={`accordion-panel group relative overflow-hidden ${
             expandingPanel === 'export' ? 'flex-[10]' : expandingPanel ? 'flex-[0.1]' : 'flex-1 hover:flex-[2]'
           }`}
         >
@@ -251,7 +215,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
                 <p className="text-white/70 max-w-md font-outfit text-sm md:text-base leading-relaxed mb-6">
                   Buat paket laporan komprehensif (JSON, CSV, PDF) untuk Due Diligence Statement (DDS) sesuai regulasi Uni Eropa.
                 </p>
-                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors cursor-none">
+                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
                   Masuk ke Ekspor
                 </button>
               </div>

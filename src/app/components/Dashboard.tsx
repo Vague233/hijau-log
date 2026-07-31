@@ -7,7 +7,6 @@ import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activ
 
 import { useAuth } from "../../lib/AuthContext";
 import { supabase } from "../../lib/supabase";
-import { DatabaseAccordion } from "./DatabaseAccordion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +24,6 @@ export function Dashboard() {
   const philosophyRef = useRef<HTMLDivElement>(null);
   const protocolRef = useRef<HTMLDivElement>(null);
   const [randomFact, setRandomFact] = useState("");
-  const [isDatabaseOpen, setIsDatabaseOpen] = useState(false);
   
   const { session } = useAuth();
 
@@ -148,7 +146,6 @@ export function Dashboard() {
 
   return (
     <div ref={containerRef} className="bg-black relative overflow-x-hidden text-white font-sans">
-      <DatabaseAccordion isOpen={isDatabaseOpen} onClose={() => setIsDatabaseOpen(false)} />
       
       {/* Floating Navbar Island */}
       <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl">
@@ -166,12 +163,12 @@ export function Dashboard() {
             <span className="text-sm font-medium hidden md:block opacity-80">
               Hai, {session?.user?.user_metadata?.full_name?.split(' ')[0] || session?.user?.email?.split('@')[0] || "Pengguna"}
             </span>
-            <button 
-              onClick={() => setIsDatabaseOpen(true)} 
+            <Link 
+              to="/database"
               className="hidden sm:block text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg shadow-[var(--color-moss)]/20"
             >
               Database
-            </button>
+            </Link>
             <button 
               onClick={async () => {
                 await supabase.auth.signOut();

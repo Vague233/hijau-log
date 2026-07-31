@@ -13,6 +13,7 @@ import { AuthGuard } from "./components/AuthGuard";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
 import { About } from "./components/About";
 import { AccessGateway } from "./components/AccessGateway";
+import { DatabasePage } from "./components/DatabasePage";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       { 
         path: "dashboard", 
         element: <AuthGuard><Dashboard /></AuthGuard> 
+      },
+      {
+        path: "database",
+        element: <AuthGuard><DatabasePage /></AuthGuard>
       },
       { 
         path: "dashboard/add-land", 

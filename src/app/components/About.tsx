@@ -70,7 +70,7 @@ export function About() {
                 </div>
                 <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Ni Wayan Saci Rani</h3>
                 <div className="w-8 h-0.5 bg-[var(--color-clay)]/30 my-3"></div>
-                <p className="text-sm opacity-70">Pengembangan Sistem & Kepatuhan</p>
+                <p className="text-sm opacity-70">Mahasiswa S1 Teknik Komputer<br/>Telkom University</p>
               </div>
 
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
@@ -79,7 +79,7 @@ export function About() {
                 </div>
                 <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Danar Fadhillah Azzaky</h3>
                 <div className="w-8 h-0.5 bg-[var(--color-moss)]/30 my-3"></div>
-                <p className="text-sm opacity-70">Rekayasa Perangkat Lunak</p>
+                <p className="text-sm opacity-70">Mahasiswa S1 Teknik Komputer<br/>Telkom University</p>
               </div>
 
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
@@ -88,7 +88,7 @@ export function About() {
                 </div>
                 <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Ketut Bayu Cipta Nugraha</h3>
                 <div className="w-8 h-0.5 bg-[var(--color-clay)]/30 my-3"></div>
-                <p className="text-sm opacity-70">Analisis Spasial & Pemetaan</p>
+                <p className="text-sm opacity-70">Mahasiswa S1 Teknik Komputer<br/>Telkom University</p>
               </div>
 
             </div>

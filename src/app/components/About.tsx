@@ -77,7 +77,7 @@ export function About() {
                 <div className="size-16 rounded-full bg-[var(--color-clay)]/10 flex items-center justify-center mb-4 text-[var(--color-clay)] font-serif italic text-xl">
                   DF
                 </div>
-                <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Danar Fadhillah Azzaky</h3>
+                <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Danar Fadhilah Azzaky</h3>
                 <div className="w-8 h-0.5 bg-[var(--color-moss)]/30 my-3"></div>
                 <p className="text-sm opacity-70">Mahasiswa S1 Teknik Komputer<br/>Telkom University</p>
               </div>

@@ -21,19 +21,19 @@ export function Root() {
       {/* Navigation Header */}
       {location.pathname !== "/" && location.pathname !== "/access" && location.pathname !== "/dashboard" && (
         <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full px-6 py-4 flex items-center justify-between border border-white/20 bg-white/40 backdrop-blur-md shadow-lg text-[var(--color-moss)]">
-          <Link to="/" className="group flex items-center gap-2 transition-all duration-300 hover:opacity-90">
+          <div className="group flex items-center gap-2 transition-all duration-300">
             <MapPin className="size-6 text-[var(--color-moss)] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" />
             <span className="font-semibold text-lg text-[var(--color-charcoal)] transition-colors duration-300 group-hover:text-[var(--color-moss)]">
               HijauLog
             </span>
-          </Link>
+          </div>
 
           <div className="flex items-center gap-4">
             {isDashboard ? (
               <Button variant="outline" size="sm" onClick={handleLogout} className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
                 Keluar
               </Button>
-            ) : (
+            ) : location.pathname !== "/about" && location.pathname !== "/privacy" && (
               <Link to="/access">
                 <Button size="sm" className="rounded-full bg-[var(--color-moss)] hover:bg-[var(--color-charcoal)] transition-colors">
                   {location.pathname === "/login" || location.pathname === "/register" ? "Kembali" : "Akses Sistem"}

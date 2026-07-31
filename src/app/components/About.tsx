@@ -60,17 +60,37 @@ export function About() {
           <section>
             <h2 className="text-2xl font-serif italic font-bold mb-4 text-[var(--color-moss)]">Di Balik HijauLog</h2>
             <p className="mb-4">
-              HijauLog lahir dari kolaborasi tim yang memiliki visi kuat tentang pertemuan antara inovasi teknologi, pelestarian lingkungan, dan regulasi tata niaga global. Kami menggabungkan keahlian dalam rekayasa perangkat lunak modern, telemetri spasial (GIS), dan analisis rantai pasok.
+              HijauLog lahir dari kolaborasi erat, dedikasi, dan visi bersama dari tim pengembang kami. Kami mengintegrasikan teknologi modern dengan keahlian tata ruang dan pemahaman regulasi lingkungan global.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5">
-                <h3 className="font-bold text-lg mb-2 font-serif italic text-[var(--color-charcoal)]">Inovator Teknologi</h3>
-                <p className="text-sm opacity-70 leading-relaxed">Membangun arsitektur sistem telemetri yang aman, interaktif, dan berpresisi tinggi menggunakan teknologi web terkini.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+              
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
+                <div className="size-16 rounded-full bg-[var(--color-moss)]/10 flex items-center justify-center mb-4 text-[var(--color-moss)] font-serif italic text-xl">
+                  NW
+                </div>
+                <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Ni Wayan Saci Rani</h3>
+                <div className="w-8 h-0.5 bg-[var(--color-clay)]/30 my-3"></div>
+                <p className="text-sm opacity-70">Pengembangan Sistem & Kepatuhan</p>
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5">
-                <h3 className="font-bold text-lg mb-2 font-serif italic text-[var(--color-charcoal)]">Pakar Spasial & Regulasi</h3>
-                <p className="text-sm opacity-70 leading-relaxed">Memastikan setiap titik pemetaan dan laporan uji tuntas (Due Diligence) selaras dengan ketatnya regulasi EUDR.</p>
+
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
+                <div className="size-16 rounded-full bg-[var(--color-clay)]/10 flex items-center justify-center mb-4 text-[var(--color-clay)] font-serif italic text-xl">
+                  DF
+                </div>
+                <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Danar Fadhillah Azzaky</h3>
+                <div className="w-8 h-0.5 bg-[var(--color-moss)]/30 my-3"></div>
+                <p className="text-sm opacity-70">Rekayasa Perangkat Lunak</p>
               </div>
+
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
+                <div className="size-16 rounded-full bg-[#2E4036]/10 flex items-center justify-center mb-4 text-[#2E4036] font-serif italic text-xl">
+                  KB
+                </div>
+                <h3 className="font-bold text-lg mb-1 font-serif text-[var(--color-charcoal)]">Ketut Bayu Cipta Nugraha</h3>
+                <div className="w-8 h-0.5 bg-[var(--color-clay)]/30 my-3"></div>
+                <p className="text-sm opacity-70">Analisis Spasial & Pemetaan</p>
+              </div>
+
             </div>
           </section>
 

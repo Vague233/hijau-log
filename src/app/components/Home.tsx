@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -277,7 +277,7 @@ export function Home() {
             </div>
           </div>
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-mono text-[var(--color-cream)]/40">
-            <p>┬⌐ 2026 HijauLog Core Systems.</p>
+            <p>&copy; 2026 HijauLog Core Systems.</p>
             <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full">
               <span className="w-2 h-2 bg-[var(--color-moss)] rounded-full animate-pulse"></span>
               SYSTEM OPERATIONAL
@@ -309,7 +309,7 @@ function DiagnosticShuffler() {
   const [cards, setCards] = useState([
     { id: 1, title: "Deforestation Risk", value: "Low", color: "text-[var(--color-moss)]" },
     { id: 2, title: "Canopy Density", value: "84%", color: "text-[var(--color-moss)]" },
-    { id: 3, title: "Geo-Accuracy", value: "┬▒2.1m", color: "text-[var(--color-clay)]" }
+    { id: 3, title: "Geo-Accuracy", value: "\u00B12.1m", color: "text-[var(--color-clay)]" }
   ]);
 
   useEffect(() => {

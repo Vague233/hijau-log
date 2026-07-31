@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import { ShieldCheck, MapPin, ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
+import { useAuth } from "../../lib/AuthContext";
 
 export function PrivacyPolicy() {
+  const { session } = useAuth();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -10,7 +13,7 @@ export function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-[var(--color-cream)] text-[var(--color-charcoal)] pt-32 pb-20 px-4 md:px-16 font-outfit">
       <div className="max-w-4xl mx-auto">
-        <Link to="/" className="inline-flex items-center gap-2 text-[var(--color-moss)] hover:opacity-80 transition-opacity mb-8 font-semibold">
+        <Link to={session ? "/dashboard" : "/"} className="inline-flex items-center gap-2 text-[var(--color-moss)] hover:opacity-80 transition-opacity mb-8 font-semibold">
           <ArrowLeft className="size-4" />
           Kembali ke Beranda
         </Link>

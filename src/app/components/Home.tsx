@@ -256,10 +256,10 @@ export function Home() {
         <footer className="bg-[var(--color-charcoal)] text-[var(--color-cream)] rounded-t-[4rem] pt-20 pb-10 px-8 md:px-16 mt-20 relative">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 border-b border-white/10 pb-12 mb-8">
             <div>
-              <Link to="/" className="flex items-center gap-2 font-bold text-2xl mb-6">
+              <div className="flex items-center gap-2 font-bold text-2xl mb-6">
                 <MapPin className="size-6 text-[var(--color-moss)]" />
                 HijauLog
-              </Link>
+              </div>
               <p className="font-outfit text-[var(--color-cream)]/50 max-w-sm">
                 Infrastruktur pelacakan komoditas tingkat lanjut untuk menjamin kepatuhan pasar global.
               </p>

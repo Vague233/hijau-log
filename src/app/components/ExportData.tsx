@@ -11,8 +11,13 @@ interface Land {
   lokasi: string;
   luas: number;
   jumlah_pohon: number;
-  polygon: string;
+  polygon: any;
   created_at: string;
+  tanggal_panen: string | null;
+  jenis_komoditas: string | null;
+  nama_ilmiah: string | null;
+  dokumen_legalitas: string | null;
+  bebas_deforestasi: boolean;
 }
 
 interface ExportDataProps {
@@ -76,6 +81,11 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
       "Lokasi",
       "Luas (Hektar)",
       "Jumlah Pohon",
+      "Jenis Komoditas",
+      "Nama Ilmiah",
+      "Tanggal Panen",
+      "Bebas Deforestasi",
+      "Dokumen Legalitas",
       "Polygon",
       "Tanggal Pendaftaran",
     ];
@@ -87,7 +97,12 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
       land.lokasi,
       land.luas || "",
       land.jumlah_pohon || "",
-      land.polygon || "",
+      land.jenis_komoditas || "",
+      land.nama_ilmiah || "",
+      land.tanggal_panen || "",
+      land.bebas_deforestasi ? "Ya" : "Tidak",
+      land.dokumen_legalitas || "",
+      land.polygon ? JSON.stringify(land.polygon).replace(/"/g, '""') : "",
       new Date(land.created_at).toISOString(),
     ]);
 
@@ -126,10 +141,14 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
         polygon: land.polygon,
         totalArea: land.luas,
         estimatedTrees: land.jumlah_pohon,
+        commodityType: land.jenis_komoditas,
+        scientificName: land.nama_ilmiah,
+        harvestDate: land.tanggal_panen,
         registrationTimestamp: land.created_at,
         complianceChecks: {
-          geoLocationVerified: !!land.polygon,
-          documentationComplete: true,
+          geoLocationVerified: !!land.polygon && Array.isArray(land.polygon) && land.polygon.length > 0,
+          documentationComplete: !!land.dokumen_legalitas,
+          deforestationFree: !!land.bebas_deforestasi,
           qrCodeGenerated: true,
         },
       })),

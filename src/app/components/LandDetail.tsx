@@ -13,9 +13,14 @@ interface Land {
   lokasi: string;
   luas: number;
   jumlah_pohon: number;
-  polygon: string;
+  polygon: any;
   created_at: string;
   foto?: string;
+  tanggal_panen?: string;
+  jenis_komoditas?: string;
+  nama_ilmiah?: string;
+  dokumen_legalitas?: string;
+  bebas_deforestasi?: boolean;
 }
 
 export function LandDetail() {
@@ -148,6 +153,18 @@ export function LandDetail() {
                       <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Lokasi</p>
                       <p className="font-medium text-lg text-white font-outfit">{land.lokasi}</p>
                     </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Komoditas & Spesies</p>
+                      <p className="font-medium text-lg text-white font-outfit">
+                        {land.jenis_komoditas || "-"} <span className="text-sm italic text-white/50">({land.nama_ilmiah || "-"})</span>
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Tanggal Panen</p>
+                      <p className="font-medium text-lg text-white font-outfit">
+                        {land.tanggal_panen ? new Date(land.tanggal_panen).toLocaleDateString("id-ID", { year: "numeric", month: "long", day: "numeric" }) : "-"}
+                      </p>
+                    </div>
                     {land.luas != null && (
                       <div className="space-y-1">
                         <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Luas Area</p>
@@ -206,7 +223,7 @@ export function LandDetail() {
                         Data Koordinat Tersimpan:
                       </p>
                       <p className="font-mono text-sm text-emerald-300 bg-black/60 p-4 rounded-xl border border-white/5 break-all shadow-inner">
-                        {land.polygon}
+                        {typeof land.polygon === 'string' ? land.polygon : JSON.stringify(land.polygon)}
                       </p>
                     </div>
                   ) : (
@@ -231,14 +248,26 @@ export function LandDetail() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
                       <span className="text-sm font-medium text-white/90">Data Geo-lokasi (Poligon)</span>
-                      <span className={`font-medium ${land.polygon ? 'text-emerald-400' : 'text-amber-400'}`}>
-                        {land.polygon ? "✓ Lengkap" : "⚠ Tidak Ada"}
+                      <span className={`font-medium ${land.polygon && Array.isArray(land.polygon) && land.polygon.length >= 3 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        {land.polygon && Array.isArray(land.polygon) && land.polygon.length >= 3 ? "✓ Lengkap (Poligon)" : land.polygon ? "⚠ Titik (Bukan Poligon)" : "⚠ Tidak Ada"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
                       <span className="text-sm font-medium text-white/90">Luas Lahan</span>
                       <span className={`font-medium ${land.luas > 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
                         {land.luas > 0 ? "✓ Lengkap" : "⚠ Tidak Ada"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
+                      <span className="text-sm font-medium text-white/90">Dokumen Legalitas</span>
+                      <span className={`font-medium ${land.dokumen_legalitas ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        {land.dokumen_legalitas ? "✓ Tersedia" : "⚠ Tidak Ada"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
+                      <span className="text-sm font-medium text-white/90">Deklarasi Bebas Deforestasi</span>
+                      <span className={`font-medium ${land.bebas_deforestasi ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        {land.bebas_deforestasi ? "✓ Disetujui" : "⚠ Belum Disetujui"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/30 backdrop-blur-sm">

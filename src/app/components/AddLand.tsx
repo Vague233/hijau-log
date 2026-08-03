@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
   Card,
@@ -11,14 +11,42 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { MapPin, Upload, Leaf } from "lucide-react";
+import { MapPin, Upload, Leaf, FileText, CheckCircle2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
+import { MapContainer, TileLayer, Polygon as LeafletPolygon, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix Leaflet icon paths
+import L from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+});
+L.Marker.prototype.options.icon = DefaultIcon;
+
 
 interface AddLandProps {
   onBack?: () => void;
   onSuccess?: () => void;
+}
+
+// Komponen Pembantu untuk Menggambar Poligon di Leaflet
+function PolygonDrawer({ polygonCoords, setPolygonCoords }: { polygonCoords: [number, number][], setPolygonCoords: (p: [number, number][]) => void }) {
+  useMapEvents({
+    click(e) {
+      const newPolygon = [...polygonCoords, [e.latlng.lat, e.latlng.lng] as [number, number]];
+      setPolygonCoords(newPolygon);
+    },
+  });
+
+  return polygonCoords.length > 0 ? <LeafletPolygon positions={polygonCoords} pathOptions={{ color: '#34d399', weight: 3, fillColor: '#34d399', fillOpacity: 0.2 }} /> : null;
 }
 
 export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
@@ -30,13 +58,27 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
     lokasi: "",
     luas: "",
     jumlah_pohon: "",
-    polygon: "", // Optional, JSON string or coordinates
+    tanggal_panen: "",
+    jenis_komoditas: "",
+    nama_ilmiah: "",
+    bebas_deforestasi: false,
     notes: "",
   });
 
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  // State untuk Foto Lahan
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
+
+  // State untuk Dokumen Legalitas
+  const legalDocRef = useRef<HTMLInputElement>(null);
+  const [legalDoc, setLegalDoc] = useState<File | null>(null);
+  const [legalDocPreviewUrl, setLegalDocPreviewUrl] = useState<string>("");
+
+  // State untuk Poligon Peta
+  const [polygonCoords, setPolygonCoords] = useState<[number, number][]>([]);
+  // Mengatur lokasi awal peta ke tengah Indonesia (kurang lebih)
+  const defaultCenter: [number, number] = [-0.7893, 113.9213];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -46,41 +88,54 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
     }
   };
 
+  const handleLegalDocChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      setLegalDoc(selectedFile);
+      // Jika gambar, buat preview, jika PDF tidak perlu preview (hanya nama file)
+      if (selectedFile.type.startsWith('image/')) {
+        setLegalDocPreviewUrl(URL.createObjectURL(selectedFile));
+      } else {
+        setLegalDocPreviewUrl("pdf"); // Penanda bahwa ini file non-image
+      }
+    }
+  };
+
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, type } = e.target;
+    
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const coords = `[${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}]`;
-          setFormData({
-            ...formData,
-            polygon: coords,
-          });
-          toast.success("Lokasi (Poligon) berhasil diambil!");
+          // Ambil titik saat ini dan jadikan bagian dari poligon
+          const newCoord: [number, number] = [position.coords.latitude, position.coords.longitude];
+          setPolygonCoords(prev => [...prev, newCoord]);
+          toast.success("Titik lokasi saat ini berhasil ditambahkan ke poligon!");
         },
         (error) => {
-          toast.error(
-            "Tidak dapat mengambil lokasi. Silakan masukkan secara manual.",
-          );
+          toast.error("Tidak dapat mengambil lokasi. Pastikan izin GPS aktif.");
           console.error(error);
         },
       );
     } else {
-      toast.error(
-        "Geolocation tidak didukung oleh browser Anda.",
-      );
+      toast.error("Geolocation tidak didukung oleh browser Anda.");
     }
+  };
+
+  const clearPolygon = () => {
+    setPolygonCoords([]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,6 +143,16 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
     if (!session?.user) {
       toast.error("Sesi tidak ditemukan. Silakan login kembali.");
       return;
+    }
+
+    if (!formData.bebas_deforestasi) {
+      toast.error("Anda harus menyetujui pernyataan bebas deforestasi (Cut-off Date 31 Des 2020).");
+      return;
+    }
+
+    if (polygonCoords.length < 3 && parseFloat(formData.luas) > 4) {
+      toast.warning("Lahan di atas 4 Hektar sangat disarankan untuk memiliki minimal 3 titik poligon.");
+      // Tapi kita tetap izinkan lanjut jika mereka memaksa
     }
 
     setLoading(true);
@@ -98,27 +163,37 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
         const filePath = `${session.user.id}/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("lahan_photos")
-          .upload(filePath, file);
-
-        if (uploadError) {
-          throw uploadError;
-        }
-
-        const { data: publicUrlData } = supabase.storage
-          .from("lahan_photos")
-          .getPublicUrl(filePath);
-
+        const { error: uploadError } = await supabase.storage.from("lahan_photos").upload(filePath, file);
+        if (uploadError) throw uploadError;
+        const { data: publicUrlData } = supabase.storage.from("lahan_photos").getPublicUrl(filePath);
         fotoUrl = publicUrlData.publicUrl;
       } catch (err: any) {
-        console.error("Gagal mengunggah foto ke storage", err);
         toast.error(`Gagal mengunggah foto: ${err.message}`);
         setLoading(false);
         return;
       }
     }
+
+    let legalDocUrl = null;
+    if (legalDoc) {
+      try {
+        const fileExt = legalDoc.name.split('.').pop();
+        const fileName = `legal_${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+        const filePath = `${session.user.id}/${fileName}`;
+        const { error: uploadError } = await supabase.storage.from("legal_documents").upload(filePath, legalDoc);
+        if (uploadError) throw uploadError;
+        const { data: publicUrlData } = supabase.storage.from("legal_documents").getPublicUrl(filePath);
+        legalDocUrl = publicUrlData.publicUrl;
+      } catch (err: any) {
+        toast.error(`Gagal mengunggah dokumen legalitas: ${err.message}`);
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Persiapkan data poligon, jika kurang dari 3 titik (misal 1 titik), EUDR memperbolehkan untuk < 4ha.
+    // Kita simpan saja array koordinatnya.
+    const finalPolygonData = polygonCoords.length > 0 ? polygonCoords : null;
 
     const { error } = await supabase.from("lahan").insert([
       {
@@ -127,7 +202,12 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
         lokasi: formData.lokasi,
         luas: parseFloat(formData.luas) || 0,
         jumlah_pohon: parseInt(formData.jumlah_pohon) || 0,
-        polygon: formData.polygon ? JSON.parse(`[${formData.polygon}]`) : null,
+        tanggal_panen: formData.tanggal_panen || null,
+        jenis_komoditas: formData.jenis_komoditas,
+        nama_ilmiah: formData.nama_ilmiah,
+        dokumen_legalitas: legalDocUrl,
+        bebas_deforestasi: formData.bebas_deforestasi,
+        polygon: finalPolygonData,
         foto: fotoUrl,
       },
     ]);
@@ -136,7 +216,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
       toast.error(`Gagal mendaftarkan lahan: ${error.message}`);
       setLoading(false);
     } else {
-      toast.success("Lahan berhasil didaftarkan!");
+      toast.success("Lahan berhasil didaftarkan secara penuh (Kepatuhan EUDR)!");
       if (onSuccess) {
         onSuccess();
       } else {
@@ -155,7 +235,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
               Tambah Lahan / Registrasi Pohon
             </h1>
             <p className="text-white/70">
-              Input data lahan dan geo-tagging untuk kepatuhan EUDR
+              Input data lahan secara komprehensif untuk Kepatuhan EUDR Penuh
             </p>
           </div>
         </div>
@@ -165,18 +245,16 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
           <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
             <CardHeader>
               <CardTitle>
-                1. Informasi Lahan (Petani/Pengelola Kebun)
+                1. Informasi Lahan & Komoditas
               </CardTitle>
               <CardDescription>
-                Input data lahan dan informasi administratif
+                Informasi administratif dan detail komoditas yang dipanen
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="nama_lahan">
-                    Nama Lahan *
-                  </Label>
+                  <Label htmlFor="nama_lahan">Nama Lahan *</Label>
                   <Input
                     id="nama_lahan"
                     name="nama_lahan"
@@ -188,9 +266,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lokasi">
-                    Lokasi (Kabupaten/Desa) *
-                  </Label>
+                  <Label htmlFor="lokasi">Lokasi (Kabupaten/Desa) *</Label>
                   <Input
                     id="lokasi"
                     name="lokasi"
@@ -205,9 +281,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="luas">
-                    Luas Area (Hektar) *
-                  </Label>
+                  <Label htmlFor="luas">Luas Area (Hektar) *</Label>
                   <Input
                     id="luas"
                     name="luas"
@@ -221,9 +295,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="jumlah_pohon">
-                    Estimasi Jumlah Pohon *
-                  </Label>
+                  <Label htmlFor="jumlah_pohon">Estimasi Jumlah Pohon *</Label>
                   <Input
                     id="jumlah_pohon"
                     name="jumlah_pohon"
@@ -236,102 +308,231 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                   />
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/10 pt-4 mt-2">
+                <div className="space-y-2">
+                  <Label htmlFor="jenis_komoditas">Jenis Komoditas (Umum) *</Label>
+                  <Input
+                    id="jenis_komoditas"
+                    name="jenis_komoditas"
+                    placeholder="e.g., Kayu Jati, Karet"
+                    value={formData.jenis_komoditas}
+                    onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="nama_ilmiah">Nama Ilmiah (Spesies) *</Label>
+                  <Input
+                    id="nama_ilmiah"
+                    name="nama_ilmiah"
+                    placeholder="e.g., Tectona grandis"
+                    value={formData.nama_ilmiah}
+                    onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30 italic font-mono text-sm"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="tanggal_panen">Tanggal / Waktu Panen *</Label>
+                  <Input
+                    id="tanggal_panen"
+                    name="tanggal_panen"
+                    type="date"
+                    value={formData.tanggal_panen}
+                    onChange={handleChange}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    required
+                  />
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Part 2: Geo-Tagging */}
+          {/* Part 2: Geo-Tagging Map */}
           <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
             <CardHeader>
-              <CardTitle>
-                2. Geo-Tagging & Dokumentasi
+              <CardTitle className="flex justify-between items-center">
+                <span>2. Geo-Tagging & Poligon Lahan</span>
+                <span className="text-xs font-normal px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded">EUDR Geolocation</span>
               </CardTitle>
               <CardDescription>
-                Koordinat GPS Poligon, foto lahan, dan dokumentasi
+                Wajib poligon (klik lebih dari 3 titik batas lahan pada peta) untuk lahan {'>'} 4 Ha. Untuk {`<`} 4 Ha, 1 titik lokasi diperbolehkan.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="polygon">Koordinat Poligon (JSON Array)</Label>
-                <Input
-                  id="polygon"
-                  name="polygon"
-                  placeholder="e.g., [-6.200, 106.816]"
-                  value={formData.polygon}
-                  onChange={handleChange}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
-                />
+              
+              <div className="rounded-xl overflow-hidden border border-white/20 relative z-10" style={{ height: '350px' }}>
+                <MapContainer center={defaultCenter} zoom={5} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+                  <TileLayer
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                  />
+                  <PolygonDrawer polygonCoords={polygonCoords} setPolygonCoords={setPolygonCoords} />
+                </MapContainer>
+                
+                <div className="absolute bottom-4 left-4 z-[400] flex gap-2">
+                  <Button
+                    type="button"
+                    onClick={getCurrentLocation}
+                    className="bg-black/50 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white shadow-lg"
+                    size="sm"
+                  >
+                    <MapPin className="size-4 mr-2 text-emerald-400" />
+                    Ambil Lokasi Saat Ini
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={clearPolygon}
+                    className="bg-red-500/50 hover:bg-red-500/80 backdrop-blur-md border border-red-500/20 text-white shadow-lg"
+                    size="sm"
+                  >
+                    <RotateCcw className="size-4 mr-2" />
+                    Hapus Poligon
+                  </Button>
+                </div>
+
+                <div className="absolute top-4 right-4 z-[400] bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-xs font-mono">
+                  Titik Tersimpan: <span className="text-emerald-400 font-bold">{polygonCoords.length}</span>
+                </div>
               </div>
 
-              <Button
-                type="button"
-                variant="outline"
-                onClick={getCurrentLocation}
-                className="w-full border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/20 bg-transparent"
-              >
-                <MapPin className="size-4 mr-2" />
-                Ambil Koordinat Saat Ini
-              </Button>
+              {polygonCoords.length > 0 && (
+                <div className="p-3 bg-white/5 border border-white/10 rounded-lg max-h-32 overflow-y-auto font-mono text-xs text-white/60">
+                  {JSON.stringify(polygonCoords)}
+                </div>
+              )}
 
-              <div className="space-y-2 mt-4">
-                <Label>Upload Foto Lahan (Opsional)</Label>
+            </CardContent>
+          </Card>
+
+          {/* Part 3: Kepatuhan EUDR */}
+          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
+            <CardHeader>
+              <CardTitle className="flex justify-between items-center">
+                <span>3. Kepatuhan & Legalitas</span>
+                <span className="text-xs font-normal px-2 py-1 bg-amber-500/20 text-amber-400 rounded">Mandatory EUDR</span>
+              </CardTitle>
+              <CardDescription>
+                Unggah dokumen legalitas (SHM/HGU/SKT) dan deklarasi bebas deforestasi.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                {/* Hidden File Input */}
-                <input 
-                  type="file" 
-                  ref={fileInputRef} 
-                  onChange={handleFileChange} 
-                  accept="image/*" 
-                  className="hidden" 
-                />
-
-                {!previewUrl ? (
-                  <div 
-                    onClick={() => fileInputRef.current?.click()}
-                    className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:bg-white/5 transition-colors cursor-pointer"
-                  >
-                    <Upload className="size-8 mx-auto mb-2 text-white/50" />
-                    <p className="text-sm text-white/70">
-                      Klik untuk mengunggah atau seret file
-                    </p>
-                    <p className="text-xs text-white/40 mt-1">
-                      Foto lahan, tanaman (Maks 5MB)
-                    </p>
-                  </div>
-                ) : (
-                  <div className="relative border border-gray-200 rounded-lg overflow-hidden group">
-                    <img src={previewUrl} alt="Preview" className="w-full h-48 object-cover" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                {/* Legal Doc Upload */}
+                <div className="space-y-3">
+                  <Label className="flex items-center gap-2">
+                    <FileText className="size-4 text-emerald-400" />
+                    Bukti Legalitas Lahan *
+                  </Label>
+                  <input 
+                    type="file" 
+                    ref={legalDocRef} 
+                    onChange={handleLegalDocChange} 
+                    accept="image/*,.pdf" 
+                    className="hidden" 
+                  />
+                  {!legalDoc ? (
+                    <div 
+                      onClick={() => legalDocRef.current?.click()}
+                      className="border-2 border-dashed border-emerald-500/30 rounded-lg p-6 text-center hover:bg-emerald-500/10 transition-colors cursor-pointer bg-white/5"
+                    >
+                      <Upload className="size-8 mx-auto mb-2 text-emerald-400/70" />
+                      <p className="text-sm font-medium text-emerald-100">Unggah SHM / SKT / HGU</p>
+                      <p className="text-xs text-white/40 mt-1">Format: PDF, JPG, PNG (Maks 5MB)</p>
+                    </div>
+                  ) : (
+                    <div className="relative border border-emerald-500/30 rounded-lg p-4 bg-emerald-500/10 flex items-center justify-between">
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <FileText className="size-8 text-emerald-400 flex-shrink-0" />
+                        <div className="truncate">
+                          <p className="text-sm font-bold text-white truncate">{legalDoc.name}</p>
+                          <p className="text-xs text-emerald-200">Siap diunggah</p>
+                        </div>
+                      </div>
                       <Button 
-                        type="button" 
-                        variant="destructive" 
-                        size="sm" 
-                        onClick={() => {
-                          setFile(null);
-                          setPreviewUrl("");
-                          if (fileInputRef.current) fileInputRef.current.value = "";
-                        }}
+                        type="button" variant="ghost" size="sm" 
+                        onClick={() => { setLegalDoc(null); setLegalDocPreviewUrl(""); if (legalDocRef.current) legalDocRef.current.value = ""; }}
+                        className="text-red-400 hover:text-red-300 hover:bg-red-400/10"
                       >
-                        Hapus Foto
+                        Batal
                       </Button>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+
+                {/* Optional Photo Upload */}
+                <div className="space-y-3">
+                  <Label className="flex items-center gap-2 text-white/70">
+                    <Upload className="size-4" />
+                    Foto Lahan (Opsional)
+                  </Label>
+                  <input 
+                    type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" 
+                  />
+                  {!previewUrl ? (
+                    <div 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <p className="text-sm text-white/70">Klik untuk mengunggah foto</p>
+                    </div>
+                  ) : (
+                    <div className="relative border border-white/20 rounded-lg overflow-hidden group h-[120px]">
+                      <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Button 
+                          type="button" variant="destructive" size="sm" 
+                          onClick={() => { setFile(null); setPreviewUrl(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                        >
+                          Hapus Foto
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
               </div>
+
+              {/* Deforestation Declaration */}
+              <div className="mt-6 p-4 border border-amber-500/30 bg-amber-500/10 rounded-xl">
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <div className="mt-1">
+                    <input 
+                      type="checkbox" 
+                      name="bebas_deforestasi"
+                      checked={formData.bebas_deforestasi}
+                      onChange={handleChange}
+                      className="w-5 h-5 rounded border-amber-500/50 bg-black/50 text-amber-500 focus:ring-amber-500/50 cursor-pointer"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold text-amber-400 mb-1 flex items-center gap-2">
+                      Deklarasi Bebas Deforestasi (EUDR Pasal 3a)
+                    </p>
+                    <p className="text-sm text-white/80 leading-relaxed">
+                      Saya secara sadar dan bertanggung jawab menyatakan bahwa lahan tempat komoditas ini diproduksi <strong>tidak mengalami deforestasi</strong> atau degradasi hutan yang terjadi setelah batas waktu (Cut-off Date) <strong>31 Desember 2020</strong>. Segala bentuk pemalsuan data dapat berakibat pada diskualifikasi pasar ekspor.
+                    </p>
+                  </div>
+                </label>
+              </div>
+
             </CardContent>
           </Card>
 
           {/* Additional Notes */}
           <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
-            <CardHeader>
-              <CardTitle>Catatan Tambahan</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
+              <Label className="mb-2 block">Catatan Tambahan (Opsional)</Label>
               <Textarea
                 name="notes"
-                placeholder="Catatan tambahan..."
+                placeholder="Catatan lainnya terkait lokasi atau proses panen..."
                 value={formData.notes}
                 onChange={handleChange}
-                rows={4}
+                rows={3}
                 className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
               />
             </CardContent>
@@ -339,15 +540,15 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
 
           {/* Submit Buttons */}
           <div className="flex gap-4">
-            <Button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white border-0" disabled={loading}>
-              {loading ? "Menyimpan..." : "Simpan ke Database"}
+            <Button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white border-0 py-6 text-lg" disabled={loading}>
+              {loading ? "Menyimpan ke Database..." : "Simpan & Verifikasi Kepatuhan"}
             </Button>
             {onBack ? (
               <Button
                 type="button"
                 variant="outline"
                 onClick={onBack}
-                className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+                className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
               >
                 Batal
               </Button>
@@ -356,7 +557,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                 type="button"
                 variant="outline"
                 onClick={() => navigate("/dashboard")}
-                className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+                className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
               >
                 Batal
               </Button>

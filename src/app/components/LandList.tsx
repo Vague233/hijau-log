@@ -13,9 +13,14 @@ interface Land {
   lokasi: string;
   luas: number;
   jumlah_pohon: number;
-  polygon: string;
+  polygon: any;
   created_at: string;
   foto?: string;
+  tanggal_panen?: string;
+  jenis_komoditas?: string;
+  nama_ilmiah?: string;
+  dokumen_legalitas?: string;
+  bebas_deforestasi?: boolean;
 }
 
 interface LandListProps {
@@ -116,9 +121,15 @@ export function LandList({ onBack }: LandListProps = {}) {
                   {land.polygon && (
                     <div className="flex items-start gap-2 text-white/70">
                       <MapPin className="size-4 mt-0.5" />
-                      <span className="line-clamp-1" title={land.polygon}>
-                        Poligon: {land.polygon}
+                      <span className="line-clamp-1" title={JSON.stringify(land.polygon)}>
+                        Poligon: {Array.isArray(land.polygon) ? `${land.polygon.length} Titik Koordinat` : 'Data Tersedia'}
                       </span>
+                    </div>
+                  )}
+                  {land.jenis_komoditas && (
+                    <div className="flex items-center gap-2 text-white/70">
+                      <Leaf className="size-4" />
+                      <span>Komoditas: {land.jenis_komoditas}</span>
                     </div>
                   )}
                   {land.luas != null && (

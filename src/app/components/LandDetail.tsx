@@ -106,14 +106,8 @@ export function LandDetail() {
 
       <div className="relative z-10 container mx-auto px-4 pb-8 pt-32 md:pt-36">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8 flex flex-col sm:flex-row sm:items-center gap-6">
-            <Link to="/database" state={{ view: 'list' }}>
-              <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10 bg-white/5 backdrop-blur-sm rounded-full px-6 transition-all duration-300">
-                <ArrowLeft className="size-4 mr-2" />
-                Kembali
-              </Button>
-            </Link>
-            <div className="flex-1 flex items-center gap-4">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
               <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 backdrop-blur-md hidden sm:flex">
                 <Leaf className="size-8 text-emerald-400" />
               </div>

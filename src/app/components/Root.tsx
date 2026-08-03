@@ -35,9 +35,17 @@ export function Root() {
 
           <div className="flex items-center gap-4">
             {isDashboard ? (
-              <Button variant="outline" size="sm" onClick={() => setIsLogoutModalOpen(true)} className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
-                Keluar
-              </Button>
+              location.pathname.match(/^\/dashboard\/land\/[^/]+$/) ? (
+                <Link to="/database" state={{ view: 'list' }}>
+                  <Button variant="outline" size="sm" className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
+                    Kembali
+                  </Button>
+                </Link>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => setIsLogoutModalOpen(true)} className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
+                  Keluar
+                </Button>
+              )
             ) : location.pathname !== "/about" && location.pathname !== "/privacy" && (
               <Link to="/access">
                 <Button size="sm" className="rounded-full bg-[var(--color-moss)] hover:bg-[var(--color-charcoal)] transition-colors">

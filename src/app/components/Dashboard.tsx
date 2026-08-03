@@ -170,10 +170,10 @@ export function Dashboard() {
                 className="relative w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 focus:outline-none"
                 aria-label="Toggle menu"
               >
-                <div className="relative w-5 h-4">
-                  <span className={`absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out ${isMenuOpen ? 'rotate-45 top-2' : 'top-0'}`} />
-                  <span className={`absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out top-2 ${isMenuOpen ? 'opacity-0 translate-x-2' : 'opacity-100 translate-x-0'}`} />
-                  <span className={`absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out ${isMenuOpen ? '-rotate-45 top-2' : 'top-4'}`} />
+                <div className="relative w-5 h-[14px]">
+                  <span className={`absolute block left-0 h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out origin-center ${isMenuOpen ? 'rotate-45 top-[6px]' : 'top-0'}`} />
+                  <span className={`absolute block left-0 h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out top-[6px] ${isMenuOpen ? 'opacity-0 translate-x-3' : 'opacity-100 translate-x-0'}`} />
+                  <span className={`absolute block left-0 h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out origin-center ${isMenuOpen ? '-rotate-45 top-[6px]' : 'top-[12px]'}`} />
                 </div>
               </button>
               

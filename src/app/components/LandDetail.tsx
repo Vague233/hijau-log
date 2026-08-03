@@ -104,11 +104,11 @@ export function LandDetail() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8 pt-24">
+      <div className="relative z-10 container mx-auto px-4 pb-8 pt-32 md:pt-36">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 flex flex-col sm:flex-row sm:items-center gap-6">
             <Link to="/database" state={{ view: 'list' }}>
-              <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-full px-6 transition-all duration-300">
+              <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10 bg-white/5 backdrop-blur-sm rounded-full px-6 transition-all duration-300">
                 <ArrowLeft className="size-4 mr-2" />
                 Kembali
               </Button>
@@ -134,9 +134,9 @@ export function LandDetail() {
           </div>
 
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-xl p-1">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/50 rounded-lg transition-all duration-300">Overview Lahan</TabsTrigger>
-              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/50 rounded-lg transition-all duration-300">Kepatuhan EUDR</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-1.5 shadow-2xl">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300 py-2.5">Overview Lahan</TabsTrigger>
+              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300 py-2.5">Kepatuhan EUDR</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">

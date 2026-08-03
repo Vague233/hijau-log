@@ -2,6 +2,8 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import { MapPin, LayoutDashboard } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAuth } from "../../lib/AuthContext";
+import { useState } from "react";
+import { LogoutConfirmModal } from "./LogoutConfirmModal";
 
 export function Root() {
   const location = useLocation();
@@ -11,7 +13,10 @@ export function Root() {
   const isDashboard =
     location.pathname.startsWith("/dashboard");
 
-  const handleLogout = async () => {
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const handleConfirmLogout = async () => {
+    setIsLogoutModalOpen(false);
     await signOut();
     navigate("/");
   };
@@ -30,7 +35,7 @@ export function Root() {
 
           <div className="flex items-center gap-4">
             {isDashboard ? (
-              <Button variant="outline" size="sm" onClick={handleLogout} className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
+              <Button variant="outline" size="sm" onClick={() => setIsLogoutModalOpen(true)} className="rounded-full bg-white/50 border-white/30 hover:bg-white text-[var(--color-charcoal)]">
                 Keluar
               </Button>
             ) : location.pathname !== "/about" && location.pathname !== "/privacy" && (
@@ -60,6 +65,12 @@ export function Root() {
           </div>
         </footer>
       )}
+
+      <LogoutConfirmModal 
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleConfirmLogout}
+      />
     </div>
   );
 }

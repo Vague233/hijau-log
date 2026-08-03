@@ -7,6 +7,7 @@ import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activ
 
 import { useAuth } from "../../lib/AuthContext";
 import { supabase } from "../../lib/supabase";
+import { LogoutConfirmModal } from "./LogoutConfirmModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,6 +26,7 @@ export function Dashboard() {
   const protocolRef = useRef<HTMLDivElement>(null);
   const [randomFact, setRandomFact] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   
   const { session } = useAuth();
 
@@ -145,6 +147,12 @@ export function Dashboard() {
     });
   };
 
+  const handleConfirmLogout = async () => {
+    setIsLogoutModalOpen(false);
+    await supabase.auth.signOut();
+    window.location.href = '/';
+  };
+
   return (
     <div ref={containerRef} className="bg-black relative overflow-x-hidden text-white font-sans">
       
@@ -190,9 +198,9 @@ export function Dashboard() {
                   Database
                 </Link>
                 <button 
-                  onClick={async () => {
-                    await supabase.auth.signOut();
-                    window.location.href = '/';
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsLogoutModalOpen(true);
                   }} 
                   className="flex items-center px-4 py-3 hover:bg-red-500/10 rounded-xl transition-colors font-medium text-sm text-red-400 text-left w-full"
                 >
@@ -374,6 +382,12 @@ export function Dashboard() {
             </div>
           </div>
         </footer>
+
+      <LogoutConfirmModal 
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleConfirmLogout}
+      />
 
       {/* CSS for Navbar Morph */}
       <style>{`

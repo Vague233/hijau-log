@@ -85,8 +85,8 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
 
       {/* Accordion Container */}
       <div 
-        className={`flex-1 flex w-full h-full transition-opacity duration-500 ${
-          activeView ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        className={`flex-1 flex w-full h-full transition-all duration-500 ${
+          activeView ? 'opacity-50 blur-md pointer-events-none' : 'opacity-100'
         }`}
       >
         
@@ -108,7 +108,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
           
           {/* Content */}
           <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-            <div className={`transition-all duration-500 delay-100 ${expandingPanel === 'add' || expandingPanel === null ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`transition-all duration-500 delay-100 ${(!activeView && (expandingPanel === 'add' || expandingPanel === null)) ? 'opacity-100' : 'opacity-0'}`}>
               <div className="flex items-center gap-3 text-emerald-400 mb-4">
                 <span className="font-mono text-sm tracking-widest border border-emerald-400/30 rounded-full px-3 py-1">01</span>
                 <Plus className="size-5" />
@@ -156,7 +156,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
           
           <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-            <div className={`transition-all duration-500 delay-100 ${expandingPanel === 'list' || expandingPanel === null ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`transition-all duration-500 delay-100 ${(!activeView && (expandingPanel === 'list' || expandingPanel === null)) ? 'opacity-100' : 'opacity-0'}`}>
               <div className="flex items-center gap-3 text-emerald-400 mb-4">
                 <span className="font-mono text-sm tracking-widest border border-emerald-400/30 rounded-full px-3 py-1">02</span>
                 <List className="size-5" />
@@ -203,7 +203,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
           
           <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-            <div className={`transition-all duration-500 delay-100 ${expandingPanel === 'export' || expandingPanel === null ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`transition-all duration-500 delay-100 ${(!activeView && (expandingPanel === 'export' || expandingPanel === null)) ? 'opacity-100' : 'opacity-0'}`}>
               <div className="flex items-center gap-3 text-emerald-400 mb-4">
                 <span className="font-mono text-sm tracking-widest border border-emerald-400/30 rounded-full px-3 py-1">03</span>
                 <Download className="size-5" />

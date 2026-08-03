@@ -116,9 +116,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
                 <p className="text-white/70 max-w-md font-outfit text-sm md:text-base leading-relaxed mb-6">
                   Registrasi poligon lahan baru dan input koordinat GPS pohon secara luring atau daring untuk kepatuhan EUDR.
                 </p>
-                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
-                  Mulai Registrasi
-                </button>
+
               </div>
             </div>
             
@@ -166,9 +164,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
                 <p className="text-white/70 max-w-md font-outfit text-sm md:text-base leading-relaxed mb-6">
                   Pantau seluruh portofolio lahan Anda, periksa status verifikasi, dan manajemen aset hutan berkelanjutan.
                 </p>
-                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
-                  Buka Database
-                </button>
+
               </div>
             </div>
             
@@ -215,9 +211,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
                 <p className="text-white/70 max-w-md font-outfit text-sm md:text-base leading-relaxed mb-6">
                   Buat paket laporan komprehensif (JSON, CSV, PDF) untuk Due Diligence Statement (DDS) sesuai regulasi Uni Eropa.
                 </p>
-                <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
-                  Masuk ke Ekspor
-                </button>
+
               </div>
             </div>
             

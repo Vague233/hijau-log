@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activity, ScanLine, FileText, Smartphone, Fingerprint, Lock } from "lucide-react";
+import { MapPin, LayoutDashboard, ShieldCheck, CheckCircle2, ChevronRight, Activity, ScanLine, FileText, Smartphone, Fingerprint, Lock, LogOut } from "lucide-react";
 
 import { useAuth } from "../../lib/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -24,6 +24,7 @@ export function Dashboard() {
   const philosophyRef = useRef<HTMLDivElement>(null);
   const protocolRef = useRef<HTMLDivElement>(null);
   const [randomFact, setRandomFact] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const { session } = useAuth();
 
@@ -163,21 +164,43 @@ export function Dashboard() {
             <span className="text-sm font-medium hidden md:block opacity-80">
               Hai, {session?.user?.user_metadata?.full_name?.split(' ')[0] || session?.user?.email?.split('@')[0] || "Pengguna"}
             </span>
-            <Link 
-              to="/database"
-              className="hidden sm:block text-sm font-medium bg-[var(--color-moss)] text-[var(--color-cream)] px-5 py-2 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg shadow-[var(--color-moss)]/20"
-            >
-              Database
-            </Link>
-            <button 
-              onClick={async () => {
-                await supabase.auth.signOut();
-                window.location.href = '/';
-              }} 
-              className="text-sm font-medium bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-full transition-all duration-300 backdrop-blur-md"
-            >
-              Keluar
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="relative w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 focus:outline-none"
+                aria-label="Toggle menu"
+              >
+                <div className="relative w-5 h-4">
+                  <span className={`absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out ${isMenuOpen ? 'rotate-45 top-2' : 'top-0'}`} />
+                  <span className={`absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out top-2 ${isMenuOpen ? 'opacity-0 translate-x-2' : 'opacity-100 translate-x-0'}`} />
+                  <span className={`absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-out ${isMenuOpen ? '-rotate-45 top-2' : 'top-4'}`} />
+                </div>
+              </button>
+              
+              <div 
+                className={`absolute right-0 mt-4 p-2 w-48 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-2xl flex flex-col gap-1 shadow-2xl transition-all duration-500 origin-top transform ${
+                  isMenuOpen ? 'opacity-100 scale-y-100 pointer-events-auto translate-y-0' : 'opacity-0 scale-y-90 pointer-events-none -translate-y-4'
+                }`}
+              >
+                <Link 
+                  to="/database"
+                  className="flex items-center px-4 py-3 hover:bg-[var(--color-moss)]/80 rounded-xl transition-colors font-medium text-sm text-[var(--color-cream)]"
+                >
+                  <LayoutDashboard className="size-4 mr-3 opacity-70" />
+                  Database
+                </Link>
+                <button 
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    window.location.href = '/';
+                  }} 
+                  className="flex items-center px-4 py-3 hover:bg-red-500/10 rounded-xl transition-colors font-medium text-sm text-red-400 text-left w-full"
+                >
+                  <LogOut className="size-4 mr-3 opacity-70" />
+                  Keluar
+                </button>
+              </div>
+            </div>
           </div>
         </nav>
       </div>

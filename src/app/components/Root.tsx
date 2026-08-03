@@ -45,7 +45,7 @@ export function Root() {
       )}
 
       {/* Main Content */}
-      <main key={location.pathname} className="flex-1 bg-noise animate-page-enter">
+      <main className="flex-1 bg-noise">
         <Outlet />
       </main>
 

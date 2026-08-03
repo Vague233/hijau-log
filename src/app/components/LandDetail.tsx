@@ -134,9 +134,9 @@ export function LandDetail() {
           </div>
 
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-1.5 shadow-2xl">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300 py-2.5">Overview Lahan</TabsTrigger>
-              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300 py-2.5">Kepatuhan EUDR</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 h-14 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-1 shadow-2xl">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300">Overview Lahan</TabsTrigger>
+              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300">Kepatuhan EUDR</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">

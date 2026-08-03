@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { MapPin, Trees, QrCode, Eye, Leaf } from "lucide-react";
+import { MapPin, Trees, QrCode, Eye, Leaf, Maximize } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
 import { toast } from "sonner";
@@ -123,7 +123,7 @@ export function LandList({ onBack }: LandListProps = {}) {
                   )}
                   {land.luas != null && (
                     <div className="text-white/70 flex items-center gap-2">
-                       <MapPin className="size-4 opacity-0" />
+                       <Maximize className="size-4" />
                        Luas: {land.luas} hektar
                     </div>
                   )}

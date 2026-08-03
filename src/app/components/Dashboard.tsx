@@ -178,7 +178,7 @@ export function Dashboard() {
               </button>
               
               <div 
-                className={`absolute right-0 mt-4 p-2 w-48 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-2xl flex flex-col gap-1 shadow-2xl transition-all duration-500 origin-top transform ${
+                className={`absolute right-0 mt-4 p-2 w-48 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl flex flex-col gap-1 shadow-2xl transition-all duration-500 origin-top transform ${
                   isMenuOpen ? 'opacity-100 scale-y-100 pointer-events-auto translate-y-0' : 'opacity-0 scale-y-90 pointer-events-none -translate-y-4'
                 }`}
               >

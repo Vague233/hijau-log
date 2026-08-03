@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import { ChevronLeft, Plus, List, Download } from 'lucide-react';
 import { AddLand } from './AddLand';
 import { LandList } from './LandList';
@@ -10,8 +11,12 @@ interface DatabaseAccordionProps {
 }
 
 export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
-  const [activeView, setActiveView] = useState<'add' | 'list' | 'export' | null>(null);
-  const [expandingPanel, setExpandingPanel] = useState<'add' | 'list' | 'export' | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const stateView = location.state?.view as 'add' | 'list' | 'export' | null;
+
+  const [activeView, setActiveView] = useState<'add' | 'list' | 'export' | null>(stateView || null);
+  const [expandingPanel, setExpandingPanel] = useState<'add' | 'list' | 'export' | null>(stateView || null);
 
   // Reset states when closed
   useEffect(() => {
@@ -34,6 +39,9 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
   const handleBackToAccordion = () => {
     setActiveView(null);
     setExpandingPanel(null);
+    if (location.state?.view) {
+      navigate('/database', { replace: true, state: {} });
+    }
   };
 
   if (!isOpen) return null;

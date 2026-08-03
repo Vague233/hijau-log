@@ -64,8 +64,8 @@ export function LandDetail() {
         <Card className="border-emerald-100 shadow-sm">
           <CardContent className="py-12 text-center">
             <p>Data lahan tidak ditemukan</p>
-            <Link to="/dashboard/lands">
-              <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">Kembali ke Daftar</Button>
+            <Link to="/database">
+              <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">Kembali ke Database</Button>
             </Link>
           </CardContent>
         </Card>
@@ -74,10 +74,10 @@ export function LandDetail() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-24">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
-          <Link to="/dashboard/lands">
+          <Link to="/database">
             <Button variant="outline" size="sm" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50">
               <ArrowLeft className="size-4 mr-2" />
               Kembali

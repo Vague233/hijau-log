@@ -18,9 +18,10 @@ import { useAuth } from "../../lib/AuthContext";
 
 interface AddLandProps {
   onBack?: () => void;
+  onSuccess?: () => void;
 }
 
-export function AddLand({ onBack }: AddLandProps = {}) {
+export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
   const navigate = useNavigate();
   const { session } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -136,7 +137,11 @@ export function AddLand({ onBack }: AddLandProps = {}) {
       setLoading(false);
     } else {
       toast.success("Lahan berhasil didaftarkan!");
-      navigate("/dashboard/lands");
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        navigate("/dashboard/lands");
+      }
     }
   };
 

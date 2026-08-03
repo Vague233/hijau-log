@@ -70,7 +70,7 @@ export function DatabaseAccordion({ isOpen, onClose }: DatabaseAccordionProps) {
           activeView ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
-        {activeView === 'add' && <AddLand onBack={handleBackToAccordion} />}
+        {activeView === 'add' && <AddLand onBack={handleBackToAccordion} onSuccess={() => handlePanelClick('list')} />}
         {activeView === 'list' && <LandList onBack={handleBackToAccordion} />}
         {activeView === 'export' && <ExportData onBack={handleBackToAccordion} />}
       </div>

@@ -47,184 +47,242 @@ export function LandDetail() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Card className="border-emerald-100 shadow-sm">
-          <CardContent className="py-12 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat detail lahan...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-black flex items-center justify-center font-sans relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
+            alt="Dark Forest Background" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
+        </div>
+        <div className="relative z-10 w-full max-w-md p-6">
+          <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+            <CardContent className="py-12 text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
+              <p className="text-white/70 font-outfit">Memuat detail lahan...</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
 
   if (!land) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Card className="border-emerald-100 shadow-sm">
-          <CardContent className="py-12 text-center">
-            <p>Data lahan tidak ditemukan</p>
-            <Link to="/database" state={{ view: 'list' }}>
-              <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">Kembali ke Database</Button>
-            </Link>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-black flex items-center justify-center font-sans relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
+            alt="Dark Forest Background" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
+        </div>
+        <div className="relative z-10 w-full max-w-md p-6">
+          <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+            <CardContent className="py-12 text-center">
+              <p className="text-white/90 mb-6 font-outfit text-lg">Data lahan tidak ditemukan</p>
+              <Link to="/database" state={{ view: 'list' }}>
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-8 transition-colors">Kembali ke Database</Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-24">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
-          <Link to="/database" state={{ view: 'list' }}>
-            <Button variant="outline" size="sm" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50">
-              <ArrowLeft className="size-4 mr-2" />
-              Kembali
-            </Button>
-          </Link>
-          <div className="flex-1 flex items-center gap-2">
-            <Leaf className="size-8 text-emerald-600 hidden sm:block" />
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">{land.nama_lahan}</h1>
-              <p className="text-gray-600">{land.lokasi}</p>
+    <div className="min-h-screen bg-black relative font-sans">
+      <div className="fixed inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
+          alt="Dark Forest Background" 
+          className="w-full h-full object-cover opacity-30"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-8 pt-24">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center gap-6">
+            <Link to="/database" state={{ view: 'list' }}>
+              <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-full px-6 transition-all duration-300">
+                <ArrowLeft className="size-4 mr-2" />
+                Kembali
+              </Button>
+            </Link>
+            <div className="flex-1 flex items-center gap-4">
+              <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 backdrop-blur-md hidden sm:flex">
+                <Leaf className="size-8 text-emerald-400" />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-serif font-bold text-white mb-1">{land.nama_lahan}</h1>
+                <p className="text-white/60 flex items-center gap-2 font-outfit text-sm">
+                  <MapPin className="size-4" />
+                  {land.lokasi}
+                </p>
+              </div>
             </div>
+            <Link to={`/dashboard/land/${id}/qr`}>
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white border-0 shadow-lg shadow-emerald-900/50 rounded-full px-6 transition-all duration-300">
+                <QrCode className="size-4 mr-2" />
+                Buat Kode QR
+              </Button>
+            </Link>
           </div>
-          <Link to={`/dashboard/land/${id}/qr`}>
-            <Button className="bg-emerald-600 hover:bg-emerald-700">
-              <QrCode className="size-4 mr-2" />
-              Buat Kode QR
-            </Button>
-          </Link>
-        </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="overview">Overview Lahan</TabsTrigger>
-            <TabsTrigger value="compliance">Kepatuhan EUDR</TabsTrigger>
-          </TabsList>
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-xl p-1">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/50 rounded-lg transition-all duration-300">Overview Lahan</TabsTrigger>
+              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/50 rounded-lg transition-all duration-300">Kepatuhan EUDR</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
-            <Card className="border-emerald-100 shadow-sm">
-              <CardHeader>
-                <CardTitle>Informasi Lahan</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Nama Lahan</p>
-                    <p className="font-medium text-lg text-gray-900">{land.nama_lahan}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Lokasi</p>
-                    <p className="font-medium text-lg text-gray-900">{land.lokasi}</p>
-                  </div>
-                  {land.luas != null && (
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Luas Area</p>
-                      <p className="font-medium text-lg text-gray-900">{land.luas} Hektar</p>
-                    </div>
-                  )}
-                  {land.jumlah_pohon != null && (
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Estimasi Jumlah Pohon</p>
-                      <p className="font-medium text-lg text-gray-900">{land.jumlah_pohon} Pohon</p>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Tanggal Terdaftar</p>
-                    <p className="font-medium text-lg text-gray-900">
-                      {new Date(land.created_at).toLocaleDateString("id-ID", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric"
-                      })}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {land.foto && (
-              <Card className="border-emerald-100 shadow-sm">
+            <TabsContent value="overview" className="space-y-6">
+              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
                 <CardHeader>
-                  <CardTitle>Foto Lahan</CardTitle>
+                  <CardTitle className="font-serif text-2xl">Informasi Lahan</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <img src={land.foto} alt="Foto Lahan" className="w-full max-h-96 object-cover rounded-lg border border-gray-200" />
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-1">
+                      <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Nama Lahan</p>
+                      <p className="font-medium text-lg text-white font-outfit">{land.nama_lahan}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Lokasi</p>
+                      <p className="font-medium text-lg text-white font-outfit">{land.lokasi}</p>
+                    </div>
+                    {land.luas != null && (
+                      <div className="space-y-1">
+                        <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Luas Area</p>
+                        <p className="font-medium text-lg text-white font-outfit flex items-center gap-2">
+                          {land.luas} Hektar
+                        </p>
+                      </div>
+                    )}
+                    {land.jumlah_pohon != null && (
+                      <div className="space-y-1">
+                        <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Estimasi Pohon</p>
+                        <p className="font-medium text-lg text-white font-outfit flex items-center gap-2">
+                          <Trees className="size-4 text-white/50" />
+                          {land.jumlah_pohon} Pohon
+                        </p>
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      <p className="text-sm font-mono tracking-widest text-emerald-400/80 uppercase">Tanggal Terdaftar</p>
+                      <p className="font-medium text-lg text-white font-outfit">
+                        {new Date(land.created_at).toLocaleDateString("id-ID", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric"
+                        })}
+                      </p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
-            )}
 
-            <Card className="border-emerald-100 shadow-sm">
-              <CardHeader>
-                <CardTitle>Data Geo-Lokasi (Poligon)</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {land.polygon ? (
-                  <div className="bg-emerald-50 rounded-lg p-6 text-center border border-emerald-100">
-                    <MapPin className="size-8 mx-auto mb-3 text-emerald-600" />
-                    <p className="text-sm text-emerald-800 mb-2">
-                      Data Koordinat Tersimpan:
-                    </p>
-                    <p className="font-mono text-sm text-gray-700 bg-white p-2 rounded border break-all">
-                      {land.polygon}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
-                    <p className="text-gray-500">Data koordinat poligon tidak tersedia.</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+              {land.foto && (
+                <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+                  <CardHeader>
+                    <CardTitle className="font-serif text-2xl">Foto Lahan</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="relative group overflow-hidden rounded-2xl border border-white/10">
+                      <img src={land.foto} alt="Foto Lahan" className="w-full max-h-96 object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+                <CardHeader>
+                  <CardTitle className="font-serif text-2xl">Data Geo-Lokasi (Poligon)</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {land.polygon ? (
+                    <div className="bg-black/40 rounded-2xl p-6 text-center border border-white/10 relative overflow-hidden group">
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <MapPin className="size-8 mx-auto mb-4 text-emerald-400" />
+                      <p className="text-sm text-white/60 mb-3 font-outfit">
+                        Data Koordinat Tersimpan:
+                      </p>
+                      <p className="font-mono text-sm text-emerald-300 bg-black/60 p-4 rounded-xl border border-white/5 break-all shadow-inner">
+                        {land.polygon}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-black/40 rounded-2xl p-8 text-center border border-white/10">
+                      <MapPin className="size-8 mx-auto mb-4 text-white/20" />
+                      <p className="text-white/50 font-outfit">Data koordinat poligon tidak tersedia.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
           </TabsContent>
 
           <TabsContent value="compliance" className="space-y-6">
-            <Card className="border-emerald-100 shadow-sm">
-              <CardHeader>
-                <CardTitle>Status Kepatuhan EUDR</CardTitle>
-                <CardDescription>
-                  Pengecekan Kepatuhan Regulasi Deforestasi Uni Eropa (EUDR)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
-                    <span className="text-sm font-medium text-green-900">Data Geo-lokasi (Poligon)</span>
-                    <span className="text-green-600 font-medium">
-                      {land.polygon ? "✓ Lengkap" : "⚠ Tidak Ada"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
-                    <span className="text-sm font-medium text-green-900">Luas Lahan</span>
-                    <span className="text-green-600 font-medium">
-                      {land.luas > 0 ? "✓ Lengkap" : "⚠ Tidak Ada"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-100">
-                    <span className="text-sm font-medium text-emerald-900">QR Code Sistem Keterlacakan</span>
-                    <Link to={`/dashboard/land/${id}/qr`}>
-                      <span className="text-emerald-700 font-bold hover:underline">
-                        Lihat QR →
+            <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+                <CardHeader>
+                  <CardTitle className="font-serif text-2xl text-emerald-400">Status Kepatuhan EUDR</CardTitle>
+                  <CardDescription className="text-white/60 font-outfit">
+                    Pengecekan Kepatuhan Regulasi Deforestasi Uni Eropa (EUDR)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
+                      <span className="text-sm font-medium text-white/90">Data Geo-lokasi (Poligon)</span>
+                      <span className={`font-medium ${land.polygon ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        {land.polygon ? "✓ Lengkap" : "⚠ Tidak Ada"}
                       </span>
-                    </Link>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
+                      <span className="text-sm font-medium text-white/90">Luas Lahan</span>
+                      <span className={`font-medium ${land.luas > 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        {land.luas > 0 ? "✓ Lengkap" : "⚠ Tidak Ada"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/30 backdrop-blur-sm">
+                      <span className="text-sm font-medium text-emerald-100">QR Code Sistem Keterlacakan</span>
+                      <Link to={`/dashboard/land/${id}/qr`}>
+                        <span className="text-emerald-400 font-bold hover:text-emerald-300 transition-colors flex items-center gap-1">
+                          Lihat QR <ArrowLeft className="size-4 rotate-180" />
+                        </span>
+                      </Link>
+                    </div>
                   </div>
-                </div>
 
-                <div className="pt-6 border-t mt-6">
-                  <h4 className="font-bold text-gray-900 mb-3">Persyaratan Dokumen EUDR:</h4>
-                  <ul className="text-sm text-gray-700 space-y-2 list-disc list-inside">
-                    <li>Pernyataan Uji Tuntas (Due Diligence Statement - DDS)</li>
-                    <li>Bukti legalitas lahan (Sertifikat/SKT)</li>
-                    <li>Data koordinat poligon akurasi tinggi</li>
-                    <li>Informasi waktu panen / produksi</li>
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                  <div className="pt-6 border-t border-white/10 mt-6">
+                    <h4 className="font-serif text-lg text-white/90 mb-4">Persyaratan Dokumen EUDR:</h4>
+                    <ul className="text-sm text-white/60 space-y-3 font-outfit">
+                      <li className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5"></div>
+                        Pernyataan Uji Tuntas (Due Diligence Statement - DDS)
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5"></div>
+                        Bukti legalitas lahan (Sertifikat/SKT)
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5"></div>
+                        Data koordinat poligon akurasi tinggi
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5"></div>
+                        Informasi waktu panen / produksi
+                      </li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );

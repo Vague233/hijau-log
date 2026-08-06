@@ -52,6 +52,30 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
     fetchLands();
   }, []);
 
+  // Fungsi Validasi Dinamis Kepatuhan EUDR per Bidang Lahan (EUDR Article 9 & 3a)
+  const isLandCompliant = (land: Land) => {
+    const isPolygonValid = land.luas > 4 
+      ? (Array.isArray(land.polygon) && land.polygon.length >= 3)
+      : (Array.isArray(land.polygon) && land.polygon.length >= 1);
+    
+    const isDocUploaded = !!land.dokumen_legalitas;
+    const isDeforestationFree = !!land.bebas_deforestasi;
+    const isSpeciesFilled = !!land.jenis_komoditas && !!land.nama_ilmiah;
+
+    return isPolygonValid && isDocUploaded && isDeforestationFree && isSpeciesFilled;
+  };
+
+  const compliantLandsCount = lands.filter(isLandCompliant).length;
+  const compliancePercentage = lands.length > 0 ? Math.round((compliantLandsCount / lands.length) * 100) : 0;
+
+  const overallComplianceStatus = lands.length === 0
+    ? "No Data"
+    : compliantLandsCount === lands.length
+    ? "Fully Compliant"
+    : compliantLandsCount > 0
+    ? "Partially Compliant"
+    : "Non-Compliant";
+
   const exportAsJSON = () => {
     if (lands.length === 0) {
       toast.error("Tidak ada data untuk diekspor");
@@ -133,25 +157,38 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
       generatedDate: new Date().toISOString(),
       organization: "HijauLog - Platform Keterlacakan Kayu Berkelanjutan",
       totalParcels: lands.length,
-      complianceStatus: "Compliant",
-      data: lands.map((land) => ({
-        id: land.id,
-        landName: land.nama_lahan,
-        location: land.lokasi,
-        polygon: land.polygon,
-        totalArea: land.luas,
-        estimatedTrees: land.jumlah_pohon,
-        commodityType: land.jenis_komoditas,
-        scientificName: land.nama_ilmiah,
-        harvestDate: land.tanggal_panen,
-        registrationTimestamp: land.created_at,
-        complianceChecks: {
-          geoLocationVerified: !!land.polygon && Array.isArray(land.polygon) && land.polygon.length > 0,
-          documentationComplete: !!land.dokumen_legalitas,
-          deforestationFree: !!land.bebas_deforestasi,
-          qrCodeGenerated: true,
-        },
-      })),
+      compliantParcels: compliantLandsCount,
+      nonCompliantParcels: lands.length - compliantLandsCount,
+      complianceRate: `${compliancePercentage}%`,
+      complianceStatus: overallComplianceStatus,
+      data: lands.map((land) => {
+        const compliant = isLandCompliant(land);
+        const geoValid = land.luas > 4 
+          ? (Array.isArray(land.polygon) && land.polygon.length >= 3)
+          : (Array.isArray(land.polygon) && land.polygon.length >= 1);
+
+        return {
+          id: land.id,
+          landName: land.nama_lahan,
+          location: land.lokasi,
+          polygon: land.polygon,
+          totalArea: land.luas,
+          estimatedTrees: land.jumlah_pohon,
+          commodityType: land.jenis_komoditas,
+          scientificName: land.nama_ilmiah,
+          harvestDate: land.tanggal_panen,
+          registrationTimestamp: land.created_at,
+          landComplianceStatus: compliant ? "Compliant" : "Non-Compliant",
+          complianceChecks: {
+            geoLocationVerified: geoValid,
+            polygonPointCount: Array.isArray(land.polygon) ? land.polygon.length : 0,
+            documentationComplete: !!land.dokumen_legalitas,
+            deforestationFree: !!land.bebas_deforestasi,
+            speciesVerified: !!land.jenis_komoditas && !!land.nama_ilmiah,
+            qrCodeGenerated: true,
+          },
+        };
+      }),
     };
 
     const dataStr = JSON.stringify(report, null, 2);
@@ -207,8 +244,10 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
                   <p className="text-sm text-white/70">Total Pohon Terdaftar</p>
                 </div>
                 <div className="text-center p-4 bg-white/5 border border-white/10 rounded-lg">
-                  <p className="text-3xl font-bold text-emerald-400 mb-1">100%</p>
-                  <p className="text-sm text-white/70">Tingkat Kepatuhan EUDR</p>
+                  <p className={`text-3xl font-bold mb-1 ${compliancePercentage === 100 ? 'text-emerald-400' : compliancePercentage >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
+                    {compliancePercentage}%
+                  </p>
+                  <p className="text-sm text-white/70">Kepatuhan EUDR ({compliantLandsCount}/{lands.length} Lahan Compliant)</p>
                 </div>
               </div>
             </CardContent>

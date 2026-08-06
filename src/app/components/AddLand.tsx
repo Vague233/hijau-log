@@ -37,6 +37,23 @@ interface AddLandProps {
   onSuccess?: () => void;
 }
 
+// Daftar Preset Komoditas & Spesies Resmi Standar EUDR
+const PRESET_SPECIES = [
+  { label: "-- Pilih Komoditas & Spesies Resmi EUDR --", common: "", scientific: "" },
+  { label: "Kelapa Sawit (Elaeis guineensis)", common: "Kelapa Sawit", scientific: "Elaeis guineensis" },
+  { label: "Karet (Hevea brasiliensis)", common: "Karet", scientific: "Hevea brasiliensis" },
+  { label: "Kayu Jati (Tectona grandis)", common: "Kayu Jati", scientific: "Tectona grandis" },
+  { label: "Kayu Mahoni (Swietenia macrophylla)", common: "Kayu Mahoni", scientific: "Swietenia macrophylla" },
+  { label: "Kayu Sengon / Albasia (Falcataria moluccana)", common: "Kayu Sengon", scientific: "Falcataria moluccana" },
+  { label: "Kayu Pinus (Pinus merkusii)", common: "Kayu Pinus", scientific: "Pinus merkusii" },
+  { label: "Kayu Akasia (Acacia mangium)", common: "Kayu Akasia", scientific: "Acacia mangium" },
+  { label: "Kayu Meranti (Shorea spp.)", common: "Kayu Meranti", scientific: "Shorea spp." },
+  { label: "Kopi Arabika (Coffea arabica)", common: "Kopi Arabika", scientific: "Coffea arabica" },
+  { label: "Kopi Robusta (Coffea canephora)", common: "Kopi Robusta", scientific: "Coffea canephora" },
+  { label: "Kakao / Cokelat (Theobroma cacao)", common: "Kakao", scientific: "Theobroma cacao" },
+  { label: "Komoditas / Spesies Lainnya (Input Manual)", common: "custom", scientific: "custom" },
+];
+
 // Komponen Pembantu untuk Menggerakkan Kamera Peta (FlyTo)
 function MapController({ targetLocation }: { targetLocation: [number, number] | null }) {
   const map = useMap();
@@ -237,13 +254,28 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
     }
 
     if (!formData.bebas_deforestasi) {
-      toast.error("Anda harus menyetujui pernyataan bebas deforestasi (Cut-off Date 31 Des 2020).");
+      toast.error("AKSES DITOLAK: Anda harus menyetujui pernyataan bebas deforestasi (Cut-off Date 31 Des 2020).");
       return;
     }
 
-    if (polygonCoords.length < 3 && parseFloat(formData.luas) > 4) {
-      toast.warning("Lahan di atas 4 Hektar sangat disarankan untuk memiliki minimal 3 titik poligon.");
-      // Tapi kita tetap izinkan lanjut jika mereka memaksa
+    const luasArea = parseFloat(formData.luas) || 0;
+
+    // EUDR Pasal 9 Rule 1: Lahan > 4 Hektar WAJIB minimal 3 titik poligon tertutup
+    if (luasArea > 4 && polygonCoords.length < 3) {
+      toast.error("AKSES DITOLAK: Regulasi EUDR (Pasal 9) WAJIB melampirkan minimal 3 titik poligon tertutup untuk lahan di atas 4 Hektar.");
+      return;
+    }
+
+    // EUDR Pasal 9 Rule 2: Lahan <= 4 Hektar WAJIB minimal 1 titik koordinat geolokasi
+    if (luasArea <= 4 && polygonCoords.length < 1) {
+      toast.error("AKSES DITOLAK: Regulasi EUDR membutuhkan minimal 1 titik geolokasi koordinat lahan.");
+      return;
+    }
+
+    // Wajib Dokumen Legalitas
+    if (!legalDoc) {
+      toast.error("AKSES DITOLAK: Dokumen Bukti Legalitas Lahan (SHM/SKT/HGU) WAJIB diunggah untuk kepatuhan EUDR.");
+      return;
     }
 
     setLoading(true);
@@ -400,42 +432,71 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/10 pt-4 mt-2">
+              <div className="border-t border-white/10 pt-4 mt-2 space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="jenis_komoditas">Jenis Komoditas (Umum) *</Label>
-                  <Input
-                    id="jenis_komoditas"
-                    name="jenis_komoditas"
-                    placeholder="e.g., Kayu Jati, Karet"
-                    value={formData.jenis_komoditas}
-                    onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
-                    required
-                  />
+                  <Label htmlFor="preset_species" className="text-emerald-400 font-medium flex items-center gap-2">
+                    <Leaf className="size-4" /> Pilih Komoditas & Spesies Resmi EUDR (Rekomendasi)
+                  </Label>
+                  <select
+                    id="preset_species"
+                    onChange={(e) => {
+                      const selected = PRESET_SPECIES[parseInt(e.target.value)];
+                      if (selected && selected.common !== "custom" && selected.common !== "") {
+                        setFormData(prev => ({
+                          ...prev,
+                          jenis_komoditas: selected.common,
+                          nama_ilmiah: selected.scientific,
+                        }));
+                        toast.success(`Komoditas diatur ke ${selected.common} (${selected.scientific})`);
+                      }
+                    }}
+                    className="w-full bg-white/10 border border-white/20 text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 font-outfit"
+                  >
+                    {PRESET_SPECIES.map((spec, idx) => (
+                      <option key={idx} value={idx} className="bg-slate-900 text-white">
+                        {spec.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="nama_ilmiah">Nama Ilmiah (Spesies) *</Label>
-                  <Input
-                    id="nama_ilmiah"
-                    name="nama_ilmiah"
-                    placeholder="e.g., Tectona grandis"
-                    value={formData.nama_ilmiah}
-                    onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30 italic font-mono text-sm"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="tanggal_panen">Tanggal / Waktu Panen *</Label>
-                  <Input
-                    id="tanggal_panen"
-                    name="tanggal_panen"
-                    type="date"
-                    value={formData.tanggal_panen}
-                    onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
-                    required
-                  />
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="jenis_komoditas">Jenis Komoditas (Umum) *</Label>
+                    <Input
+                      id="jenis_komoditas"
+                      name="jenis_komoditas"
+                      placeholder="e.g., Kayu Jati, Karet"
+                      value={formData.jenis_komoditas}
+                      onChange={handleChange}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="nama_ilmiah">Nama Ilmiah (Spesies) *</Label>
+                    <Input
+                      id="nama_ilmiah"
+                      name="nama_ilmiah"
+                      placeholder="e.g., Tectona grandis"
+                      value={formData.nama_ilmiah}
+                      onChange={handleChange}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 italic font-mono text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="tanggal_panen">Tanggal / Waktu Panen *</Label>
+                    <Input
+                      id="tanggal_panen"
+                      name="tanggal_panen"
+                      type="date"
+                      value={formData.tanggal_panen}
+                      onChange={handleChange}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
             </CardContent>

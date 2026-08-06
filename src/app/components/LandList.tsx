@@ -65,14 +65,12 @@ export function LandList({ onBack }: LandListProps = {}) {
             <p className="text-white/70">Daftar lahan yang telah teregistrasi</p>
           </div>
         </div>
-        {!onBack && (
-          <Link to="/dashboard/add-land">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">
-              <MapPin className="size-4 mr-2" />
-              Tambah Lahan Baru
-            </Button>
-          </Link>
-        )}
+        <Link to="/dashboard/add-land">
+          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">
+            <MapPin className="size-4 mr-2" />
+            Tambah Lahan Baru
+          </Button>
+        </Link>
       </div>
 
       {loading ? (

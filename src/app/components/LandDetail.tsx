@@ -75,43 +75,23 @@ export function LandDetail() {
 
   if (!land) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center font-sans relative">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
-            alt="Dark Forest Background" 
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
-        </div>
-        <div className="relative z-10 w-full max-w-md p-6">
-          <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
-            <CardContent className="py-12 text-center">
-              <p className="text-white/90 mb-6 font-outfit text-lg">Data lahan tidak ditemukan</p>
-              <Link to="/database" state={{ view: 'list' }}>
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-8 transition-colors">Kembali ke Database</Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="max-w-md mx-auto py-12">
+        <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+          <CardContent className="py-12 text-center">
+            <p className="text-white/90 mb-6 font-outfit text-lg">Data lahan tidak ditemukan</p>
+            <Link to="/dashboard/lands">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-8 transition-colors">Kembali ke Database</Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black relative font-sans">
-      <div className="fixed inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
-          alt="Dark Forest Background" 
-          className="w-full h-full object-cover opacity-30"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 pb-8 pt-32 md:pt-36">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+    <div className="max-w-4xl mx-auto space-y-6 font-sans">
+      <div>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 backdrop-blur-md hidden sm:flex">
                 <Leaf className="size-8 text-emerald-400" />
@@ -306,7 +286,6 @@ export function LandDetail() {
             </TabsContent>
           </Tabs>
         </div>
-      </div>
     </div>
   );
 }

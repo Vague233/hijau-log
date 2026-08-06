@@ -769,7 +769,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/dashboard/lands")}
                 className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
               >
                 Batal

@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Download, FileJson, FileSpreadsheet, FileText, Package } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "../../lib/supabase";
+import { isLandCompliant } from "../../lib/compliance";
 
 interface Land {
   id: string;
@@ -51,19 +52,6 @@ export function ExportData({ onBack }: ExportDataProps = {}) {
 
     fetchLands();
   }, []);
-
-  // Fungsi Validasi Dinamis Kepatuhan EUDR per Bidang Lahan (EUDR Article 9 & 3a)
-  const isLandCompliant = (land: Land) => {
-    const isPolygonValid = land.luas > 4 
-      ? (Array.isArray(land.polygon) && land.polygon.length >= 3)
-      : (Array.isArray(land.polygon) && land.polygon.length >= 1);
-    
-    const isDocUploaded = !!land.dokumen_legalitas;
-    const isDeforestationFree = !!land.bebas_deforestasi;
-    const isSpeciesFilled = !!land.jenis_komoditas && !!land.nama_ilmiah;
-
-    return isPolygonValid && isDocUploaded && isDeforestationFree && isSpeciesFilled;
-  };
 
   const compliantLandsCount = lands.filter(isLandCompliant).length;
   const compliancePercentage = lands.length > 0 ? Math.round((compliantLandsCount / lands.length) * 100) : 0;

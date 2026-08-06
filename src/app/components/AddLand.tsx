@@ -426,38 +426,38 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                   ))}
                 </MapContainer>
                 
-                {/* Floating Confirmation Bar untuk Titik GPS */}
+                {/* Floating Confirmation Bar untuk Titik GPS (Glassmorphism) */}
                 {pendingLocation && (
-                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[400] bg-black/85 backdrop-blur-md border border-amber-500/50 px-4 py-2 rounded-xl flex items-center gap-3 shadow-2xl text-xs">
-                    <span className="text-amber-300 font-medium flex items-center gap-1.5">
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[400] bg-black/40 backdrop-blur-xl border border-white/20 px-5 py-2.5 rounded-full flex items-center gap-3 shadow-2xl text-xs transition-all duration-300">
+                    <span className="text-amber-300 font-medium flex items-center gap-1.5 font-outfit">
                       <MapPin className="size-4 animate-bounce text-amber-400" /> Tambahkan titik GPS ini?
                     </span>
                     <Button
                       type="button"
                       size="sm"
                       onClick={confirmPendingLocation}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white h-7 px-3 text-xs border-0"
+                      className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-full h-8 px-4 text-xs backdrop-blur-md shadow-sm transition-all duration-300"
                     >
-                      <Check className="size-3 mr-1" /> Simpan Titik
+                      <Check className="size-3.5 mr-1" /> Simpan Titik
                     </Button>
                     <Button
                       type="button"
                       size="sm"
                       variant="ghost"
                       onClick={cancelPendingLocation}
-                      className="text-white/70 hover:text-white hover:bg-white/10 h-7 px-2 text-xs"
+                      className="text-white/60 hover:text-white hover:bg-white/10 rounded-full h-8 px-3 text-xs transition-all duration-300"
                     >
-                      <X className="size-3 mr-1" /> Batal
+                      <X className="size-3.5 mr-1" /> Batal
                     </Button>
                   </div>
                 )}
 
-                {/* Map Control Buttons */}
+                {/* Map Control Buttons (Glassmorphism Pills) */}
                 <div className="absolute bottom-4 left-4 z-[400] flex flex-wrap gap-2">
                   <Button
                     type="button"
                     onClick={handleDetectLocation}
-                    className="bg-black/75 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white shadow-lg"
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 text-white shadow-xl rounded-full px-4 h-9 text-xs transition-all duration-300"
                     size="sm"
                   >
                     <MapPin className="size-4 mr-2 text-emerald-400" />
@@ -468,7 +468,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                     type="button"
                     onClick={handleUndo}
                     disabled={polygonCoords.length === 0}
-                    className="bg-black/75 hover:bg-black/90 disabled:opacity-40 backdrop-blur-md border border-white/20 text-white shadow-lg"
+                    className="bg-amber-500/10 hover:bg-amber-500/20 disabled:opacity-40 backdrop-blur-xl border border-amber-500/20 text-amber-200 shadow-xl rounded-full px-4 h-9 text-xs transition-all duration-300"
                     size="sm"
                   >
                     <Undo2 className="size-4 mr-2 text-amber-400" />
@@ -479,7 +479,7 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                     type="button"
                     onClick={clearPolygon}
                     disabled={polygonCoords.length === 0}
-                    className="bg-red-500/60 hover:bg-red-500/80 disabled:opacity-40 backdrop-blur-md border border-red-500/20 text-white shadow-lg"
+                    className="bg-rose-500/10 hover:bg-rose-500/20 disabled:opacity-40 backdrop-blur-xl border border-rose-500/20 text-rose-200 shadow-xl rounded-full px-4 h-9 text-xs transition-all duration-300"
                     size="sm"
                   >
                     <RotateCcw className="size-4 mr-2" />
@@ -487,8 +487,9 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                   </Button>
                 </div>
 
-                <div className="absolute top-4 right-4 z-[400] bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-xs font-mono">
-                  Titik Tersimpan: <span className="text-emerald-400 font-bold">{polygonCoords.length}</span>
+                <div className="absolute top-4 right-4 z-[400] bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full border border-white/20 text-xs font-mono text-white shadow-xl flex items-center gap-1.5">
+                  <span className="text-white/70">Titik Tersimpan:</span>
+                  <span className="text-emerald-400 font-bold">{polygonCoords.length}</span>
                 </div>
               </div>
 

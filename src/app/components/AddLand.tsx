@@ -11,11 +11,11 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { MapPin, Upload, Leaf, FileText, CheckCircle2, RotateCcw } from "lucide-react";
+import { MapPin, Upload, Leaf, FileText, CheckCircle2, RotateCcw, Undo2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
-import { MapContainer, TileLayer, Polygon as LeafletPolygon, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon as LeafletPolygon, CircleMarker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Fix Leaflet icon paths
@@ -35,6 +35,17 @@ L.Marker.prototype.options.icon = DefaultIcon;
 interface AddLandProps {
   onBack?: () => void;
   onSuccess?: () => void;
+}
+
+// Komponen Pembantu untuk Menggerakkan Kamera Peta (FlyTo)
+function MapController({ targetLocation }: { targetLocation: [number, number] | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (targetLocation) {
+      map.flyTo(targetLocation, 17, { animate: true, duration: 1.5 });
+    }
+  }, [targetLocation, map]);
+  return null;
 }
 
 // Komponen Pembantu untuk Menggambar Poligon di Leaflet
@@ -75,9 +86,10 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
   const [legalDoc, setLegalDoc] = useState<File | null>(null);
   const [legalDocPreviewUrl, setLegalDocPreviewUrl] = useState<string>("");
 
-  // State untuk Poligon Peta
+  // State untuk Poligon Peta & GPS Interaktif
   const [polygonCoords, setPolygonCoords] = useState<[number, number][]>([]);
-  // Mengatur lokasi awal peta ke tengah Indonesia (kurang lebih)
+  const [pendingLocation, setPendingLocation] = useState<[number, number] | null>(null);
+  const [flyToTarget, setFlyToTarget] = useState<[number, number] | null>(null);
   const defaultCenter: [number, number] = [-0.7893, 113.9213];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,27 +127,49 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
     }
   };
 
-  const getCurrentLocation = () => {
+  const handleDetectLocation = () => {
     if (navigator.geolocation) {
+      toast.info("Mengambil titik lokasi GPS Anda...");
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // Ambil titik saat ini dan jadikan bagian dari poligon
           const newCoord: [number, number] = [position.coords.latitude, position.coords.longitude];
-          setPolygonCoords(prev => [...prev, newCoord]);
-          toast.success("Titik lokasi saat ini berhasil ditambahkan ke poligon!");
+          setPendingLocation(newCoord);
+          setFlyToTarget(newCoord);
+          toast.success("Lokasi ditemukan! Tinjau posisi pada peta lalu klik 'Simpan Titik'.");
         },
         (error) => {
           toast.error("Tidak dapat mengambil lokasi. Pastikan izin GPS aktif.");
           console.error(error);
         },
+        { enableHighAccuracy: true, timeout: 10000 }
       );
     } else {
       toast.error("Geolocation tidak didukung oleh browser Anda.");
     }
   };
 
+  const confirmPendingLocation = () => {
+    if (pendingLocation) {
+      setPolygonCoords(prev => [...prev, pendingLocation]);
+      setPendingLocation(null);
+      toast.success("Titik lokasi berhasil ditambahkan ke poligon!");
+    }
+  };
+
+  const cancelPendingLocation = () => {
+    setPendingLocation(null);
+  };
+
+  const handleUndo = () => {
+    if (polygonCoords.length > 0) {
+      setPolygonCoords(prev => prev.slice(0, -1));
+      toast.info("Titik terakhir berhasil dihapus.");
+    }
+  };
+
   const clearPolygon = () => {
     setPolygonCoords([]);
+    setPendingLocation(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -363,33 +397,93 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
             </CardHeader>
             <CardContent className="space-y-4">
               
-              <div className="rounded-xl overflow-hidden border border-white/20 relative z-10" style={{ height: '350px' }}>
+              <div className="rounded-xl overflow-hidden border border-white/20 relative z-10" style={{ height: '380px' }}>
                 <MapContainer center={defaultCenter} zoom={5} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                   <TileLayer
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
                   />
+                  <MapController targetLocation={flyToTarget} />
                   <PolygonDrawer polygonCoords={polygonCoords} setPolygonCoords={setPolygonCoords} />
+                  
+                  {/* Titik Lokasi Sementara yang Belum Dikonfirmasi */}
+                  {pendingLocation && (
+                    <CircleMarker 
+                      center={pendingLocation} 
+                      radius={10} 
+                      pathOptions={{ color: '#fbbf24', fillColor: '#f59e0b', fillOpacity: 0.9, weight: 3 }} 
+                    />
+                  )}
+
+                  {/* Titik-Titik Poligon yang Sudah Tersimpan */}
+                  {polygonCoords.map((coord, idx) => (
+                    <CircleMarker 
+                      key={idx} 
+                      center={coord} 
+                      radius={5} 
+                      pathOptions={{ color: '#10b981', fillColor: '#34d399', fillOpacity: 1, weight: 2 }} 
+                    />
+                  ))}
                 </MapContainer>
                 
-                <div className="absolute bottom-4 left-4 z-[400] flex gap-2">
+                {/* Floating Confirmation Bar untuk Titik GPS */}
+                {pendingLocation && (
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[400] bg-black/85 backdrop-blur-md border border-amber-500/50 px-4 py-2 rounded-xl flex items-center gap-3 shadow-2xl text-xs">
+                    <span className="text-amber-300 font-medium flex items-center gap-1.5">
+                      <MapPin className="size-4 animate-bounce text-amber-400" /> Tambahkan titik GPS ini?
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={confirmPendingLocation}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white h-7 px-3 text-xs border-0"
+                    >
+                      <Check className="size-3 mr-1" /> Simpan Titik
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      onClick={cancelPendingLocation}
+                      className="text-white/70 hover:text-white hover:bg-white/10 h-7 px-2 text-xs"
+                    >
+                      <X className="size-3 mr-1" /> Batal
+                    </Button>
+                  </div>
+                )}
+
+                {/* Map Control Buttons */}
+                <div className="absolute bottom-4 left-4 z-[400] flex flex-wrap gap-2">
                   <Button
                     type="button"
-                    onClick={getCurrentLocation}
-                    className="bg-black/50 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white shadow-lg"
+                    onClick={handleDetectLocation}
+                    className="bg-black/75 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white shadow-lg"
                     size="sm"
                   >
                     <MapPin className="size-4 mr-2 text-emerald-400" />
-                    Ambil Lokasi Saat Ini
+                    Deteksi Lokasi Saya
                   </Button>
+
+                  <Button
+                    type="button"
+                    onClick={handleUndo}
+                    disabled={polygonCoords.length === 0}
+                    className="bg-black/75 hover:bg-black/90 disabled:opacity-40 backdrop-blur-md border border-white/20 text-white shadow-lg"
+                    size="sm"
+                  >
+                    <Undo2 className="size-4 mr-2 text-amber-400" />
+                    Undo Titik
+                  </Button>
+
                   <Button
                     type="button"
                     onClick={clearPolygon}
-                    className="bg-red-500/50 hover:bg-red-500/80 backdrop-blur-md border border-red-500/20 text-white shadow-lg"
+                    disabled={polygonCoords.length === 0}
+                    className="bg-red-500/60 hover:bg-red-500/80 disabled:opacity-40 backdrop-blur-md border border-red-500/20 text-white shadow-lg"
                     size="sm"
                   >
                     <RotateCcw className="size-4 mr-2" />
-                    Hapus Poligon
+                    Reset Poligon
                   </Button>
                 </div>
 

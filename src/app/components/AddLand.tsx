@@ -15,7 +15,7 @@ import { MapPin, Upload, Leaf, FileText, CheckCircle2, RotateCcw, Undo2, Check, 
 import { toast } from "sonner";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
-import { MapContainer, TileLayer, Polygon as LeafletPolygon, CircleMarker, useMapEvents, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon as LeafletPolygon, CircleMarker, Marker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Fix Leaflet icon paths
@@ -46,6 +46,54 @@ function MapController({ targetLocation }: { targetLocation: [number, number] | 
     }
   }, [targetLocation, map]);
   return null;
+}
+
+// Marker Icon untuk Titik Poligon yang Bisa Digeser (Draggable)
+const createVertexIcon = (index: number) => L.divIcon({
+  className: 'custom-vertex-marker',
+  html: `<div style="
+    background: #10b981;
+    border: 2px solid #ffffff;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.9);
+    cursor: grab;
+  "></div>`,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8]
+});
+
+function DraggableVertexMarker({
+  position,
+  index,
+  onDragEnd,
+}: {
+  position: [number, number];
+  index: number;
+  onDragEnd: (idx: number, newPos: [number, number]) => void;
+}) {
+  const eventHandlers = React.useMemo(
+    () => ({
+      dragend(e: any) {
+        const marker = e.target;
+        if (marker != null) {
+          const latLng = marker.getLatLng();
+          onDragEnd(index, [latLng.lat, latLng.lng]);
+        }
+      },
+    }),
+    [index, onDragEnd]
+  );
+
+  return (
+    <Marker
+      position={position}
+      draggable={true}
+      eventHandlers={eventHandlers}
+      icon={createVertexIcon(index)}
+    />
+  );
 }
 
 // Komponen Pembantu untuk Menggambar Poligon di Leaflet
@@ -165,6 +213,15 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
       setPolygonCoords(prev => prev.slice(0, -1));
       toast.info("Titik terakhir berhasil dihapus.");
     }
+  };
+
+  const handleVertexDragEnd = (index: number, newPos: [number, number]) => {
+    setPolygonCoords((prev) => {
+      const updated = [...prev];
+      updated[index] = newPos;
+      return updated;
+    });
+    toast.info(`Koordinat titik #${index + 1} berhasil diperbarui.`);
   };
 
   const clearPolygon = () => {
@@ -415,13 +472,13 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
                     />
                   )}
 
-                  {/* Titik-Titik Poligon yang Sudah Tersimpan */}
+                  {/* Titik-Titik Poligon yang Bisa Digeser (Draggable) */}
                   {polygonCoords.map((coord, idx) => (
-                    <CircleMarker 
-                      key={idx} 
-                      center={coord} 
-                      radius={5} 
-                      pathOptions={{ color: '#10b981', fillColor: '#34d399', fillOpacity: 1, weight: 2 }} 
+                    <DraggableVertexMarker
+                      key={`${idx}-${coord[0]}-${coord[1]}`}
+                      position={coord}
+                      index={idx}
+                      onDragEnd={handleVertexDragEnd}
                     />
                   ))}
                 </MapContainer>

@@ -238,7 +238,7 @@ export function QRCodeView() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-xs font-outfit text-white/80">
                   <div className="p-3.5 bg-emerald-500/10 rounded-xl border border-emerald-500/30 text-emerald-200">
-                    <p className="font-semibold mb-1 text-emerald-300">Self-Declaration Operator Verification Link:</p>
+                    <p className="font-semibold mb-1 text-emerald-300"><a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-100 transition-colors underline">Self-Declaration Operator Verification Link:</a></p>
                     <p className="leading-relaxed text-[11px]">
                       Kode QR ini berisi enkripsi data geolokasi & tautan verifikasi publik atas Deklarasi Uji Tuntas (DDS) Mandiri Operator. Digunakan oleh importir Uni Eropa dan Bea Cukai untuk memvalidasi keabsahan koordinat lahan secara digital.
                     </p>

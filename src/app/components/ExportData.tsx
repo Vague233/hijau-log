@@ -347,7 +347,7 @@ export function ExportData() {
               <div className="space-y-1">
                 <h5 className="font-semibold text-amber-300">Peringatan Legalitas & Self-Declaration Operator (EUDR Article 25)</h5>
                 <p className="text-amber-200/80 text-[11px] leading-relaxed">
-                  HijauLog menyediakan platform pengumpulan data geolokasi dan sertifikasi digital sesuai EUDR Article 9. Seluruh isi Deklarasi Uji Tuntas (DDS) bersifat <span className="underline">Self-Declared Operator</span>. Pastikan koordinat poligon dan bukti legalitas lahan yang Anda input akurat. Penyampaian informasi tidak benar pada portal Uni Eropa dapat dikenakan sanksi administrative atau penolakan kargo sesuai <span className="font-mono text-amber-300">Pasal 25 EUDR</span>.
+                  HijauLog menyediakan platform pengumpulan data geolokasi dan sertifikasi digital sesuai EUDR Article 9. Seluruh isi Deklarasi Uji Tuntas (DDS) bersifat <a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-100 transition-colors">Self-Declared Operator</a>. Pastikan koordinat poligon dan bukti legalitas lahan yang Anda input akurat. Penyampaian informasi tidak benar pada portal Uni Eropa dapat dikenakan sanksi administrative atau penolakan kargo sesuai <a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank" rel="noopener noreferrer" className="font-mono text-amber-300 underline hover:text-amber-100 transition-colors">Pasal 25 EUDR</a>.
                 </p>
               </div>
             </div>

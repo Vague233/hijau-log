@@ -234,6 +234,20 @@ export function QRCodeView() {
             <div className="space-y-6">
               <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
                 <CardHeader>
+                  <CardTitle className="font-serif text-xl">Kedudukan Hukum Kode QR</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-xs font-outfit text-white/80">
+                  <div className="p-3.5 bg-emerald-500/10 rounded-xl border border-emerald-500/30 text-emerald-200">
+                    <p className="font-semibold mb-1 text-emerald-300">Self-Declaration Operator Verification Link:</p>
+                    <p className="leading-relaxed text-[11px]">
+                      Kode QR ini berisi enkripsi data geolokasi & tautan verifikasi publik atas Deklarasi Uji Tuntas (DDS) Mandiri Operator. Digunakan oleh importir Uni Eropa dan Bea Cukai untuk memvalidasi keabsahan koordinat lahan secara digital.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+                <CardHeader>
                   <CardTitle className="font-serif text-2xl">Data yang Terkandung</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 text-sm font-outfit">

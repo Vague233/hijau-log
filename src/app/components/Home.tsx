@@ -228,8 +228,8 @@ export function Home() {
       <section id="protocol" ref={protocolRef} className="bg-[var(--color-cream)] relative">
         <ProtocolCard 
           bg="bg-[#EAE8E0]"
-          title="Fase 01: Akuisisi Spasial"
-          desc="Poligon ditarik langsung dari lapangan menggunakan instrumen GPS presisi. Ketidakcocokan area akan langsung ditolak oleh algoritma kami."
+          title="Fase 01: Akuisisi Spasial & Telemetri Mobile"
+          desc="Pemetaan geolokasi presisi melalui Web SaaS Dashboard dengan Cloud Sync, disiapkan terintegrasi dengan Roadmap Mobile Field App untuk pemetaan area perkebunan terpencil tanpa sinyal."
           icon={<ScanLine className="size-24 text-[var(--color-moss)] opacity-20" />}
           animation="rotate"
         />

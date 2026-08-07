@@ -361,22 +361,24 @@ export function AddLand() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 text-white font-sans">
-        <div className="mb-6 flex items-center gap-2">
-          <Leaf className="size-8 text-emerald-400" />
+    <div className="max-w-4xl mx-auto space-y-8 text-white font-sans pb-12">
+        <div className="mb-8 flex items-center gap-4">
+          <div className="p-3 bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
+            <Leaf className="size-8 text-white" />
+          </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">
-              Tambah Lahan / Registrasi Pohon
+            <h1 className="text-4xl font-bold tracking-tight text-white mb-1">
+              Tambah Lahan
             </h1>
-            <p className="text-white/70">
-              Input data lahan secara komprehensif untuk Kepatuhan EUDR Penuh
+            <p className="text-white/60 font-medium">
+              Input data lahan secara komprehensif untuk Kepatuhan EUDR
             </p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-8">
           {/* Part 1: Land Information */}
-          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
+          <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 text-white shadow-2xl rounded-[2.5rem] overflow-hidden">
             <CardHeader>
               <CardTitle>
                 1. Informasi Lahan & Komoditas
@@ -395,7 +397,7 @@ export function AddLand() {
                     placeholder="e.g., Kebun Sawit A"
                     value={formData.nama_lahan}
                     onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
                     required
                   />
                 </div>
@@ -407,7 +409,7 @@ export function AddLand() {
                     placeholder="e.g., Kabupaten/Kota"
                     value={formData.lokasi}
                     onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
                     required
                   />
                 </div>
@@ -435,7 +437,7 @@ export function AddLand() {
                     placeholder="e.g., 5.5"
                     value={formData.luas}
                     onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
                     required
                   />
                 </div>
@@ -448,7 +450,7 @@ export function AddLand() {
                     placeholder="e.g., 100"
                     value={formData.jumlah_pohon}
                     onChange={handleChange}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
                     required
                   />
                 </div>
@@ -491,7 +493,7 @@ export function AddLand() {
                       placeholder="e.g., Kayu Jati, Karet"
                       value={formData.jenis_komoditas}
                       onChange={handleChange}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                      className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
                       required
                     />
                   </div>
@@ -503,7 +505,7 @@ export function AddLand() {
                       placeholder="e.g., Tectona grandis"
                       value={formData.nama_ilmiah}
                       onChange={handleChange}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 italic font-mono text-sm"
+                      className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 italic font-mono text-sm rounded-xl"
                       required
                     />
                   </div>
@@ -515,7 +517,7 @@ export function AddLand() {
                       type="date"
                       value={formData.tanggal_panen}
                       onChange={handleChange}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                      className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
                       required
                     />
                   </div>
@@ -525,7 +527,7 @@ export function AddLand() {
           </Card>
 
           {/* Part 2: Geo-Tagging Map */}
-          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
+          <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 text-white shadow-2xl rounded-[2.5rem] overflow-hidden">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>2. Geo-Tagging & Poligon Lahan</span>
@@ -655,11 +657,11 @@ export function AddLand() {
           </Card>
 
           {/* Part 3: Kepatuhan EUDR */}
-          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
+          <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 text-white shadow-2xl rounded-[2.5rem] overflow-hidden">
             <CardHeader>
-              <CardTitle className="flex justify-between items-center">
+              <CardTitle className="flex justify-between items-center text-xl">
                 <span>3. Kepatuhan & Legalitas</span>
-                <span className="text-xs font-normal px-2 py-1 bg-amber-500/20 text-amber-400 rounded">Mandatory EUDR</span>
+                <span className="text-xs font-medium px-3 py-1 bg-white/10 border border-white/10 text-white rounded-full">Mandatory EUDR</span>
               </CardTitle>
               <CardDescription>
                 Unggah dokumen legalitas (SHM/HGU/SKT) dan deklarasi bebas deforestasi.
@@ -685,7 +687,7 @@ export function AddLand() {
                   {!legalDoc ? (
                     <div 
                       onClick={() => legalDocRef.current?.click()}
-                      className="border-2 border-dashed border-emerald-500/30 rounded-lg p-6 text-center hover:bg-emerald-500/10 transition-colors cursor-pointer bg-white/5"
+                      className="border-2 border-dashed border-emerald-500/30 rounded-[1.5rem] p-6 text-center hover:bg-emerald-500/10 transition-colors cursor-pointer bg-white/[0.03]"
                     >
                       <Upload className="size-8 mx-auto mb-2 text-emerald-400/70" />
                       <p className="text-sm font-medium text-emerald-100">Unggah SHM / SKT / HGU</p>
@@ -771,30 +773,30 @@ export function AddLand() {
           </Card>
 
           {/* Additional Notes */}
-          <Card className="mb-6 bg-white/5 backdrop-blur-lg border-white/10 text-white shadow-xl">
+          <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 text-white shadow-2xl rounded-[2.5rem] overflow-hidden">
             <CardContent className="pt-6">
-              <Label className="mb-2 block">Catatan Tambahan (Opsional)</Label>
+              <Label className="mb-3 block text-lg font-bold">Catatan Tambahan (Opsional)</Label>
               <Textarea
                 name="notes"
                 placeholder="Catatan lainnya terkait lokasi atau proses panen..."
                 value={formData.notes}
                 onChange={handleChange}
                 rows={3}
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 rounded-xl"
               />
             </CardContent>
           </Card>
 
           {/* Submit Buttons */}
-          <div className="flex gap-4">
-            <Button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white border-0 py-6 text-lg" disabled={loading}>
+          <div className="flex gap-4 pt-4">
+            <Button type="submit" className="flex-1 bg-white hover:bg-white/90 text-black border-0 py-7 text-lg rounded-full font-bold shadow-2xl transition-all" disabled={loading}>
               {loading ? "Menyimpan ke Database..." : "Simpan & Verifikasi Kepatuhan"}
             </Button>
             <Button
               type="button"
               variant="outline"
               onClick={() => navigate("/dashboard/lands")}
-              className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
+              className="border-white/10 text-white hover:bg-white/10 bg-white/[0.03] backdrop-blur-md py-7 px-8 rounded-full font-medium transition-all"
             >
               Batal
             </Button>

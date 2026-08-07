@@ -188,22 +188,14 @@ export function DashboardLayout() {
             >
               <Menu className="size-5" />
             </button>
+          </div>
 
-            <h2 className="text-sm font-medium text-white/60 hidden sm:block font-outfit tracking-wide ml-2">
+          <div className="flex items-center gap-3">
+            <h2 className="text-sm font-medium text-white/60 font-outfit tracking-wide">
               <span className="text-white/30">Workspace</span>
               <span className="mx-2 text-white/10">/</span>
               <span className="text-white/90 drop-shadow-sm">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>
             </h2>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-widest bg-white/10 border border-white/20 text-white shadow-lg backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              EUDR ACTIVE
-            </span>
           </div>
         </header>
 

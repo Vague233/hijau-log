@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { Download, Printer, Info, QrCode } from "lucide-react";
+import { Download, Printer, Info, QrCode, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "../../lib/supabase";
 
@@ -51,7 +51,7 @@ export function QRCodeView() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-12">
-        <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+        <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
           <CardContent className="py-12 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
             <p className="text-white/70 font-outfit">Memuat detail QR Code...</p>
@@ -64,7 +64,7 @@ export function QRCodeView() {
   if (!land) {
     return (
       <div className="max-w-md mx-auto py-12">
-        <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+        <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
           <CardContent className="py-12 text-center">
             <p className="text-white/90 mb-6 font-outfit text-lg">Data lahan tidak ditemukan</p>
             <Link to="/dashboard/lands">
@@ -152,8 +152,18 @@ export function QRCodeView() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 font-sans">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 font-sans">
       <div>
+        {/* Back Button */}
+        <div className="mb-6 -ml-4">
+          <Link to={`/dashboard/land/${id}`}>
+            <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 rounded-[1rem] px-4 py-2 h-auto font-outfit">
+              <ArrowLeft className="size-4 mr-2" />
+              Kembali ke Detail Lahan
+            </Button>
+          </Link>
+        </div>
+
         {/* Header Title Bar */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 backdrop-blur-md hidden sm:flex">
@@ -171,7 +181,7 @@ export function QRCodeView() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* QR Code Display */}
-            <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+            <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
               <CardHeader>
                 <CardTitle className="font-serif text-2xl">QR Code Kepatuhan EUDR</CardTitle>
                 <CardDescription className="text-white/60 font-outfit">
@@ -222,7 +232,7 @@ export function QRCodeView() {
 
             {/* QR Information */}
             <div className="space-y-6">
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+              <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                 <CardHeader>
                   <CardTitle className="font-serif text-xl">Kedudukan Hukum Kode QR</CardTitle>
                 </CardHeader>
@@ -236,7 +246,7 @@ export function QRCodeView() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+              <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                 <CardHeader>
                   <CardTitle className="font-serif text-2xl">Data yang Terkandung</CardTitle>
                 </CardHeader>
@@ -291,7 +301,7 @@ export function QRCodeView() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+              <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                 <CardHeader>
                   <CardTitle className="font-serif text-xl">Preview Data Mentah (JSON)</CardTitle>
                 </CardHeader>

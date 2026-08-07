@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { MapPin, Trees, QrCode, Eye, Leaf, Maximize, CheckCircle2, AlertTriangle, FileText, ChevronRight, PlusCircle } from "lucide-react";
+import { MapPin, Trees, QrCode, Eye, Leaf, Maximize, CheckCircle2, AlertTriangle, FileText, ChevronRight, PlusCircle, Clock } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
 import { toast } from "sonner";
@@ -22,6 +22,7 @@ interface Land {
   nama_ilmiah?: string;
   dokumen_legalitas?: string;
   bebas_deforestasi?: boolean;
+  status_verifikasi?: string;
 }
 
 export function LandList() {
@@ -127,6 +128,10 @@ export function LandList() {
                         {compliant ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest bg-emerald-500 text-black font-semibold">
                             <CheckCircle2 className="size-3.5" /> Compliant
+                          </span>
+                        ) : (land.status_verifikasi === 'pending' || !land.status_verifikasi) ? (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest bg-amber-500 text-black font-semibold">
+                            <Clock className="size-3.5" /> Pending Verification
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest bg-white/10 text-white border border-white/20">

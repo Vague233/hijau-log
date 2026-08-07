@@ -5,6 +5,7 @@ export interface LandForCompliance {
   bebas_deforestasi: boolean;
   jenis_komoditas: string | null;
   nama_ilmiah: string | null;
+  status_verifikasi?: string | null;
 }
 
 export function isLandCompliant(land: LandForCompliance): boolean {
@@ -15,6 +16,7 @@ export function isLandCompliant(land: LandForCompliance): boolean {
   const isDocUploaded = !!land.dokumen_legalitas;
   const isDeforestationFree = !!land.bebas_deforestasi;
   const isSpeciesFilled = !!land.jenis_komoditas && !!land.nama_ilmiah;
+  const isVerified = land.status_verifikasi === 'verified';
 
-  return isPolygonValid && isDocUploaded && isDeforestationFree && isSpeciesFilled;
+  return isPolygonValid && isDocUploaded && isDeforestationFree && isSpeciesFilled && isVerified;
 }

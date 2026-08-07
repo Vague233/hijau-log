@@ -31,6 +31,7 @@ interface Land {
   nama_ilmiah?: string;
   dokumen_legalitas?: string;
   bebas_deforestasi?: boolean;
+  status_verifikasi?: string;
 }
 
 export function DashboardOverview() {

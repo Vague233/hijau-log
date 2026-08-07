@@ -176,6 +176,14 @@ export function AddLand() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        toast.error("Ukuran foto maksimal 5MB");
+        return;
+      }
+      if (!selectedFile.type.startsWith('image/')) {
+        toast.error("Foto lahan harus berupa file gambar (JPG/PNG)");
+        return;
+      }
       setFile(selectedFile);
       setPreviewUrl(URL.createObjectURL(selectedFile));
     }
@@ -184,13 +192,17 @@ export function AddLand() {
   const handleLegalDocChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
-      setLegalDoc(selectedFile);
-      // Jika gambar, buat preview, jika PDF tidak perlu preview (hanya nama file)
-      if (selectedFile.type.startsWith('image/')) {
-        setLegalDocPreviewUrl(URL.createObjectURL(selectedFile));
-      } else {
-        setLegalDocPreviewUrl("pdf"); // Penanda bahwa ini file non-image
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        toast.error("Ukuran dokumen maksimal 5MB");
+        return;
       }
+      const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!validTypes.includes(selectedFile.type)) {
+        toast.error("Dokumen legalitas harus berupa file PDF atau Word");
+        return;
+      }
+      setLegalDoc(selectedFile);
+      setLegalDocPreviewUrl("pdf"); // Penanda bahwa ini file dokumen
     }
   };
 
@@ -348,6 +360,7 @@ export function AddLand() {
         bebas_deforestasi: formData.bebas_deforestasi,
         polygon: finalPolygonData,
         foto: fotoUrl,
+        status_verifikasi: 'pending',
       },
     ]);
 
@@ -681,7 +694,7 @@ export function AddLand() {
                     type="file" 
                     ref={legalDocRef} 
                     onChange={handleLegalDocChange} 
-                    accept="image/*,.pdf" 
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     className="hidden" 
                   />
                   {!legalDoc ? (
@@ -691,7 +704,7 @@ export function AddLand() {
                     >
                       <Upload className="size-8 mx-auto mb-2 text-emerald-400/70" />
                       <p className="text-sm font-medium text-emerald-100">Unggah SHM / SKT / HGU</p>
-                      <p className="text-xs text-white/40 mt-1">Format: PDF, JPG, PNG (Maks 5MB)</p>
+                      <p className="text-xs text-white/40 mt-1">Format: PDF atau DOC (Maks 5MB)</p>
                     </div>
                   ) : (
                     <div className="relative border border-emerald-500/30 rounded-lg p-4 bg-emerald-500/10 flex items-center justify-between">

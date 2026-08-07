@@ -21,6 +21,7 @@ interface Land {
   nama_ilmiah?: string;
   dokumen_legalitas?: string;
   bebas_deforestasi?: boolean;
+  status_verifikasi?: string;
 }
 
 export function LandDetail() {
@@ -239,14 +240,14 @@ export function LandDetail() {
                     </div>
                     <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
                       <span className="text-sm font-medium text-white/90">Dokumen Legalitas</span>
-                      <span className={`font-medium ${land.dokumen_legalitas ? 'text-emerald-400' : 'text-amber-400'}`}>
-                        {land.dokumen_legalitas ? "✓ Tersedia" : "⚠ Tidak Ada"}
+                      <span className={`font-medium ${!land.dokumen_legalitas ? 'text-red-400' : (land.status_verifikasi === 'pending' || !land.status_verifikasi) ? 'text-amber-400' : 'text-emerald-400'}`}>
+                        {!land.dokumen_legalitas ? "⚠ Tidak Ada" : (land.status_verifikasi === 'pending' || !land.status_verifikasi) ? "⏳ Sedang Diverifikasi" : "✓ Tersedia & Valid"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-emerald-500/20 backdrop-blur-sm">
                       <span className="text-sm font-medium text-white/90">Deklarasi Bebas Deforestasi</span>
-                      <span className={`font-medium ${land.bebas_deforestasi ? 'text-emerald-400' : 'text-amber-400'}`}>
-                        {land.bebas_deforestasi ? "✓ Disetujui" : "⚠ Belum Disetujui"}
+                      <span className={`font-medium ${!land.bebas_deforestasi ? 'text-red-400' : (land.status_verifikasi === 'pending' || !land.status_verifikasi) ? 'text-amber-400' : 'text-emerald-400'}`}>
+                        {!land.bebas_deforestasi ? "⚠ Belum Disetujui" : (land.status_verifikasi === 'pending' || !land.status_verifikasi) ? "⏳ Sedang Diverifikasi" : "✓ Disetujui"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/30 backdrop-blur-sm">

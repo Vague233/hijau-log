@@ -21,6 +21,7 @@ export function DashboardLayout() {
   const { session, signOut } = useAuth();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState(false);
 
   const handleConfirmLogout = async () => {
     setIsLogoutModalOpen(false);
@@ -85,17 +86,19 @@ export function DashboardLayout() {
 
       {/* Sidebar Component */}
       <aside className={`
-        fixed md:sticky top-0 left-0 z-50 h-screen w-64 bg-white/[0.02] backdrop-blur-[40px] border-r border-white/10 flex flex-col justify-between transition-transform duration-300 ease-in-out shadow-2xl shadow-black/50
-        ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        fixed md:sticky top-0 left-0 z-50 h-screen bg-white/[0.02] backdrop-blur-[40px] border-r border-white/10 flex flex-col justify-between transition-all duration-300 ease-in-out shadow-2xl shadow-black/50
+        ${isMobileSidebarOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0"}
+        ${isDesktopSidebarCollapsed ? "md:w-20" : "md:w-64"}
+        w-64
       `}>
         <div>
           {/* Sidebar Header / Logo */}
-          <div className="p-6 border-b border-white/5 flex items-center justify-between">
+          <div className={`p-6 border-b border-white/5 flex items-center justify-between ${isDesktopSidebarCollapsed ? "md:justify-center md:px-0" : ""}`}>
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="p-2.5 bg-white/10 rounded-xl border border-white/20 group-hover:bg-white/20 transition-all">
+              <div className="p-2.5 bg-white/10 rounded-xl border border-white/20 group-hover:bg-white/20 transition-all flex-shrink-0">
                 <MapPin className="size-5 text-white" />
               </div>
-              <div>
+              <div className={`${isDesktopSidebarCollapsed ? "md:hidden block" : "block"}`}>
                 <span className="font-bold text-xl text-white font-sans tracking-wide block leading-tight">
                   HijauLog
                 </span>
@@ -105,7 +108,7 @@ export function DashboardLayout() {
               </div>
             </Link>
             <button 
-              className="md:hidden text-white/50 hover:text-white transition-colors"
+              className="md:hidden text-white/50 hover:text-white transition-colors flex-shrink-0"
               onClick={() => setIsMobileSidebarOpen(false)}
             >
               <X className="size-5" />
@@ -124,13 +127,15 @@ export function DashboardLayout() {
                   onClick={() => setIsMobileSidebarOpen(false)}
                   className={`
                     flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-300 group
+                    ${isDesktopSidebarCollapsed ? "md:justify-center md:px-0" : ""}
                     ${active 
                       ? "bg-white/10 text-white border border-white/20 shadow-lg backdrop-blur-xl" 
                       : "text-white/60 hover:text-white hover:bg-white/5 border border-transparent"}
                   `}
+                  title={isDesktopSidebarCollapsed ? item.label : undefined}
                 >
-                  <Icon className={`size-[18px] transition-colors ${active ? "text-white" : "text-white/40 group-hover:text-white/80"}`} />
-                  <span className="font-outfit tracking-wide">{item.label}</span>
+                  <Icon className={`size-[18px] flex-shrink-0 transition-colors ${active ? "text-white" : "text-white/40 group-hover:text-white/80"}`} />
+                  <span className={`font-outfit tracking-wide ${isDesktopSidebarCollapsed ? "md:hidden block" : "block"}`}>{item.label}</span>
                 </Link>
               );
             })}
@@ -138,12 +143,12 @@ export function DashboardLayout() {
         </div>
 
         {/* Sidebar Footer User Info & Logout */}
-        <div className="p-4 border-t border-white/5 bg-black/20">
-          <div className="p-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 mb-3 flex items-center gap-3">
-            <div className="p-2 bg-white/10 rounded-xl text-white border border-white/5">
+        <div className={`p-4 border-t border-white/5 bg-black/20 ${isDesktopSidebarCollapsed ? "md:flex md:flex-col md:items-center" : ""}`}>
+          <div className={`p-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 mb-3 flex items-center gap-3 ${isDesktopSidebarCollapsed ? "md:justify-center md:p-2" : ""}`}>
+            <div className="p-2 bg-white/10 rounded-xl text-white border border-white/5 flex-shrink-0">
               <UserCheck className="size-4" />
             </div>
-            <div className="overflow-hidden">
+            <div className={`overflow-hidden ${isDesktopSidebarCollapsed ? "md:hidden block" : "block"}`}>
               <p className="text-xs font-medium text-white truncate font-outfit">
                 {session?.user?.email || "User Active"}
               </p>
@@ -154,10 +159,11 @@ export function DashboardLayout() {
           <Button
             variant="outline"
             onClick={() => setIsLogoutModalOpen(true)}
-            className="w-full justify-start text-xs border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all bg-transparent rounded-2xl py-2.5 font-outfit"
+            className={`justify-start text-xs border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all bg-transparent rounded-2xl py-2.5 font-outfit ${isDesktopSidebarCollapsed ? "md:w-10 md:h-10 md:p-0 md:justify-center w-full" : "w-full"}`}
+            title={isDesktopSidebarCollapsed ? "Keluar Akun" : undefined}
           >
-            <LogOut className="size-4 mr-2" />
-            Keluar Akun
+            <LogOut className={`size-4 ${isDesktopSidebarCollapsed ? "md:mr-0 mr-2" : "mr-2"}`} />
+            <span className={`${isDesktopSidebarCollapsed ? "md:hidden block" : "block"}`}>Keluar Akun</span>
           </Button>
         </div>
       </aside>
@@ -167,13 +173,23 @@ export function DashboardLayout() {
         {/* Topbar */}
         <header className="sticky top-0 z-30 h-16 bg-white/[0.02] backdrop-blur-[40px] border-b border-white/10 px-4 md:px-8 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
+            {/* Mobile Menu Button */}
             <button 
               className="md:hidden p-2 bg-white/5 border border-white/10 rounded-xl text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMobileSidebarOpen(true)}
             >
               <Menu className="size-5" />
             </button>
-            <h2 className="text-sm font-medium text-white/60 hidden sm:block font-outfit tracking-wide">
+            
+            {/* Desktop Sidebar Toggle Button */}
+            <button 
+              className="hidden md:block p-2 bg-white/5 border border-white/10 rounded-xl text-white/80 hover:text-white transition-colors"
+              onClick={() => setIsDesktopSidebarCollapsed(!isDesktopSidebarCollapsed)}
+            >
+              <Menu className="size-5" />
+            </button>
+
+            <h2 className="text-sm font-medium text-white/60 hidden sm:block font-outfit tracking-wide ml-2">
               <span className="text-white/30">Workspace</span>
               <span className="mx-2 text-white/10">/</span>
               <span className="text-white/90 drop-shadow-sm">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>

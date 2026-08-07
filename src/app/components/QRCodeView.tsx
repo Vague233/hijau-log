@@ -50,23 +50,13 @@ export function QRCodeView() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center font-sans relative">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2000&auto=format&fit=crop" 
-            alt="Nature Background" 
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"></div>
-        </div>
-        <div className="relative z-10 w-full max-w-md p-6">
-          <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
-            <CardContent className="py-12 text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
-              <p className="text-white/70 font-outfit">Memuat detail QR Code...</p>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="max-w-4xl mx-auto py-12">
+        <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+          <CardContent className="py-12 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
+            <p className="text-white/70 font-outfit">Memuat detail QR Code...</p>
+          </CardContent>
+        </Card>
       </div>
     );
   }

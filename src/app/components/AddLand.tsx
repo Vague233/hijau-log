@@ -32,11 +32,6 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 
-interface AddLandProps {
-  onBack?: () => void;
-  onSuccess?: () => void;
-}
-
 // Daftar Preset Komoditas & Spesies Resmi Standar EUDR
 const PRESET_SPECIES = [
   { label: "-- Pilih Komoditas & Spesies Resmi EUDR --", common: "", scientific: "" },
@@ -125,7 +120,7 @@ function PolygonDrawer({ polygonCoords, setPolygonCoords }: { polygonCoords: [nu
   return polygonCoords.length > 0 ? <LeafletPolygon positions={polygonCoords} pathOptions={{ color: '#34d399', weight: 3, fillColor: '#34d399', fillOpacity: 0.2 }} /> : null;
 }
 
-export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
+export function AddLand() {
   const navigate = useNavigate();
   const { session } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -340,17 +335,12 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
       setLoading(false);
     } else {
       toast.success("Lahan berhasil didaftarkan secara penuh (Kepatuhan EUDR)!");
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        navigate("/dashboard/lands");
-      }
+      navigate("/dashboard/lands");
     }
   };
 
   return (
-    <div className="dark container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto space-y-6 text-white font-sans">
         <div className="mb-6 flex items-center gap-2">
           <Leaf className="size-8 text-emerald-400" />
           <div>
@@ -756,28 +746,16 @@ export function AddLand({ onBack, onSuccess }: AddLandProps = {}) {
             <Button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white border-0 py-6 text-lg" disabled={loading}>
               {loading ? "Menyimpan ke Database..." : "Simpan & Verifikasi Kepatuhan"}
             </Button>
-            {onBack ? (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onBack}
-                className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
-              >
-                Batal
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => navigate("/dashboard/lands")}
-                className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
-              >
-                Batal
-              </Button>
-            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate("/dashboard/lands")}
+              className="border-white/20 text-white hover:bg-white/10 bg-transparent py-6"
+            >
+              Batal
+            </Button>
           </div>
         </form>
-      </div>
     </div>
   );
 }

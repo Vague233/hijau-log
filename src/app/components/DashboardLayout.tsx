@@ -128,7 +128,7 @@ export function DashboardLayout() {
                       : "text-white/70 hover:text-white hover:bg-white/5 border border-transparent"}
                   `}
                 >
-                  <Icon className={`size-4.5 ${active ? "text-emerald-400" : "text-white/50"}`} />
+                  <Icon className={`size-[18px] ${active ? "text-emerald-400" : "text-white/50"}`} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -172,8 +172,10 @@ export function DashboardLayout() {
             >
               <Menu className="size-5" />
             </button>
-            <h2 className="text-sm font-medium text-white/70 hidden sm:block">
-              Workspace &gt; <span className="text-white font-semibold">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>
+            <h2 className="text-sm font-medium text-white/60 hidden sm:block font-outfit">
+              <span className="text-white/40">Workspace</span>
+              <span className="mx-2 text-white/20">/</span>
+              <span className="text-white font-semibold">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>
             </h2>
           </div>
 
@@ -186,7 +188,7 @@ export function DashboardLayout() {
         </header>
 
         {/* Content Outlet */}
-        <main className="flex-1 p-4 md:p-8">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
           <Outlet />
         </main>
       </div>

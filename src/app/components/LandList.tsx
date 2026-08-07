@@ -53,8 +53,8 @@ export function LandList() {
   }, [session]);
 
   return (
-    <div className="dark container mx-auto px-4 py-4 text-white">
-      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="max-w-6xl mx-auto space-y-6 text-white font-sans">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-400 hidden md:block">
             <Trees className="size-6" />

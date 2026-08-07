@@ -198,7 +198,7 @@ export function ExportData() {
 
   if (loading) {
     return (
-      <div className="dark container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto py-8">
         <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
           <CardContent className="py-12 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
@@ -210,8 +210,7 @@ export function ExportData() {
   }
 
   return (
-    <div className="dark container mx-auto px-4 py-4 text-white font-sans">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6 text-white font-sans">
         <div>
           <h1 className="text-2xl md:text-3xl font-serif font-bold text-white mb-1">Ekspor Data & Paket DDS EUDR</h1>
           <p className="text-white/70 text-xs font-outfit">
@@ -353,8 +352,6 @@ export function ExportData() {
             </div>
           </CardContent>
         </Card>
-      </div>
-
       {/* Printable / Viewable DDS Modal */}
       {showDDSModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">

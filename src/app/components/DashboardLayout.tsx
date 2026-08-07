@@ -69,9 +69,9 @@ export function DashboardLayout() {
         <img 
           src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
           alt="Forest Canopy" 
-          className="w-full h-full object-cover opacity-40 scale-105 transition-transform duration-1000"
+          className="w-full h-full object-cover opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-slate-950/75 to-black/90 backdrop-blur-[4px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95 backdrop-blur-[2px]"></div>
       </div>
 
       {/* Sidebar Overlay for Mobile */}

@@ -17,6 +17,8 @@ import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../lib/AuthContext";
 import { MapContainer, TileLayer, Polygon as LeafletPolygon, CircleMarker, Marker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import area from '@turf/area';
+import { polygon as turfPolygon } from '@turf/helpers';
 
 // Fix Leaflet icon paths
 import L from 'leaflet';
@@ -150,7 +152,26 @@ export function AddLand() {
   const [polygonCoords, setPolygonCoords] = useState<[number, number][]>([]);
   const [pendingLocation, setPendingLocation] = useState<[number, number] | null>(null);
   const [flyToTarget, setFlyToTarget] = useState<[number, number] | null>(null);
+  const [calculatedArea, setCalculatedArea] = useState<number>(0);
   const defaultCenter: [number, number] = [-0.7893, 113.9213];
+
+  useEffect(() => {
+    if (polygonCoords.length >= 3) {
+      try {
+        // Turf expects [longitude, latitude], Leaflet gives [latitude, longitude]
+        const ring = polygonCoords.map(c => [c[1], c[0]]);
+        ring.push(ring[0]); // close the polygon ring
+        const poly = turfPolygon([ring]);
+        const sqm = area(poly);
+        const hectares = sqm / 10000;
+        setCalculatedArea(hectares);
+      } catch (err) {
+        setCalculatedArea(0);
+      }
+    } else {
+      setCalculatedArea(0);
+    }
+  }, [polygonCoords]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -394,7 +415,18 @@ export function AddLand() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="luas">Luas Area (Hektar) *</Label>
+                  <div className="flex justify-between items-end">
+                    <Label htmlFor="luas">Luas Area (Hektar) *</Label>
+                    {calculatedArea > 0 && (
+                      <button 
+                        type="button" 
+                        onClick={() => setFormData(prev => ({ ...prev, luas: calculatedArea.toFixed(2) }))}
+                        className="text-[10px] font-mono bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors cursor-pointer flex items-center gap-1"
+                      >
+                        <MapPin className="size-3" /> Gunakan Luas Peta: {calculatedArea.toFixed(2)} Ha
+                      </button>
+                    )}
+                  </div>
                   <Input
                     id="luas"
                     name="luas"
@@ -602,8 +634,20 @@ export function AddLand() {
               </div>
 
               {polygonCoords.length > 0 && (
-                <div className="p-3 bg-white/5 border border-white/10 rounded-lg max-h-32 overflow-y-auto font-mono text-xs text-white/60">
-                  {JSON.stringify(polygonCoords)}
+                <div className="flex flex-col gap-2">
+                  {polygonCoords.length >= 3 && (
+                    <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center justify-between text-sm">
+                      <span className="text-emerald-400 font-medium flex items-center gap-2">
+                        <MapPin className="size-4" /> Estimasi Luas Real:
+                      </span>
+                      <span className="font-mono font-bold text-white bg-black/40 px-3 py-1 rounded-md border border-white/10">
+                        {calculatedArea.toFixed(4)} Ha
+                      </span>
+                    </div>
+                  )}
+                  <div className="p-3 bg-white/5 border border-white/10 rounded-lg max-h-32 overflow-y-auto font-mono text-xs text-white/60">
+                    {JSON.stringify(polygonCoords)}
+                  </div>
                 </div>
               )}
 

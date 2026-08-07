@@ -55,8 +55,8 @@ export function LandList() {
   return (
     <div className="max-w-6xl mx-auto space-y-6 text-white font-sans">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-400 hidden md:block">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-400 hidden md:block shrink-0">
             <Trees className="size-6" />
           </div>
           <div>
@@ -64,8 +64,8 @@ export function LandList() {
             <p className="text-white/70 text-xs font-outfit">Daftar bidang lahan terdaftar & indikator status kepatuhan EUDR</p>
           </div>
         </div>
-        <Link to="/dashboard/add-land">
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 text-xs shadow-lg shadow-emerald-950/50">
+        <Link to="/dashboard/add-land" className="shrink-0 md:ml-auto">
+          <Button className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 text-xs shadow-lg shadow-emerald-950/50">
             <MapPin className="size-4 mr-2" />
             Tambah Lahan Baru
           </Button>

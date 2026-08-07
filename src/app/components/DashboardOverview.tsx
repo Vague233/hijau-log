@@ -83,7 +83,7 @@ export function DashboardOverview() {
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Header Banner */}
       <div className="p-6 md:p-8 bg-gradient-to-r from-emerald-950/40 via-black/40 to-emerald-950/20 backdrop-blur-xl border border-emerald-500/20 rounded-3xl shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
+        <div className="flex-1 min-w-0">
           <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold block mb-1">
             SaaS Traceability Workspace
           </span>
@@ -94,15 +94,15 @@ export function DashboardOverview() {
             Pantau statistik geolokasi bidang lahan, jumlah pohon terdaftar, dan pemenuhan regulasi uji tuntas secara real-time.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 md:ml-auto">
           <Link to="/dashboard/add-land">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 text-sm shadow-lg shadow-emerald-950/50">
+            <Button className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 text-sm shadow-lg shadow-emerald-950/50">
               <PlusCircle className="size-4 mr-2" />
               Tambah Lahan
             </Button>
           </Link>
           <Link to="/dashboard/export">
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-full px-5 text-sm">
+            <Button variant="outline" className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 bg-transparent rounded-full px-5 text-sm">
               <FileSpreadsheet className="size-4 mr-2 text-emerald-400" />
               Laporan EUDR
             </Button>

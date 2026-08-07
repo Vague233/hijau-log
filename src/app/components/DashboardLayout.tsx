@@ -64,47 +64,49 @@ export function DashboardLayout() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans flex relative overflow-x-hidden">
-      {/* Background Nature Image Overlay */}
+      {/* Background Nature Image Overlay - Enhanced Glassmorphism */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <img 
-          src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop" 
+          src="https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2000&auto=format&fit=crop" 
           alt="Forest Canopy" 
-          className="w-full h-full object-cover opacity-20"
+          className="w-full h-full object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95 backdrop-blur-[2px]"></div>
+        {/* Multi-layered gradient for depth and readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-emerald-950/80 backdrop-blur-[4px]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/20 via-transparent to-transparent"></div>
       </div>
 
       {/* Sidebar Overlay for Mobile */}
       {isMobileSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/80 backdrop-blur-md z-40 md:hidden"
           onClick={() => setIsMobileSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar Component */}
       <aside className={`
-        fixed md:sticky top-0 left-0 z-50 h-screen w-64 bg-black/70 backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between transition-transform duration-300 ease-in-out
+        fixed md:sticky top-0 left-0 z-50 h-screen w-64 bg-black/40 backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between transition-transform duration-300 ease-in-out shadow-2xl shadow-black/50
         ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}>
         <div>
           {/* Sidebar Header / Logo */}
           <div className="p-6 border-b border-white/10 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="p-2 bg-emerald-500/20 rounded-xl border border-emerald-500/30 group-hover:scale-105 transition-transform">
-                <MapPin className="size-5 text-emerald-400" />
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="p-2.5 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl border border-emerald-500/30 group-hover:scale-105 transition-all shadow-lg shadow-emerald-950/50">
+                <MapPin className="size-5 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
               </div>
               <div>
-                <span className="font-bold text-lg text-white font-serif tracking-wide block leading-tight">
+                <span className="font-bold text-xl text-white font-serif tracking-wide block leading-tight drop-shadow-md">
                   HijauLog
                 </span>
-                <span className="text-[10px] text-emerald-400/80 font-mono uppercase tracking-widest block">
+                <span className="text-[10px] text-emerald-400/90 font-mono uppercase tracking-[0.15em] block mt-0.5">
                   SaaS Traceability
                 </span>
               </div>
             </Link>
             <button 
-              className="md:hidden text-white/70 hover:text-white"
+              className="md:hidden text-white/50 hover:text-white transition-colors"
               onClick={() => setIsMobileSidebarOpen(false)}
             >
               <X className="size-5" />
@@ -122,14 +124,14 @@ export function DashboardLayout() {
                   to={item.path}
                   onClick={() => setIsMobileSidebarOpen(false)}
                   className={`
-                    flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300
+                    flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 group
                     ${active 
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-950/50 backdrop-blur-md" 
-                      : "text-white/70 hover:text-white hover:bg-white/5 border border-transparent"}
+                      ? "bg-gradient-to-r from-emerald-500/20 to-emerald-500/5 text-emerald-300 border border-emerald-500/30 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] backdrop-blur-xl" 
+                      : "text-white/60 hover:text-white hover:bg-white/5 border border-transparent"}
                   `}
                 >
-                  <Icon className={`size-[18px] ${active ? "text-emerald-400" : "text-white/50"}`} />
-                  <span>{item.label}</span>
+                  <Icon className={`size-[18px] transition-colors ${active ? "text-emerald-400" : "text-white/40 group-hover:text-white/80"}`} />
+                  <span className="font-outfit tracking-wide">{item.label}</span>
                 </Link>
               );
             })}
@@ -137,25 +139,25 @@ export function DashboardLayout() {
         </div>
 
         {/* Sidebar Footer User Info & Logout */}
-        <div className="p-4 border-t border-white/10">
-          <div className="p-3 bg-white/5 rounded-xl border border-white/10 mb-3 flex items-center gap-3">
-            <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">
+        <div className="p-4 border-t border-white/10 bg-black/20">
+          <div className="p-3 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 mb-3 flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-emerald-500/10 to-transparent rounded-lg text-emerald-400 border border-emerald-500/20">
               <UserCheck className="size-4" />
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-medium text-white truncate">
+              <p className="text-xs font-medium text-white truncate font-outfit">
                 {session?.user?.email || "User Active"}
               </p>
-              <p className="text-[10px] text-white/50 font-mono uppercase">EUDR Operator</p>
+              <p className="text-[9px] text-white/50 font-mono uppercase tracking-wider mt-0.5">EUDR Operator</p>
             </div>
           </div>
 
           <Button
             variant="outline"
             onClick={() => setIsLogoutModalOpen(true)}
-            className="w-full justify-start text-xs border-rose-500/30 text-rose-300 hover:bg-rose-500/10 hover:text-rose-200 bg-transparent rounded-xl py-2.5"
+            className="w-full justify-start text-xs border-white/10 text-white/70 hover:bg-rose-500/20 hover:border-rose-500/30 hover:text-rose-200 hover:shadow-[0_0_15px_-3px_rgba(244,63,94,0.3)] transition-all bg-transparent rounded-xl py-2.5 font-outfit"
           >
-            <LogOut className="size-4 mr-2 text-rose-400" />
+            <LogOut className="size-4 mr-2" />
             Keluar Akun
           </Button>
         </div>
@@ -164,25 +166,28 @@ export function DashboardLayout() {
       {/* Main Area */}
       <div className="flex-1 flex flex-col min-w-0 z-10 relative">
         {/* Topbar */}
-        <header className="sticky top-0 z-30 h-16 bg-black/40 backdrop-blur-xl border-b border-white/10 px-4 md:px-8 flex items-center justify-between">
+        <header className="sticky top-0 z-30 h-16 bg-black/20 backdrop-blur-2xl border-b border-white/10 px-4 md:px-8 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
             <button 
-              className="md:hidden p-2 bg-white/5 border border-white/10 rounded-xl text-white/80 hover:text-white"
+              className="md:hidden p-2 bg-white/5 border border-white/10 rounded-xl text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMobileSidebarOpen(true)}
             >
               <Menu className="size-5" />
             </button>
-            <h2 className="text-sm font-medium text-white/60 hidden sm:block font-outfit">
+            <h2 className="text-sm font-medium text-white/60 hidden sm:block font-outfit tracking-wide">
               <span className="text-white/40">Workspace</span>
               <span className="mx-2 text-white/20">/</span>
-              <span className="text-white font-semibold">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>
+              <span className="text-white drop-shadow-sm">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>
             </h2>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-              <span className="size-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              EUDR Active
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-widest bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shadow-[0_0_10px_-2px_rgba(16,185,129,0.3)] backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              EUDR ACTIVE
             </span>
           </div>
         </header>

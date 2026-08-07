@@ -188,14 +188,18 @@ export function DashboardLayout() {
             >
               <Menu className="size-5" />
             </button>
+            
+            {/* Page Title */}
+            <h2 className="text-base font-semibold text-white/90 hidden sm:block font-outfit tracking-wide ml-2 drop-shadow-sm">
+              {navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}
+            </h2>
           </div>
 
           <div className="flex items-center gap-3">
-            <h2 className="text-sm font-medium text-white/60 font-outfit tracking-wide">
-              <span className="text-white/30">Workspace</span>
-              <span className="mx-2 text-white/10">/</span>
-              <span className="text-white/90 drop-shadow-sm">{navItems.find(n => isActive(n.path, n.exact))?.label || "Dashboard"}</span>
-            </h2>
+            {/* Prominent Workspace Badge (Glassmorphism) */}
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-[0.15em] bg-white/[0.05] border border-white/20 text-white shadow-xl backdrop-blur-md">
+              Workspace
+            </span>
           </div>
         </header>
 

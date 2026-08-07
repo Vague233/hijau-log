@@ -210,91 +210,96 @@ export function ExportData() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 text-white font-sans">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-serif font-bold text-white mb-1">Ekspor Data & Paket DDS EUDR</h1>
-          <p className="text-white/70 text-xs font-outfit">
-            Unduh data geolokasi GeoJSON, berkas CSV, dan Paket Deklarasi Uji Tuntas (Due Diligence Statement) Uni Eropa.
-          </p>
+    <div className="max-w-4xl mx-auto space-y-8 text-white font-sans pb-12">
+        <div className="mb-8 flex items-center gap-4">
+          <div className="p-3 bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
+            <Package className="size-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-white mb-1">Ekspor Data & Paket DDS</h1>
+            <p className="text-white/60 font-medium">
+              Unduh data geolokasi GeoJSON, berkas CSV, dan Paket Deklarasi Uji Tuntas (Due Diligence Statement) Uni Eropa.
+            </p>
+          </div>
         </div>
 
         {/* Export Statistics */}
-        <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
+        <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-serif">Ringkasan Kepatuhan Dataset</CardTitle>
+            <CardTitle className="text-xl tracking-tight">Ringkasan Kepatuhan Dataset</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <p className="text-3xl font-bold text-emerald-400 mb-1 font-serif">{lands.length}</p>
-                <p className="text-xs text-white/70 font-outfit">Total Bidang Lahan</p>
+              <div className="text-center p-4 bg-white/[0.03] border border-white/10 rounded-3xl">
+                <p className="text-4xl font-bold text-white mb-1 tracking-tight">{lands.length}</p>
+                <p className="text-sm text-white/60 font-medium">Total Bidang Lahan</p>
               </div>
-              <div className="text-center p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <p className="text-3xl font-bold text-emerald-400 mb-1 font-serif">
+              <div className="text-center p-4 bg-white/[0.03] border border-white/10 rounded-3xl">
+                <p className="text-4xl font-bold text-white mb-1 tracking-tight">
                   {lands.reduce((acc, land) => acc + (land.jumlah_pohon || 0), 0).toLocaleString("id-ID")}
                 </p>
-                <p className="text-xs text-white/70 font-outfit">Total Pohon Terdaftar</p>
+                <p className="text-sm text-white/60 font-medium">Total Pohon Terdaftar</p>
               </div>
-              <div className="text-center p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <p className={`text-3xl font-bold mb-1 font-serif ${compliancePercentage === 100 ? 'text-emerald-400' : compliancePercentage >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
+              <div className="text-center p-4 bg-white/[0.03] border border-white/10 rounded-3xl">
+                <p className={`text-4xl font-bold tracking-tight mb-1 ${compliancePercentage === 100 ? 'text-white' : compliancePercentage >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
                   {compliancePercentage}%
                 </p>
-                <p className="text-xs text-white/70 font-outfit">Kepatuhan EUDR ({compliantLandsCount}/{lands.length} Lahan Compliant)</p>
+                <p className="text-sm text-white/60 font-medium">Kepatuhan EUDR ({compliantLandsCount}/{lands.length} Compliant)</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Export Options */}
-        <Card className="bg-white/5 backdrop-blur-lg border-white/10 shadow-xl text-white">
+        <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
           <CardHeader>
-            <CardTitle className="font-serif text-xl">Format Ekspor Berkas</CardTitle>
-            <CardDescription className="text-white/70 text-xs font-outfit">
-              Pilih jenis berkas ekspor sesuai dengan kebutuhan importirUni Eropa, Bea Cukai, atau integrasi ERP internal.
+            <CardTitle className="text-xl tracking-tight">Format Ekspor Berkas</CardTitle>
+            <CardDescription className="text-white/60 font-medium">
+              Pilih jenis berkas ekspor sesuai dengan kebutuhan importir Uni Eropa, Bea Cukai, atau integrasi ERP internal.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Button 1: DDS Package */}
-              <Button onClick={handleGenerateDDS} className="h-auto py-5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white border-0 rounded-2xl shadow-lg shadow-emerald-950/50">
+              <Button onClick={handleGenerateDDS} className="h-auto py-6 bg-white hover:bg-white/90 text-black border-0 rounded-[1.5rem] shadow-2xl transition-all">
                 <div className="flex flex-col items-center gap-2">
-                  <Package className="size-8 text-white animate-bounce" />
+                  <Package className="size-8" />
                   <div className="text-center">
-                    <p className="font-bold text-sm">Paket Registrasi DDS</p>
-                    <p className="text-[11px] text-emerald-100/80">Dokumen Uji Tuntas Resmi (Article 4 EUDR)</p>
+                    <p className="font-bold text-base">Paket Registrasi DDS</p>
+                    <p className="text-xs text-black/60 font-medium">Dokumen Uji Tuntas Resmi (Article 4 EUDR)</p>
                   </div>
                 </div>
               </Button>
 
               {/* Button 2: JSON Export */}
-              <Button onClick={exportAsJSON} variant="outline" className="h-auto py-5 border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400 bg-transparent text-white rounded-2xl">
+              <Button onClick={exportAsJSON} variant="outline" className="h-auto py-6 border-white/10 hover:bg-white/10 bg-white/[0.03] backdrop-blur-md text-white rounded-[1.5rem] transition-all">
                 <div className="flex flex-col items-center gap-2">
-                  <FileJson className="size-8 text-emerald-400" />
+                  <FileJson className="size-8" />
                   <div className="text-center">
-                    <p className="font-bold text-sm">Ekspor JSON / GeoJSON</p>
-                    <p className="text-[11px] text-white/50">Format data geolokasi mesin TRACES EU</p>
+                    <p className="font-bold text-base">Ekspor JSON / GeoJSON</p>
+                    <p className="text-xs text-white/50 font-medium">Format data geolokasi mesin TRACES EU</p>
                   </div>
                 </div>
               </Button>
 
               {/* Button 3: CSV Export */}
-              <Button onClick={exportAsCSV} variant="outline" className="h-auto py-5 border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400 bg-transparent text-white rounded-2xl">
+              <Button onClick={exportAsCSV} variant="outline" className="h-auto py-6 border-white/10 hover:bg-white/10 bg-white/[0.03] backdrop-blur-md text-white rounded-[1.5rem] transition-all">
                 <div className="flex flex-col items-center gap-2">
-                  <FileSpreadsheet className="size-8 text-emerald-400" />
+                  <FileSpreadsheet className="size-8" />
                   <div className="text-center">
-                    <p className="font-bold text-sm">Ekspor CSV Excel</p>
-                    <p className="text-[11px] text-white/50">Kompatibel dengan Microsoft Excel & ERP</p>
+                    <p className="font-bold text-base">Ekspor CSV Excel</p>
+                    <p className="text-xs text-white/50 font-medium">Kompatibel dengan Microsoft Excel & ERP</p>
                   </div>
                 </div>
               </Button>
 
               {/* Button 4: Full Report */}
-              <Button onClick={exportEUDRReport} variant="outline" className="h-auto py-5 border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400 bg-transparent text-white rounded-2xl">
+              <Button onClick={exportEUDRReport} variant="outline" className="h-auto py-6 border-white/10 hover:bg-white/10 bg-white/[0.03] backdrop-blur-md text-white rounded-[1.5rem] transition-all">
                 <div className="flex flex-col items-center gap-2">
-                  <FileText className="size-8 text-emerald-400" />
+                  <FileText className="size-8" />
                   <div className="text-center">
-                    <p className="font-bold text-sm">Laporan Kepatuhan EUDR</p>
-                    <p className="text-[11px] text-white/50">Laporan rekapitulasi audit lengkap</p>
+                    <p className="font-bold text-base">Laporan Kepatuhan EUDR</p>
+                    <p className="text-xs text-white/50 font-medium">Laporan rekapitulasi audit lengkap</p>
                   </div>
                 </div>
               </Button>
@@ -303,38 +308,38 @@ export function ExportData() {
         </Card>
 
         {/* Post-Export Guide Roadmap Card */}
-        <Card className="bg-gradient-to-r from-emerald-950/40 via-white/5 to-black/40 backdrop-blur-xl border border-emerald-500/30 text-white shadow-2xl">
+        <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 text-white shadow-2xl rounded-[2.5rem] overflow-hidden">
           <CardHeader>
-            <div className="flex items-center gap-2 text-emerald-400">
+            <div className="flex items-center gap-2 text-white">
               <HelpCircle className="size-5" />
-              <CardTitle className="font-serif text-lg text-white">Panduan Alur Pasca-Ekspor (Setelah Unduh Berkas)</CardTitle>
+              <CardTitle className="tracking-tight text-xl text-white">Panduan Alur Pasca-Ekspor (Setelah Unduh Berkas)</CardTitle>
             </div>
-            <CardDescription className="text-white/70 text-xs font-outfit">
+            <CardDescription className="text-white/60 font-medium">
               Penjelasan resmi mengenai langkah penggunaan berkas setelah diunduh dari sistem HijauLog.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-xs font-outfit">
+          <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2">
-                <span className="text-emerald-400 font-mono text-xs font-bold block">LANGKAH 1</span>
+              <div className="p-5 bg-white/[0.03] rounded-3xl border border-white/10 space-y-2">
+                <span className="text-white font-mono text-xs font-bold block bg-white/10 w-fit px-2 py-1 rounded-full border border-white/10">LANGKAH 1</span>
                 <h4 className="font-semibold text-white">Kirim ke Importir Uni Eropa</h4>
-                <p className="text-white/60">
+                <p className="text-white/60 text-sm">
                   Kirimkan berkas JSON/DDS ini kepada pembeli atau importir Anda di negara Uni Eropa tujuan sebelum kontainer diberangkatkan.
                 </p>
               </div>
 
-              <div className="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2">
-                <span className="text-emerald-400 font-mono text-xs font-bold block">LANGKAH 2</span>
+              <div className="p-5 bg-white/[0.03] rounded-3xl border border-white/10 space-y-2">
+                <span className="text-white font-mono text-xs font-bold block bg-white/10 w-fit px-2 py-1 rounded-full border border-white/10">LANGKAH 2</span>
                 <h4 className="font-semibold text-white">Upload ke Portal TRACES EU</h4>
-                <p className="text-white/60">
-                  Importir Anda akan mengunggah payload JSON geolokasi ini ke portal <span className="text-emerald-300 font-mono">EU Information System (TRACES)</span> untuk mendapatkan Reference Number.
+                <p className="text-white/60 text-sm">
+                  Importir Anda akan mengunggah payload JSON geolokasi ini ke portal <span className="text-white font-mono">EU Information System (TRACES)</span> untuk mendapatkan Reference Number.
                 </p>
               </div>
 
-              <div className="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2">
-                <span className="text-emerald-400 font-mono text-xs font-bold block">LANGKAH 3</span>
+              <div className="p-5 bg-white/[0.03] rounded-3xl border border-white/10 space-y-2">
+                <span className="text-white font-mono text-xs font-bold block bg-white/10 w-fit px-2 py-1 rounded-full border border-white/10">LANGKAH 3</span>
                 <h4 className="font-semibold text-white">Verifikasi Pabean / Bea Cukai</h4>
-                <p className="text-white/60">
+                <p className="text-white/60 text-sm">
                   Otoritas Bea Cukai pelabuhan Eropa akan mencocokkan Kode QR / Reference Number dengan data geolokasi bebas deforestasi secara otomatis.
                 </p>
               </div>
@@ -354,24 +359,24 @@ export function ExportData() {
         </Card>
       {/* Printable / Viewable DDS Modal */}
       {showDDSModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-emerald-500/30 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto text-white shadow-2xl p-6 md:p-8 space-y-6 relative" id="printable-dds-area">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-black/40 backdrop-blur-[80px] border border-white/10 rounded-[2.5rem] max-w-3xl w-full max-h-[90vh] overflow-y-auto text-white shadow-2xl p-8 md:p-10 space-y-8 relative" id="printable-dds-area">
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-white/10 pb-4">
+            <div className="flex items-start justify-between border-b border-white/10 pb-6">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block mb-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-white/50 font-bold block mb-2">
                   EUDR Article 4 & Article 9 Official Statement
                 </span>
-                <h2 className="text-2xl font-serif font-bold text-white">
-                  Paket Deklarasi Uji Tuntas (Due Diligence Statement)
+                <h2 className="text-3xl font-bold tracking-tight text-white">
+                  Paket Deklarasi Uji Tuntas (DDS)
                 </h2>
-                <p className="text-xs text-white/60 font-outfit mt-1">
-                  Nomor Referensi Keterlacakan: <span className="font-mono text-emerald-400">DDS-EUDR-2026-{(Math.random()*1000000).toFixed(0)}</span>
+                <p className="text-sm text-white/60 font-medium mt-2">
+                  Nomor Referensi Keterlacakan: <span className="font-mono text-white bg-white/10 px-2 py-0.5 rounded ml-1">DDS-EUDR-2026-{(Math.random()*1000000).toFixed(0)}</span>
                 </p>
               </div>
               <button 
                 onClick={() => setShowDDSModal(false)}
-                className="p-2 text-white/60 hover:text-white bg-white/5 rounded-full border border-white/10"
+                className="p-3 text-white/60 hover:text-white bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-colors"
               >
                 <X className="size-5" />
               </button>
@@ -425,19 +430,19 @@ export function ExportData() {
             </div>
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+            <div className="flex items-center justify-end gap-4 pt-6 border-t border-white/10">
               <Button 
                 variant="outline"
                 onClick={() => setShowDDSModal(false)}
-                className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-full px-5 text-xs"
+                className="border-white/10 text-white hover:bg-white/10 bg-white/[0.03] backdrop-blur-md rounded-full px-6 py-5 transition-all"
               >
                 Tutup
               </Button>
               <Button 
                 onClick={handlePrintDDS}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-6 text-xs"
+                className="bg-white hover:bg-white/90 text-black rounded-full px-8 py-5 font-bold shadow-xl transition-all"
               >
-                <Printer className="size-4 mr-2" /> Cetak / Simpan Berkas DDS (PDF)
+                <Printer className="size-4 mr-2" /> Cetak / Simpan Berkas (PDF)
               </Button>
             </div>
           </div>

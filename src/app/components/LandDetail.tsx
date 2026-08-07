@@ -79,8 +79,17 @@ export function LandDetail() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 font-sans">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 font-sans">
       <div>
+        <div className="mb-6 -ml-4">
+          <Link to="/dashboard/lands">
+            <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 rounded-[1rem] px-4 py-2 h-auto font-outfit">
+              <ArrowLeft className="size-4 mr-2" />
+              Kembali ke Daftar Lahan
+            </Button>
+          </Link>
+        </div>
+
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 backdrop-blur-md hidden sm:flex">
@@ -103,13 +112,13 @@ export function LandDetail() {
           </div>
 
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 h-14 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-1 shadow-2xl">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300">Overview Lahan</TabsTrigger>
-              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-lg transition-all duration-300">Kepatuhan EUDR</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 h-14 bg-white/[0.03] backdrop-blur-[40px] border border-white/10 rounded-[2rem] p-1 shadow-2xl">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-full transition-all duration-300">Overview Lahan</TabsTrigger>
+              <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white data-[state=active]:shadow-sm text-white/60 font-medium rounded-full transition-all duration-300">Kepatuhan EUDR</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+              <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                 <CardHeader>
                   <CardTitle className="font-serif text-2xl">Informasi Lahan</CardTitle>
                 </CardHeader>
@@ -167,7 +176,7 @@ export function LandDetail() {
               </Card>
 
               {land.foto && (
-                <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+                <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                   <CardHeader>
                     <CardTitle className="font-serif text-2xl">Foto Lahan</CardTitle>
                   </CardHeader>
@@ -180,7 +189,7 @@ export function LandDetail() {
                 </Card>
               )}
 
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+              <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                 <CardHeader>
                   <CardTitle className="font-serif text-2xl">Data Geo-Lokasi (Poligon)</CardTitle>
                 </CardHeader>
@@ -207,7 +216,7 @@ export function LandDetail() {
           </TabsContent>
 
           <TabsContent value="compliance" className="space-y-6">
-            <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl text-white">
+            <Card className="bg-white/[0.03] backdrop-blur-[40px] border-white/10 shadow-2xl rounded-[2.5rem] overflow-hidden text-white">
                 <CardHeader>
                   <CardTitle className="font-serif text-2xl text-emerald-400">Status Kepatuhan EUDR</CardTitle>
                   <CardDescription className="text-white/60 font-outfit">
